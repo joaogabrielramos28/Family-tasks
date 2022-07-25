@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "family-task",
+    "slug": "family-task",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

@@ -7,6 +7,7 @@ import { Home } from "./src/Screens";
 export default function App() {
   return (
     <NativeBaseProvider>
+      <StatusBar style="dark" />
       <Home />
     </NativeBaseProvider>
   );

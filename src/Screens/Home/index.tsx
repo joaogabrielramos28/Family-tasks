@@ -1,6 +1,7 @@
-import { Avatar, Box, Container, Heading } from "native-base";
+import { Avatar, Box, Container, Fab, Heading, Icon } from "native-base";
 import React from "react";
 import { WeekCalendar } from "./Components/WeekCalendar";
+import { AntDesign } from "@expo/vector-icons";
 
 const Home = () => {
   return (
@@ -33,6 +34,11 @@ const Home = () => {
           <WeekCalendar />
         </Box>
       </Box>
+
+      <Fab
+        icon={<Icon color={"light.100"} as={AntDesign} name="plus" size="md" />}
+        backgroundColor={"indigo.400"}
+      />
     </>
   );
 };

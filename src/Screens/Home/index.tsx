@@ -1,8 +1,9 @@
 import { Avatar, Box, Fab, Heading, Icon } from "native-base";
 import React from "react";
 import { WeekCalendar } from "./Components/WeekCalendar";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { ProgressChart } from "./Components/ProgressChart";
+import { TasksStatistics } from "./Components/TasksStatistics";
 
 const Home = () => {
   return (
@@ -46,6 +47,25 @@ const Home = () => {
       />
 
       <ProgressChart />
+
+      <Box
+        display={"flex"}
+        flexDirection={"row"}
+        justifyContent={"space-around"}
+      >
+        <TasksStatistics
+          title="Tasks diárias"
+          icon={"pen"}
+          value={8}
+          color={"yellow.600"}
+        />
+        <TasksStatistics
+          title="Tasks ativas"
+          icon={"toggle-on"}
+          color={"success.400"}
+          value={12}
+        />
+      </Box>
     </Box>
   );
 };

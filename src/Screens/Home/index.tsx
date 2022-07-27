@@ -1,11 +1,12 @@
-import { Avatar, Box, Container, Fab, Heading, Icon } from "native-base";
+import { Avatar, Box, Fab, Heading, Icon } from "native-base";
 import React from "react";
 import { WeekCalendar } from "./Components/WeekCalendar";
 import { AntDesign } from "@expo/vector-icons";
+import { ProgressChart } from "./Components/ProgressChart";
 
 const Home = () => {
   return (
-    <>
+    <Box bg={"warmGray.900"} h={"100%"}>
       <Box
         bg={"indigo.500"}
         w={"100%"}
@@ -35,11 +36,17 @@ const Home = () => {
         </Box>
       </Box>
 
+      <Box marginTop={6} w={"100%"} display={"flex"} alignItems={"center"}>
+        <Heading color={"light.100"}>Tasks completadas </Heading>
+      </Box>
+
       <Fab
         icon={<Icon color={"light.100"} as={AntDesign} name="plus" size="md" />}
         backgroundColor={"indigo.400"}
       />
-    </>
+
+      <ProgressChart />
+    </Box>
   );
 };
 

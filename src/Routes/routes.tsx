@@ -10,6 +10,7 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
+import { CreateTask } from "../Components/CreateTask";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 const Routes = () => {
@@ -82,6 +83,7 @@ const Routes = () => {
                     />
                   }
                 />
+                <CreateTask isOpen={true} />
               </BorderlessButton>
             ),
           }}

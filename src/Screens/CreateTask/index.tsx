@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Heading,
@@ -17,10 +16,14 @@ import {
 import React, { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Dimensions, Keyboard } from "react-native";
+import { Badge } from "./Components/Badge";
+import { TaskResponsible } from "./Components/TaskResponsible";
 
 const CreateTask = () => {
   const [date, setDate] = useState(new Date());
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [categorySelected, setCategorySelected] = useState("");
+  const [responsible, setResponsible] = useState("");
 
   const changeDate = (event: any, date) => {
     setDate(date);
@@ -29,6 +32,11 @@ const CreateTask = () => {
   const theme = useTheme();
 
   const { height } = Dimensions.get("screen");
+
+  const handleSelectCategory = (category: string) => {
+    setCategorySelected(category);
+    console.log(categorySelected);
+  };
 
   return (
     <KeyboardAvoidingView>
@@ -106,49 +114,29 @@ const CreateTask = () => {
                     marginY={2}
                   >
                     <Badge
-                      bgColor={"warmGray.600"}
-                      variant={"solid"}
-                      borderRadius={8}
-                      _text={{
-                        fontSize: 16,
-                      }}
-                      marginRight={2}
-                    >
-                      Limpeza
-                    </Badge>
+                      title="Limpeza"
+                      isPress={categorySelected}
+                      setIsPress={setCategorySelected}
+                      name={"clean"}
+                    />
                     <Badge
-                      bgColor={"warmGray.600"}
-                      variant={"solid"}
-                      borderRadius={8}
-                      _text={{
-                        fontSize: 16,
-                      }}
-                      marginRight={2}
-                    >
-                      Estudo
-                    </Badge>
+                      title="Estudos"
+                      isPress={categorySelected}
+                      setIsPress={setCategorySelected}
+                      name={"study"}
+                    />
                     <Badge
-                      bgColor={"warmGray.600"}
-                      variant={"solid"}
-                      borderRadius={8}
-                      _text={{
-                        fontSize: 16,
-                      }}
-                      marginRight={2}
-                    >
-                      Animal de estimação
-                    </Badge>
+                      title="Animal de Estimação"
+                      isPress={categorySelected}
+                      setIsPress={setCategorySelected}
+                      name={"pet"}
+                    />
                     <Badge
-                      bgColor={"warmGray.600"}
-                      variant={"solid"}
-                      borderRadius={8}
-                      _text={{
-                        fontSize: 16,
-                      }}
-                      marginRight={2}
-                    >
-                      Alimentação
-                    </Badge>
+                      title="Alimentação"
+                      isPress={categorySelected}
+                      setIsPress={setCategorySelected}
+                      name={"food"}
+                    />
                   </ScrollView>
                 </VStack>
               </HStack>
@@ -168,13 +156,21 @@ const CreateTask = () => {
                     maxWidth="250px"
                     marginY={2}
                   >
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
-                    <Avatar marginRight={"3px"} />
+                    <TaskResponsible
+                      id="1"
+                      responsible={responsible}
+                      setResponsible={setResponsible}
+                    />
+                    <TaskResponsible
+                      id="2"
+                      responsible={responsible}
+                      setResponsible={setResponsible}
+                    />
+                    <TaskResponsible
+                      id="3"
+                      responsible={responsible}
+                      setResponsible={setResponsible}
+                    />
                   </ScrollView>
                 </VStack>
               </HStack>

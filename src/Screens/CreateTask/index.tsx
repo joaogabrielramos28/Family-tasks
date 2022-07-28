@@ -52,7 +52,12 @@ const CreateTask = () => {
             </HStack>
             <VStack>
               <VStack>
-                <Text color={"light.50"} marginBottom={2}>
+                <Text
+                  color={"light.50"}
+                  marginBottom={2}
+                  fontSize={14}
+                  fontWeight={"bold"}
+                >
                   Nome
                 </Text>
                 <Input
@@ -65,7 +70,12 @@ const CreateTask = () => {
                 />
               </VStack>
               <VStack marginY={2}>
-                <Text color={"light.50"} marginBottom={2}>
+                <Text
+                  color={"light.50"}
+                  marginBottom={2}
+                  fontSize={14}
+                  fontWeight={"bold"}
+                >
                   Descriçao
                 </Text>
                 <TextArea
@@ -81,7 +91,12 @@ const CreateTask = () => {
               </VStack>
               <HStack>
                 <VStack>
-                  <Text color={"light.50"} marginBottom={2}>
+                  <Text
+                    color={"light.50"}
+                    marginBottom={2}
+                    fontSize={14}
+                    fontWeight={"bold"}
+                  >
                     Categoria
                   </Text>
                   <ScrollView
@@ -139,7 +154,12 @@ const CreateTask = () => {
               </HStack>
               <HStack marginY={2}>
                 <VStack>
-                  <Text color={"light.50"} marginBottom={2}>
+                  <Text
+                    color={"light.50"}
+                    marginBottom={2}
+                    fontSize={14}
+                    fontWeight={"bold"}
+                  >
                     Responsável
                   </Text>
                   <ScrollView
@@ -161,21 +181,27 @@ const CreateTask = () => {
 
               <HStack marginY={"10px"}>
                 <VStack>
-                  <Text color={"light.50"} marginBottom={2}>
+                  <Text
+                    color={"light.50"}
+                    marginBottom={2}
+                    fontSize={14}
+                    fontWeight={"bold"}
+                  >
                     Data
                   </Text>
+
                   <DateTimePicker
+                    themeVariant="dark"
                     mode="date"
                     display="default"
                     value={date}
                     locale="pt-BR"
                     onChange={changeDate}
-                    textColor={theme.colors.red[500]}
+                    accentColor={theme.colors.violet[500]}
                     style={{
                       width: 200,
                       marginLeft: -30,
                       borderRadius: 8,
-                      display: "flex",
                     }}
                   />
                 </VStack>

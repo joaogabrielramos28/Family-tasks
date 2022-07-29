@@ -14,7 +14,7 @@ import {
 import React, { useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 
-const Task = () => {
+const TaskDetails = () => {
   const [status, setStatus] = useState("");
 
   return (
@@ -197,4 +197,4 @@ const Task = () => {
   );
 };
 
-export { Task };
+export { TaskDetails };

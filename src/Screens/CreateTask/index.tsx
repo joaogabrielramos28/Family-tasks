@@ -7,6 +7,7 @@ import {
   Input,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar,
   Text,
   TextArea,
   useTheme,
@@ -40,6 +41,7 @@ const CreateTask = () => {
 
   return (
     <KeyboardAvoidingView>
+      <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView behavior="height" enabled>
         <ScrollView
           bgColor={"warmGray.900"}

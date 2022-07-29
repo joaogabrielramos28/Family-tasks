@@ -11,7 +11,7 @@ import {
 } from "@expo/vector-icons";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 
-import { CreateTask, Home, TaskDetails, Tasks } from "../Screens";
+import { CreateTask, Home, Profile, TaskDetails, Tasks } from "../Screens";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 const { Screen, Navigator } = createBottomTabNavigator();
@@ -91,7 +91,7 @@ const Routes = () => {
         />
         <Screen
           name="Group"
-          component={Home}
+          component={TaskDetails}
           options={{
             tabBarIcon: ({ color }) => (
               <FontAwesome name="group" size={24} color={color} />
@@ -100,7 +100,7 @@ const Routes = () => {
         />
         <Screen
           name="Profile"
-          component={TaskDetails}
+          component={Profile}
           options={{
             tabBarIcon: ({ color }) => (
               <Feather name="user" size={26} color={color} />

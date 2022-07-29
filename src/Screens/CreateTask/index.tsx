@@ -4,7 +4,6 @@ import {
   Button,
   Heading,
   HStack,
-  Icon,
   Input,
   KeyboardAvoidingView,
   ScrollView,
@@ -18,6 +17,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Dimensions, Keyboard } from "react-native";
 import { Badge } from "./Components/Badge";
 import { TaskResponsible } from "./Components/TaskResponsible";
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 const CreateTask = () => {
   const [date, setDate] = useState(new Date());
@@ -45,6 +45,7 @@ const CreateTask = () => {
           bgColor={"warmGray.900"}
           _contentContainerStyle={{
             padding: 6,
+            marginTop: getStatusBarHeight(),
           }}
         >
           <Box

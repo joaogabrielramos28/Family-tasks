@@ -35,8 +35,8 @@ const Tasks = () => {
         <WeekCalendar />
 
         <VStack paddingX={10} marginTop={12} space={6}>
-          <Task status={Status.Completed} />
-          <Task status={Status.Doing} />
+          <Task status={Status.Completed} id={"123"} />
+          <Task status={Status.Doing} id={"123"} />
         </VStack>
       </Box>
     </ScrollView>

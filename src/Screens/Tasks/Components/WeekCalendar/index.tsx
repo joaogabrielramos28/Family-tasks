@@ -29,10 +29,11 @@ const WeekCalendar = () => {
       highlightDateNameStyle={{ color: theme.colors.violet[600] }}
       disabledDateNameStyle={{ color: theme.colors.info[100] }}
       disabledDateNumberStyle={{ color: theme.colors.light[300] }}
-      datesWhitelist={datesWhitelist}
       iconContainer={{ flex: 0.1 }}
       iconStyle={{ tintColor: theme.colors.light[50] }}
       locale={ptBr}
+      scrollable={true}
+      selectedDate={moment()}
     />
   );
 };

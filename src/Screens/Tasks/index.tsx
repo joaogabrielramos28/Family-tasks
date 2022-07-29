@@ -14,12 +14,18 @@ import { Status } from "./Components/Task/types";
 
 const Tasks = () => {
   return (
-    <ScrollView flex={1} background={"warmGray.900"}>
+    <ScrollView
+      flex={1}
+      background={"warmGray.900"}
+      _contentContainerStyle={{
+        paddingBottom: 20,
+      }}
+    >
       <Box width={"100%"} flex={1}>
         <VStack
           background={"indigo.500"}
           width={"100%"}
-          height={"190px"}
+          height={"120px"}
           borderBottomLeftRadius={"20px"}
           padding={"20px"}
           justifyContent={"center"}

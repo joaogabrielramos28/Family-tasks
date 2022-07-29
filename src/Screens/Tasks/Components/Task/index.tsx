@@ -41,7 +41,7 @@ const Task = ({ status, id }: ITask) => {
               </HStack>
             </HStack>
             <Box alignItems={"flex-end"} justifyContent={"flex-end"} flex={1}>
-              <HStack alignItems={"center"} space={2}>
+              <HStack alignItems={"center"} space={2} w={20}>
                 <Box
                   w={"15px"}
                   h={"15px"}

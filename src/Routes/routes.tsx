@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home } from "../Screens";
+
 import { Icon, IconButton, useTheme } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -10,7 +10,8 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
-import { CreateTask } from "../Screens/CreateTask";
+
+import { CreateTask, Home, Tasks } from "../Screens";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 const Routes = () => {
@@ -50,7 +51,7 @@ const Routes = () => {
         />
         <Screen
           name="Tasks"
-          component={Home}
+          component={Tasks}
           options={{
             tabBarIcon: ({ color }) => (
               <FontAwesome5 name="tasks" size={24} color={color} />

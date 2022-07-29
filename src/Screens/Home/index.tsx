@@ -1,9 +1,8 @@
 import { Avatar, Box, Heading, ScrollView } from "native-base";
 import React from "react";
-import { WeekCalendar } from "./Components/WeekCalendar";
+
 import { ProgressChart } from "./Components/ProgressChart";
 import { TasksStatistics } from "./Components/TasksStatistics";
-import { getBottomSpace } from "react-native-iphone-x-helper";
 
 const Home = () => {
   return (
@@ -31,10 +30,6 @@ const Home = () => {
             <Avatar>
               <Avatar.Badge bg="green.500" />
             </Avatar>
-          </Box>
-
-          <Box w={"100%"} marginTop="5px">
-            <WeekCalendar />
           </Box>
         </Box>
 
@@ -67,4 +62,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export { Home };

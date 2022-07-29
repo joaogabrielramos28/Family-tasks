@@ -1,3 +1,5 @@
-import Home from "./Home";
+import { Home } from "./Home";
+import { CreateTask } from "./CreateTask";
+import { Tasks } from "./Tasks";
 
-export { Home };
+export { Home, CreateTask, Tasks };

@@ -7,6 +7,7 @@ import {
   Feather,
   FontAwesome,
   FontAwesome5,
+  Ionicons,
 } from "@expo/vector-icons";
 import { BorderlessButton } from "react-native-gesture-handler";
 
@@ -47,7 +48,7 @@ const TabsRoutes = () => {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <Feather name="home" size={24} color={color} />
+            <Ionicons name="home" size={24} color={color} />
           ),
         }}
       />
@@ -104,7 +105,7 @@ const TabsRoutes = () => {
         component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
-            <Feather name="user" size={26} color={color} />
+            <FontAwesome name="user" size={26} color={color} />
           ),
         }}
       />

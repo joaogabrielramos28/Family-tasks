@@ -21,6 +21,7 @@ const Task = ({ status, id }: ITask) => {
         height={"140px"}
         padding={6}
         alignItems={"flex-start"}
+        marginBottom={6}
       >
         <VStack width={"100%"} justifyContent={"space-between"}>
           <VStack>

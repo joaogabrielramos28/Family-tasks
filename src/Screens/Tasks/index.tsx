@@ -60,7 +60,7 @@ const Tasks = () => {
   return (
     <Box width={"100%"} background={"warmGray.900"} flex={1} paddingBottom={20}>
       <VStack
-        background={"indigo.500"}
+        background={"warmGray.800"}
         width={"100%"}
         height={"120px"}
         borderBottomLeftRadius={"20px"}

@@ -1,4 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import {
   Avatar,
   CheckIcon,
@@ -17,6 +18,11 @@ import { RFValue } from "react-native-responsive-fontsize";
 const TaskDetails = () => {
   const [status, setStatus] = useState("");
 
+  const { goBack } = useNavigation();
+
+  const handleGoBack = () => {
+    goBack();
+  };
   return (
     <ScrollView
       background={"warmGray.900"}
@@ -33,6 +39,7 @@ const TaskDetails = () => {
       >
         <HStack w={"100%"} justifyContent={"space-between"}>
           <IconButton
+            onPress={handleGoBack}
             icon={
               <Icon
                 as={AntDesign}

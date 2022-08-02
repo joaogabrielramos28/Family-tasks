@@ -8,7 +8,7 @@ const Task = ({ status, id }: ITask) => {
   const { navigate } = useNavigation<any>();
 
   function handleNavigateToTask() {
-    navigate("Task", { id });
+    navigate("TaskDetails", { id });
   }
 
   return (

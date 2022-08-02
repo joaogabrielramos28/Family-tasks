@@ -21,12 +21,12 @@ const Home = () => {
         <Box
           bg={"warmGray.800"}
           w={"100%"}
-          h={`${RFValue(90)}px`}
+          h={`${RFValue(100)}px`}
           borderBottomLeftRadius={"20px"}
           display={"flex"}
           justifyContent={"center"}
           px={"20px"}
-          paddingTop={8}
+          paddingTop={RFValue(6)}
         >
           <HStack w={"100%"} space={4}>
             <Avatar

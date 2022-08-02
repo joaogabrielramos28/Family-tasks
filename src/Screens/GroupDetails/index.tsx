@@ -8,12 +8,13 @@ import {
   HStack,
   Icon,
   IconButton,
+  ScrollView,
   Text,
   VStack,
 } from "native-base";
 import React from "react";
 
-import { RFValue } from "react-native-responsive-fontsize";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Participant } from "./Components/Participant";
 import { IParticipantProps } from "./types";
 
@@ -30,6 +31,19 @@ const INITIAL_PARTICIPANTS: IParticipantProps[] = [
     avatar: "https://bit.ly/dan-abramov",
     position: "Membro",
   },
+  {
+    id: "22",
+    name: "John Doe",
+    avatar: "https://bit.ly/dan-abramov",
+    position: "Membro",
+  },
+  {
+    id: "r",
+    name: "John Doe",
+    avatar: "https://bit.ly/dan-abramov",
+    position: "Membro",
+  },
+
   {
     id: "3",
     name: "John Doe",
@@ -54,7 +68,7 @@ const GroupDetails = () => {
   };
 
   return (
-    <Box flex={1} backgroundColor={"warmGray.900"}>
+    <Box flex={1} bg={"warmGray.900"}>
       <Box bg={"warmGray.800"} height={RFValue(200)} padding={RFValue(4)}>
         <HStack marginTop={10} justifyContent={"space-between"}>
           <IconButton
@@ -117,8 +131,13 @@ const GroupDetails = () => {
           <HStack>
             <Heading color={"light.100"}>Membros</Heading>
           </HStack>
+
           <FlatList
             marginTop={4}
+            height={RFPercentage(25)}
+            contentContainerStyle={{
+              paddingVertical: 20,
+            }}
             data={sortParticipants(INITIAL_PARTICIPANTS)}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <Participant {...item} />}

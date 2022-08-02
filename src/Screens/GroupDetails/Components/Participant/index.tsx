@@ -4,7 +4,7 @@ import { IParticipantProps } from "./types";
 
 const Participant = ({ name, position }: IParticipantProps) => {
   return (
-    <Box marginBottom={4}>
+    <Box marginBottom={8}>
       <HStack alignItems={"center"}>
         <Avatar
           source={{

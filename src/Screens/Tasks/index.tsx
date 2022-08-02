@@ -12,7 +12,6 @@ import React from "react";
 import { WeekCalendar } from "./Components/WeekCalendar";
 import { Task } from "./Components/Task";
 import { Status } from "./Components/Task/types";
-import { RFValue } from "react-native-responsive-fontsize";
 
 const INITIAL_TASK = [
   {

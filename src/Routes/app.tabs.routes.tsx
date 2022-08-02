@@ -16,6 +16,7 @@ import { getStatusBarHeight } from "react-native-iphone-x-helper";
 const { Screen, Navigator } = createBottomTabNavigator();
 
 import { StackRoutes } from "./app.stack.routes";
+import { Grouplist } from "../Screens/GroupList";
 const TabsRoutes = () => {
   const theme = useTheme();
   return (
@@ -91,7 +92,7 @@ const TabsRoutes = () => {
       />
       <Screen
         name="Group"
-        component={TaskDetails}
+        component={Grouplist}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="group" size={24} color={color} />

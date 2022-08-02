@@ -5,31 +5,33 @@ import {
   Heading,
   HStack,
   Text,
+  useTheme,
   VStack,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { GroupCard } from "./Components/GroupCard";
+import { SceneMap, TabView, TabBar } from "react-native-tab-view";
+import { Allgroups } from "./Components/AllGroups";
+import { MyGroup } from "./Components/MyGroup";
 
-const INITIAL_GROUPS = [
-  {
-    id: "1",
-    name: "Group 1",
-    description: "Description 1",
-  },
-  {
-    id: "2",
-    name: "Group 2",
-    description: "Description 2",
-  },
-  {
-    id: "3",
-    name: "Group 3",
-    description: "Description 3",
-  },
-];
+const FirstRoute = () => <Allgroups />;
+
+const SecondRoute = () => <MyGroup />;
+
+const renderScene = SceneMap({
+  allGroups: FirstRoute,
+  myGroup: SecondRoute,
+});
 
 const Grouplist = () => {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: "allGroups", title: "Todos Grupos" },
+    { key: "myGroup", title: "Meu Grupo" },
+  ]);
+
+  const theme = useTheme();
+
   return (
     <Box bg={"warmGray.900"} flex={1}>
       <Box
@@ -61,15 +63,21 @@ const Grouplist = () => {
           </VStack>
         </HStack>
       </Box>
-      <FlatList
-        marginTop={10}
-        data={INITIAL_GROUPS}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-        }}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <GroupCard name={item.name} description={item.description} />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            style={{
+              backgroundColor: theme.colors.warmGray[900],
+            }}
+            activeColor={theme.colors.light[100]}
+            indicatorStyle={{
+              backgroundColor: theme.colors.violet[400],
+            }}
+          />
         )}
       />
     </Box>

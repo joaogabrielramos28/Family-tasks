@@ -28,6 +28,8 @@ const GroupCard = ({ name, description }: IGroupCardProps) => {
           <Text color={"light.400"}>{description}</Text>
 
           <Avatar.Group
+            w={"100%"}
+            alignItems={"flex-start"}
             marginTop={4}
             space={-3}
             max={2}

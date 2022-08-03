@@ -21,15 +21,18 @@ const Welcome = () => {
 
         <VStack alignItems={"center"} space={2} paddingX={4}>
           <Heading color={"light.100"}>Taskfy</Heading>
-          <Heading color={"light.200"} size={"sm"}>
+          <Heading color={"light.200"} size={"sm"} textAlign={"center"}>
             {" "}
-            A simple task manager for your family
+            Organize suas tarefas familiares de forma simples e eficiente
           </Heading>
-          <Text color={"light.400"} marginTop={2} bold textAlign={"center"}>
-            Create tasks, assign {"\n"} them to your family members
-          </Text>
+          <Text
+            color={"light.400"}
+            marginTop={2}
+            bold
+            textAlign={"center"}
+          ></Text>
         </VStack>
-        <VStack space={4} marginTop={4}>
+        <VStack space={4} marginTop={2}>
           <Button
             w={300}
             bg={"violet.500"}

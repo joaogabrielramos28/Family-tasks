@@ -19,7 +19,7 @@ import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { Input, SocialLoginButton } from "../../Components";
 
-const SignUp = () => {
+const SignIn = () => {
   const { goBack, navigate } = useNavigation<any>();
 
   const handleGoBack = () => {
@@ -27,7 +27,7 @@ const SignUp = () => {
   };
 
   const handleGoToSignUp = () => {
-    navigate("SignIn");
+    navigate("SignUp");
   };
   return (
     <Box
@@ -54,12 +54,12 @@ const SignUp = () => {
                 />
               </BorderlessButton>
               <Heading size={"xl"} color={"light.100"}>
-                Criar conta
+                Fazer login
               </Heading>
             </HStack>
 
             <Text color={"light.300"}>
-              Faça seu cadastro com uma das contas abaixo
+              Faça seu login com uma das contas abaixo
             </Text>
 
             <HStack marginTop={4} space={4}>
@@ -69,12 +69,6 @@ const SignUp = () => {
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
-                <FormControl.Label>
-                  <Heading size={"sm"} color={"light.200"}>
-                    Nome
-                  </Heading>
-                </FormControl.Label>
-                <Input placeholder="John doe" />
                 <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
                     E-mail
@@ -95,17 +89,13 @@ const SignUp = () => {
                   _text={{
                     fontWeight: "bold",
                   }}
-                  _pressed={{
-                    bg: "violet.500",
-                    opacity: 0.5,
-                  }}
                 >
-                  Criar conta
+                  Entrar
                 </Button>
                 <Text marginTop={4} textAlign={"center"} color={"light.300"}>
-                  Já possui uma conta?{" "}
+                  Não possui conta?{" "}
                   <Text color={"violet.500"} onPress={handleGoToSignUp}>
-                    Entrar
+                    Criar conta
                   </Text>
                 </Text>
               </FormControl>
@@ -117,4 +107,4 @@ const SignUp = () => {
   );
 };
 
-export { SignUp };
+export { SignIn };

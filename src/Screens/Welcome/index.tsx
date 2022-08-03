@@ -11,8 +11,8 @@ const Welcome = () => {
     navigate("SignUp");
   };
 
-  const handleGoToRegister = () => {
-    navigate("Register");
+  const handleGoToSignIn = () => {
+    navigate("SignIn");
   };
   return (
     <ScrollView flex={1} bgColor={"warmGray.900"}>
@@ -36,7 +36,12 @@ const Welcome = () => {
             _text={{
               fontWeight: "bold",
             }}
+            _pressed={{
+              bg: "violet.500",
+              opacity: 0.5,
+            }}
             borderRadius={8}
+            onPress={handleGoToSignIn}
           >
             Entrar
           </Button>
@@ -47,6 +52,10 @@ const Welcome = () => {
             borderColor={"violet.500"}
             _text={{
               fontWeight: "bold",
+            }}
+            _pressed={{
+              bg: "violet.500",
+              opacity: 0.5,
             }}
             borderRadius={8}
             onPress={handleGoToSignUp}

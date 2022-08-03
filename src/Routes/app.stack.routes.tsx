@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import {
   GroupDetails,
   Grouplist,
+  SignIn,
   SignUp,
   TaskDetails,
   Tasks,
@@ -37,6 +38,7 @@ const StackWelcomeRoutes = () => {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="Welcome" component={Welcome} />
       <Screen name="SignUp" component={SignUp} />
+      <Screen name="SignIn" component={SignIn} />
     </Navigator>
   );
 };

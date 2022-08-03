@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { TabsRoutes } from "./app.tabs.routes";
+import { AuthRoutes } from "./auth.routes";
 
 const Routes = () => {
+  const [isAuth, setIsAuth] = useState(false);
   return (
     <NavigationContainer>
-      <TabsRoutes />
+      {isAuth ? <TabsRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 };

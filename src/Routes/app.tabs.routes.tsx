@@ -26,7 +26,7 @@ const TabsRoutes = () => {
   const theme = useTheme();
   return (
     <Navigator
-      initialRouteName="WelcomeTabs"
+      initialRouteName="Home"
       screenOptions={({}) => ({
         headerShown: false,
         tabBarInactiveBackgroundColor: "transparent",
@@ -48,7 +48,6 @@ const TabsRoutes = () => {
         tabBarShowLabel: false,
       })}
     >
-      <Screen name="WelcomeTabs" component={StackWelcomeRoutes} />
       <Screen
         name="Home"
         component={Home}

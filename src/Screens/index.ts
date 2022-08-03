@@ -6,6 +6,7 @@ import { Profile } from "./Profile";
 import { Grouplist } from "./GroupList";
 import { GroupDetails } from "./GroupDetails";
 import { Welcome } from "./Welcome";
+import { SignUp } from "./SignUp";
 
 export {
   Home,
@@ -16,4 +17,5 @@ export {
   Grouplist,
   GroupDetails,
   Welcome,
+  SignUp,
 };

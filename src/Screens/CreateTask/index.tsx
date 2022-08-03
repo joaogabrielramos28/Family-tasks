@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Heading,
   HStack,
   Input,
@@ -19,6 +18,7 @@ import { Dimensions, Keyboard } from "react-native";
 import { Badge } from "./Components/Badge";
 import { TaskResponsible } from "./Components/TaskResponsible";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import { Button } from "../../Components";
 
 const CreateTask = () => {
   const [date, setDate] = useState(new Date());
@@ -205,19 +205,7 @@ const CreateTask = () => {
                   />
                 </VStack>
               </HStack>
-              <Button
-                bg={"violet.500"}
-                w={"250px"}
-                borderRadius={8}
-                marginTop={5}
-                p={4}
-                _text={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                }}
-              >
-                Criar Task
-              </Button>
+              <Button marginTop={5} p={4} title={" Criar Task"} />
             </VStack>
           </Box>
         </ScrollView>

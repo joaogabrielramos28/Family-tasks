@@ -2,7 +2,6 @@ import { AntDesign } from "@expo/vector-icons";
 import {
   Avatar,
   Box,
-  Button,
   FormControl,
   Heading,
   HStack,
@@ -15,7 +14,7 @@ import {
 } from "native-base";
 import React from "react";
 import { BorderlessButton } from "react-native-gesture-handler";
-import { Input } from "../../Components";
+import { Button, Input } from "../../Components";
 
 const Profile = () => {
   const theme = useTheme();
@@ -172,13 +171,7 @@ const Profile = () => {
               }
             />
             <Box marginTop={8}>
-              <Button
-                bgColor={"violet.500"}
-                _text={{ fontWeight: "bold" }}
-                p={4}
-              >
-                Atualizar Perfil
-              </Button>
+              <Button title="Atualizar perfil" p={4} />
             </Box>
           </FormControl>
         </VStack>

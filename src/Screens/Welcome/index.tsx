@@ -1,8 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import { Box, Button, Heading, ScrollView, Text, VStack } from "native-base";
+import { Box, Heading, ScrollView, Text, VStack } from "native-base";
 import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import WelcomeImg from "../../assets/welcome-bg.svg";
+import { Button } from "../../Components";
 
 const Welcome = () => {
   const { navigate } = useNavigation<any>();
@@ -35,36 +36,19 @@ const Welcome = () => {
         <VStack space={4} marginTop={2}>
           <Button
             w={300}
-            bg={"violet.500"}
-            _text={{
-              fontWeight: "bold",
-            }}
-            _pressed={{
-              bg: "violet.500",
-              opacity: 0.5,
-            }}
             borderRadius={8}
             onPress={handleGoToSignIn}
-          >
-            Entrar
-          </Button>
+            title={"Entrar"}
+          />
           <Button
             w={300}
             bg={"transparent"}
             borderWidth={2}
             borderColor={"violet.500"}
-            _text={{
-              fontWeight: "bold",
-            }}
-            _pressed={{
-              bg: "violet.500",
-              opacity: 0.5,
-            }}
             borderRadius={8}
             onPress={handleGoToSignUp}
-          >
-            Criar conta
-          </Button>
+            title={"Criar conta"}
+          ></Button>
         </VStack>
       </Box>
     </ScrollView>

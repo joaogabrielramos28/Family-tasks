@@ -2,14 +2,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
-  Button,
   FormControl,
   Heading,
   HStack,
   Icon,
   IconButton,
   KeyboardAvoidingView,
-  Link,
   Text,
   VStack,
 } from "native-base";
@@ -17,7 +15,7 @@ import React from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
-import { Input, SocialLoginButton } from "../../Components";
+import { Button, Input, SocialLoginButton } from "../../Components";
 
 const SignUp = () => {
   const { goBack, navigate } = useNavigation<any>();
@@ -88,20 +86,8 @@ const SignUp = () => {
                 </FormControl.Label>
                 <Input placeholder="Digite sua senha" type="password" />
 
-                <Button
-                  marginTop={6}
-                  borderRadius={4}
-                  bg={"violet.500"}
-                  _text={{
-                    fontWeight: "bold",
-                  }}
-                  _pressed={{
-                    bg: "violet.500",
-                    opacity: 0.5,
-                  }}
-                >
-                  Criar conta
-                </Button>
+                <Button marginTop={6} borderRadius={4} title={"Criar conta"} />
+
                 <Text marginTop={4} textAlign={"center"} color={"light.300"}>
                   Já possui uma conta?{" "}
                   <Text color={"violet.500"} onPress={handleGoToSignUp}>

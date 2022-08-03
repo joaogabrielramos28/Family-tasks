@@ -1,4 +1,4 @@
 import { Input } from "./Input";
 import { SocialLoginButton } from "./SocialLoginButton";
-
-export { Input, SocialLoginButton };
+import { Button } from "./Button";
+export { Input, SocialLoginButton, Button };

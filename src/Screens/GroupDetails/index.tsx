@@ -2,7 +2,6 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   Box,
-  Button,
   FlatList,
   Heading,
   HStack,
@@ -15,6 +14,7 @@ import {
 import React from "react";
 
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { Button } from "../../Components";
 import { Participant } from "./Components/Participant";
 import { IParticipantProps } from "./types";
 
@@ -99,15 +99,7 @@ const GroupDetails = () => {
           Nome do grupo
         </Heading>
 
-        <Button
-          marginTop={4}
-          bg={"violet.500"}
-          _text={{
-            fontWeight: "bold",
-          }}
-        >
-          Solicitar entrada
-        </Button>
+        <Button marginTop={4} title={"Solicitar entrada"} />
 
         <HStack
           alignItems={"flex-start"}

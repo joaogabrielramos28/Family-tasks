@@ -16,12 +16,17 @@ import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
-import { StackTasksRoutes, StackGroupsRoutes } from "./app.stack.routes";
+import {
+  StackTasksRoutes,
+  StackGroupsRoutes,
+  StackWelcomeRoutes,
+} from "./app.stack.routes";
 
 const TabsRoutes = () => {
   const theme = useTheme();
   return (
     <Navigator
+      initialRouteName="WelcomeTabs"
       screenOptions={({}) => ({
         headerShown: false,
         tabBarInactiveBackgroundColor: "transparent",
@@ -43,6 +48,7 @@ const TabsRoutes = () => {
         tabBarShowLabel: false,
       })}
     >
+      <Screen name="WelcomeTabs" component={StackWelcomeRoutes} />
       <Screen
         name="Home"
         component={Home}

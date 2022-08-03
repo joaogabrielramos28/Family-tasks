@@ -5,6 +5,7 @@ import { TaskDetails } from "./TaskDetails";
 import { Profile } from "./Profile";
 import { Grouplist } from "./GroupList";
 import { GroupDetails } from "./GroupDetails";
+import { Welcome } from "./Welcome";
 
 export {
   Home,
@@ -14,4 +15,5 @@ export {
   Profile,
   Grouplist,
   GroupDetails,
+  Welcome,
 };

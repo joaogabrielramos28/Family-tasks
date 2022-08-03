@@ -1,6 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { GroupDetails, Grouplist, TaskDetails, Tasks } from "../Screens";
+import {
+  GroupDetails,
+  Grouplist,
+  TaskDetails,
+  Tasks,
+  Welcome,
+} from "../Screens";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useTheme } from "native-base";
 
@@ -25,4 +31,12 @@ const StackGroupsRoutes = () => {
   );
 };
 
-export { StackTasksRoutes, StackGroupsRoutes };
+const StackWelcomeRoutes = () => {
+  return (
+    <Navigator screenOptions={{ headerShown: false }}>
+      <Screen name="Welcome" component={Welcome} />
+    </Navigator>
+  );
+};
+
+export { StackTasksRoutes, StackGroupsRoutes, StackWelcomeRoutes };

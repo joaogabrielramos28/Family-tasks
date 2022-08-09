@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>510280220469-t63bdk281496p38v9amia5746k7eo7df.apps.googleusercontent.com</string>
+	<string>961874457934-n3smoi3f0re8fa7i4lu1ikrktou4o3ac.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.510280220469-t63bdk281496p38v9amia5746k7eo7df</string>
+	<string>com.googleusercontent.apps.961874457934-n3smoi3f0re8fa7i4lu1ikrktou4o3ac</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCldppFi7ODwSXCcQ1-grQCqfjuci-IEmA</string>
+	<string>AIzaSyDC5pAmJekMzQn-h6PkYlEjXhWCy4Own6s</string>
 	<key>GCM_SENDER_ID</key>
-	<string>510280220469</string>
+	<string>961874457934</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.name.familytask</string>
 	<key>PROJECT_ID</key>
-	<string>taskfy-26583</string>
+	<string>taskfy-d8e1d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>taskfy-26583.appspot.com</string>
+	<string>taskfy-d8e1d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:510280220469:ios:96e5f7e7c3e06bd2d7967c</string>
+	<string>1:961874457934:ios:b83845207b67bf23329a1f</string>
 </dict>
 </plist>

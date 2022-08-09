@@ -29,7 +29,6 @@ const SignUp = () => {
     try {
       setLoading(true);
       await handleSignUpWithEmailAndPassword(email, password);
-      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);

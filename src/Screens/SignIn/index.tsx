@@ -11,14 +11,19 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { Button, Input, SocialLoginButton } from "../../Components";
+import { useAuth } from "../../hooks";
 
 const SignIn = () => {
   const { goBack, navigate } = useNavigation<any>();
+  const { handleSignInWithEmailAndPassword } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleGoBack = () => {
     goBack();
@@ -26,6 +31,16 @@ const SignIn = () => {
 
   const handleGoToSignUp = () => {
     navigate("SignUp");
+  };
+
+  const handleLoginWithEmailAndPassword = async () => {
+    try {
+      setLoading(true);
+      await handleSignInWithEmailAndPassword(email, password);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   };
   return (
     <Box
@@ -72,14 +87,26 @@ const SignIn = () => {
                     E-mail
                   </Heading>
                 </FormControl.Label>
-                <Input placeholder="john.doe@example.com" />
+                <Input
+                  placeholder="john.doe@example.com"
+                  onChangeText={setEmail}
+                />
                 <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
                     Senha
                   </Heading>
                 </FormControl.Label>
-                <Input placeholder="Digite sua senha" type="password" />
-                <Button marginTop={6} borderRadius={4} title={"Entrar"} />
+                <Input
+                  placeholder="Digite sua senha"
+                  type="password"
+                  onChangeText={setPassword}
+                />
+                <Button
+                  marginTop={6}
+                  borderRadius={4}
+                  title={"Entrar"}
+                  onPress={handleLoginWithEmailAndPassword}
+                />
 
                 <Text marginTop={4} textAlign={"center"} color={"light.300"}>
                   Não possui conta?{" "}

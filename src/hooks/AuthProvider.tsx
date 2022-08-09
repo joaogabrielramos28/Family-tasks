@@ -1,7 +1,8 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { IAuthContextProps } from "./types";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useNavigation } from "@react-navigation/native";
 
 GoogleSignin.configure({
   webClientId: "",
@@ -11,7 +12,9 @@ GoogleSignin.configure({
 const AuthContext = createContext({} as IAuthContextProps);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<FirebaseAuthTypes.UserCredential | null>(
+    null
+  );
 
   const handleSignUpWithEmailAndPassword = async (
     email: string,
@@ -24,8 +27,26 @@ const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const handleSignInWithEmailAndPassword = async (
+    email: string,
+    password: string
+  ) => {
+    try {
+      const user = await auth().signInWithEmailAndPassword(email, password);
+      setUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <AuthContext.Provider value={{ handleSignUpWithEmailAndPassword }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        handleSignUpWithEmailAndPassword,
+        handleSignInWithEmailAndPassword,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

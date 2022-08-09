@@ -2,12 +2,13 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export interface IAuthContextProps {
   user: FirebaseAuthTypes.UserCredential | null;
-  handleSignUpWithEmailAndPassword: (
+  signUpWithEmailAndPassword: (
     email: string,
     password: string
   ) => Promise<void>;
-  handleSignInWithEmailAndPassword: (
+  signInWithEmailAndPassword: (
     email: string,
     password: string
   ) => Promise<void>;
+  signOut: () => Promise<void>;
 }

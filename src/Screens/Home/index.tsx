@@ -1,3 +1,4 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   Avatar,
   Box,
@@ -8,13 +9,20 @@ import {
   VStack,
 } from "native-base";
 import React from "react";
+import { BorderlessButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useAuth } from "../../hooks";
 
 import { ProgressChart } from "./Components/ProgressChart";
 import { TasksStatistics } from "./Components/TasksStatistics";
 
 const Home = () => {
+  const { signOut } = useAuth();
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <ScrollView bg={"warmGray.900"} flex={1}>
       <Box>
@@ -28,23 +36,28 @@ const Home = () => {
           px={"20px"}
           paddingTop={RFValue(6)}
         >
-          <HStack w={"100%"} space={4}>
-            <Avatar
-              size={"md"}
-              source={{
-                uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-              }}
-            >
-              <Avatar.Badge bg="green.500" />
-            </Avatar>
-            <VStack>
-              <Text color={"light.400"} fontSize={RFValue(14)}>
-                Bem vindo,
-              </Text>
-              <Heading fontSize={RFValue(18)} color={"light.200"}>
-                João
-              </Heading>
-            </VStack>
+          <HStack alignItems={"center"} justifyContent={"space-around"}>
+            <HStack w={"100%"} space={4}>
+              <Avatar
+                size={"md"}
+                source={{
+                  uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                }}
+              >
+                <Avatar.Badge bg="green.500" />
+              </Avatar>
+              <VStack>
+                <Text color={"light.400"} fontSize={RFValue(14)}>
+                  Bem vindo,
+                </Text>
+                <Heading fontSize={RFValue(18)} color={"light.200"}>
+                  João
+                </Heading>
+              </VStack>
+            </HStack>
+            <BorderlessButton onPress={handleLogout}>
+              <MaterialIcons name="logout" size={24} color="white" />
+            </BorderlessButton>
           </HStack>
         </Box>
 

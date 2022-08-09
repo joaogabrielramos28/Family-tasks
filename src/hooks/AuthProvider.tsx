@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
     null
   );
 
-  const handleSignUpWithEmailAndPassword = async (
+  const signUpWithEmailAndPassword = async (
     email: string,
     password: string
   ) => {
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleSignInWithEmailAndPassword = async (
+  const signInWithEmailAndPassword = async (
     email: string,
     password: string
   ) => {
@@ -39,12 +39,22 @@ const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const signOut = async () => {
+    try {
+      await auth().signOut();
+      setUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <AuthContext.Provider
       value={{
         user,
-        handleSignUpWithEmailAndPassword,
-        handleSignInWithEmailAndPassword,
+        signUpWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
       }}
     >
       {children}

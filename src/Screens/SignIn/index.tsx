@@ -20,7 +20,7 @@ import { useAuth } from "../../hooks";
 
 const SignIn = () => {
   const { goBack, navigate } = useNavigation<any>();
-  const { handleSignInWithEmailAndPassword } = useAuth();
+  const { signInWithEmailAndPassword } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +36,7 @@ const SignIn = () => {
   const handleLoginWithEmailAndPassword = async () => {
     try {
       setLoading(true);
-      await handleSignInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(email, password);
     } catch (error) {
       setLoading(false);
       console.log(error);

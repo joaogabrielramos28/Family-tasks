@@ -20,7 +20,7 @@ import { useAuth } from "../../hooks";
 
 const SignUp = () => {
   const { goBack, navigate } = useNavigation<any>();
-  const { handleSignUpWithEmailAndPassword } = useAuth();
+  const { signUpWithEmailAndPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
@@ -28,7 +28,7 @@ const SignUp = () => {
   const handleRegister = async () => {
     try {
       setLoading(true);
-      await handleSignUpWithEmailAndPassword(email, password);
+      await signUpWithEmailAndPassword(email, password);
     } catch (error) {
       setLoading(false);
       console.log(error);

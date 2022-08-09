@@ -14,6 +14,7 @@ const Input = ({ ...rest }: IInputProps) => {
         borderBottomColor: "violet.500",
         backgroundColor: "transparent",
       }}
+      autoCapitalize={"none"}
     />
   );
 };

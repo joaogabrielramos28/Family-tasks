@@ -11,14 +11,30 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { Button, Input, SocialLoginButton } from "../../Components";
+import { useAuth } from "../../hooks";
 
 const SignUp = () => {
   const { goBack, navigate } = useNavigation<any>();
+  const { handleSignUpWithEmailAndPassword } = useAuth();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    try {
+      setLoading(true);
+      await handleSignUpWithEmailAndPassword(email, password);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   const handleGoBack = () => {
     goBack();
@@ -67,26 +83,39 @@ const SignUp = () => {
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
-                <FormControl.Label>
+                {/* <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
                     Nome
                   </Heading>
                 </FormControl.Label>
-                <Input placeholder="John doe" />
+                <Input placeholder="John doe" /> */}
                 <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
                     E-mail
                   </Heading>
                 </FormControl.Label>
-                <Input placeholder="john.doe@example.com" />
+                <Input
+                  placeholder="john.doe@example.com"
+                  onChangeText={setEmail}
+                />
                 <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
                     Senha
                   </Heading>
                 </FormControl.Label>
-                <Input placeholder="Digite sua senha" type="password" />
+                <Input
+                  placeholder="Digite sua senha"
+                  type="password"
+                  onChangeText={setPassword}
+                />
 
-                <Button marginTop={6} borderRadius={4} title={"Criar conta"} />
+                <Button
+                  marginTop={6}
+                  borderRadius={4}
+                  title={"Criar conta"}
+                  onPress={handleRegister}
+                  isLoading={loading}
+                />
 
                 <Text marginTop={4} textAlign={"center"} color={"light.300"}>
                   Já possui uma conta?{" "}

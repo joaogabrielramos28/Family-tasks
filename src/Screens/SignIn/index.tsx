@@ -20,7 +20,7 @@ import { useAuth } from "../../hooks";
 
 const SignIn = () => {
   const { goBack, navigate } = useNavigation<any>();
-  const { signInWithEmailAndPassword } = useAuth();
+  const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +77,10 @@ const SignIn = () => {
 
             <HStack marginTop={4} space={4}>
               <SocialLoginButton iconName={"apple1"} onPress={() => {}} />
-              <SocialLoginButton iconName={"google"} onPress={() => {}} />
+              <SocialLoginButton
+                iconName={"google"}
+                onPress={signInWithGoogle}
+              />
             </HStack>
 
             <VStack space={6} marginTop={8}>

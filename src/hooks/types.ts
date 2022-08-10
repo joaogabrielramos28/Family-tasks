@@ -13,4 +13,5 @@ export interface IAuthContextProps {
   signOut: () => Promise<void>;
   updateUser: (name?: string, email?: string) => Promise<void>;
   initializing: boolean;
+  signInWithGoogle(): Promise<void>;
 }

@@ -12,12 +12,28 @@ import {
   useTheme,
   VStack,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import { BorderlessButton } from "react-native-gesture-handler";
 import { Button, Input } from "../../Components";
+import { useAuth } from "../../hooks";
 
 const Profile = () => {
   const theme = useTheme();
+  const { user, updateUser } = useAuth();
+
+  const [email, setEmail] = useState(user.user.email);
+  const [name, setName] = useState(user.user.displayName);
+  const [loading, setLoading] = useState(false);
+  const handleUpdateUser = async () => {
+    try {
+      setLoading(true);
+      await updateUser(name, email);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <ScrollView
       background={"warmGray.900"}
@@ -82,7 +98,7 @@ const Profile = () => {
               </BorderlessButton>
             </Avatar.Badge>
           </Avatar>
-          <Heading color={"light.300"}>João Gabriel</Heading>
+          <Heading color={"light.300"}>{user.user.displayName}</Heading>
         </VStack>
 
         <HStack paddingX={10} justifyContent="space-around">
@@ -105,6 +121,8 @@ const Profile = () => {
             </FormControl.Label>
             <Input
               placeholder="Digite seu nome"
+              onChangeText={setName}
+              value={name}
               leftElement={
                 <AntDesign
                   name="user"
@@ -123,6 +141,8 @@ const Profile = () => {
             </FormControl.Label>
             <Input
               placeholder="email@example.com"
+              value={email}
+              onChangeText={setEmail}
               leftElement={
                 <AntDesign
                   name="mail"
@@ -171,7 +191,12 @@ const Profile = () => {
               }
             />
             <Box marginTop={8}>
-              <Button title="Atualizar perfil" p={4} />
+              <Button
+                title="Atualizar perfil"
+                p={4}
+                onPress={handleUpdateUser}
+                isLoading={loading}
+              />
             </Box>
           </FormControl>
         </VStack>

@@ -11,4 +11,6 @@ export interface IAuthContextProps {
     password: string
   ) => Promise<void>;
   signOut: () => Promise<void>;
+  updateUser: (name?: string, email?: string) => Promise<void>;
+  initializing: boolean;
 }

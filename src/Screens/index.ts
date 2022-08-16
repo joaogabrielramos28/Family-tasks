@@ -8,6 +8,7 @@ import { GroupDetails } from "./GroupDetails";
 import { Welcome } from "./Welcome";
 import { SignUp } from "./SignUp";
 import { SignIn } from "./SignIn";
+import { SignInPhone } from "./SignInPhone";
 
 export {
   Home,
@@ -20,4 +21,5 @@ export {
   Welcome,
   SignUp,
   SignIn,
+  SignInPhone,
 };

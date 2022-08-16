@@ -15,6 +15,8 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState<FirebaseAuthTypes.UserCredential | null>(
     null
   );
+  console.log(user);
+
   const [initializing, setInitializing] = useState(true);
 
   const signUpWithEmailAndPassword = async (

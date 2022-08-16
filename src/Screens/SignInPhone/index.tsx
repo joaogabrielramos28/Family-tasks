@@ -16,36 +16,40 @@ import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { BorderlessButton, RectButton } from "react-native-gesture-handler";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { Button, Input, SocialLoginButton } from "../../Components";
-import { useAuth } from "../../hooks";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-const SignIn = () => {
+const SignInPhone = () => {
   const { goBack, navigate } = useNavigation<any>();
-  const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [displayOTPInput, setDisplayOTPInput] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const countryCode = "+55";
+  const [confirmation, setConfirmation] =
+    useState<FirebaseAuthTypes.ConfirmationResult>();
+
+  const [code, setCode] = useState("");
 
   const handleGoBack = () => {
     goBack();
   };
 
-  const handleGoToSignUp = () => {
-    navigate("SignUp");
+  const goToConfirmationScreen = (
+    confirmation: FirebaseAuthTypes.ConfirmationResult
+  ) => {
+    setDisplayOTPInput(true);
+    navigate("ConfirmationCode", { confirmation });
   };
 
-  const handleGoToPhoneSignIn = () => {
-    navigate("SignInPhone");
+  const requestOTP = async () => {
+    setDisplayOTPInput(true);
+    const confirmation = await auth().signInWithPhoneNumber(
+      `${countryCode}${phoneNumber}`
+    );
+    setConfirmation(confirmation);
+    goToConfirmationScreen(confirmation);
   };
 
-  const handleLoginWithEmailAndPassword = async () => {
-    try {
-      setLoading(true);
-      await signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
   return (
     <Box
       paddingTop={getStatusBarHeight()}
@@ -71,59 +75,32 @@ const SignIn = () => {
                 />
               </BorderlessButton>
               <Heading size={"xl"} color={"light.100"}>
-                Fazer login
+                Fazer Login
               </Heading>
             </HStack>
 
             <Text color={"light.300"}>
-              Faça seu login com uma das contas abaixo
+              Para continuar, informe seu número de telefone.
             </Text>
-
-            <HStack marginTop={4} space={4}>
-              <SocialLoginButton
-                iconName={"google"}
-                onPress={signInWithGoogle}
-              />
-              <SocialLoginButton
-                iconName={"phone"}
-                onPress={handleGoToPhoneSignIn}
-              />
-            </HStack>
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
                 <FormControl.Label>
                   <Heading size={"sm"} color={"light.200"}>
-                    E-mail
+                    Número de telefone
                   </Heading>
                 </FormControl.Label>
                 <Input
-                  placeholder="john.doe@example.com"
-                  onChangeText={setEmail}
+                  placeholder="(00) 00000-0000"
+                  onChangeText={setPhoneNumber}
                 />
-                <FormControl.Label>
-                  <Heading size={"sm"} color={"light.200"}>
-                    Senha
-                  </Heading>
-                </FormControl.Label>
-                <Input
-                  placeholder="Digite sua senha"
-                  type="password"
-                  onChangeText={setPassword}
-                />
+
                 <Button
                   marginTop={6}
                   borderRadius={4}
-                  title={"Entrar"}
-                  onPress={handleLoginWithEmailAndPassword}
+                  title={"Enviar SMS"}
+                  onPress={requestOTP}
                 />
-
-                <Text marginTop={4} textAlign={"center"} color={"light.300"}>
-                  Não possui conta?{" "}
-                  <Text color={"violet.500"} onPress={handleGoToSignUp}>
-                    Criar conta
-                  </Text>
-                </Text>
               </FormControl>
             </VStack>
           </VStack>
@@ -133,4 +110,4 @@ const SignIn = () => {
   );
 };
 
-export { SignIn };
+export { SignInPhone };

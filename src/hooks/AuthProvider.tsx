@@ -45,9 +45,9 @@ const AuthProvider = ({ children }) => {
 
   const updateUser = async (name?: string, email?: string) => {
     try {
-      email !== user.user.email &&
+      email !== user?.user?.email &&
         (await auth().currentUser.updateEmail(email));
-      name !== user.user.displayName &&
+      name !== user?.user?.displayName &&
         (await auth().currentUser.updateProfile({
           displayName: name,
           //TODO: update photoURL

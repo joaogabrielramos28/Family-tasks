@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   GroupDetails,
-  Grouplist,
+  GroupList,
   SignIn,
   SignUp,
   TaskDetails,
@@ -27,7 +27,7 @@ const StackTasksRoutes = () => {
 const StackGroupsRoutes = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
-      <Screen name="GroupList" component={Grouplist} />
+      <Screen name="GroupList" component={GroupList} />
       <Screen name="GroupDetails" component={GroupDetails} />
     </Navigator>
   );

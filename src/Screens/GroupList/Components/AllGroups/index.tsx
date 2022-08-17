@@ -19,7 +19,7 @@ const INITIAL_GROUPS = [
   },
 ];
 
-const Allgroups = () => {
+const AllGroups = () => {
   return (
     <FlatList
       marginTop={10}
@@ -35,4 +35,4 @@ const Allgroups = () => {
   );
 };
 
-export { Allgroups };
+export { AllGroups };

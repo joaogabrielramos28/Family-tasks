@@ -3,7 +3,7 @@ import { CreateTask } from "./CreateTask";
 import { Tasks } from "./Tasks";
 import { TaskDetails } from "./TaskDetails";
 import { Profile } from "./Profile";
-import { Grouplist } from "./GroupList";
+import { GroupList } from "./GroupList";
 import { GroupDetails } from "./GroupDetails";
 import { Welcome } from "./Welcome";
 import { SignUp } from "./SignUp";
@@ -16,7 +16,7 @@ export {
   Tasks,
   TaskDetails,
   Profile,
-  Grouplist,
+  GroupList,
   GroupDetails,
   Welcome,
   SignUp,

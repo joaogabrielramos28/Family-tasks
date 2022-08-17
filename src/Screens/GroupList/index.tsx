@@ -11,10 +11,10 @@ import {
 import React, { useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { SceneMap, TabView, TabBar } from "react-native-tab-view";
-import { Allgroups } from "./Components/AllGroups";
+import { AllGroups } from "./Components/AllGroups";
 import { MyGroup } from "./Components/MyGroup";
 
-const FirstRoute = () => <Allgroups />;
+const FirstRoute = () => <AllGroups />;
 
 const SecondRoute = () => <MyGroup />;
 
@@ -23,7 +23,7 @@ const renderScene = SceneMap({
   myGroup: SecondRoute,
 });
 
-const Grouplist = () => {
+const GroupList = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "allGroups", title: "Todos Grupos" },
@@ -84,4 +84,4 @@ const Grouplist = () => {
   );
 };
 
-export { Grouplist };
+export { GroupList };

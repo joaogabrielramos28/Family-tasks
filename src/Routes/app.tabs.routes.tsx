@@ -4,7 +4,6 @@ import { Icon, IconButton, useTheme } from "native-base";
 
 import {
   AntDesign,
-  Feather,
   FontAwesome,
   FontAwesome5,
   Ionicons,

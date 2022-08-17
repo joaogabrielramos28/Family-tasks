@@ -155,42 +155,7 @@ const Profile = () => {
                 />
               }
             />
-            <FormControl.Label
-              _text={{ color: "light.300", fontSize: "sm", fontWeight: 600 }}
-            >
-              Senha
-            </FormControl.Label>
-            <Input
-              placeholder="Digite sua senha"
-              leftElement={
-                <AntDesign
-                  name="lock"
-                  color={"gray"}
-                  size={22}
-                  style={{
-                    marginLeft: 2,
-                  }}
-                />
-              }
-            />
-            <FormControl.Label
-              _text={{ color: "light.300", fontSize: "sm", fontWeight: 600 }}
-            >
-              Confirmar Senha
-            </FormControl.Label>
-            <Input
-              placeholder="Confirme sua senha"
-              leftElement={
-                <AntDesign
-                  name="lock"
-                  color={"gray"}
-                  size={22}
-                  style={{
-                    marginLeft: 2,
-                  }}
-                />
-              }
-            />
+
             <Box marginTop={8}>
               <Button
                 title="Atualizar perfil"

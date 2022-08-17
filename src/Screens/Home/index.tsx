@@ -63,7 +63,7 @@ const Home = () => {
                       Bem vindo,
                     </Text>
                     <Heading fontSize={RFValue(18)} color={"light.200"}>
-                      {user.user?.displayName}
+                      {user.displayName}
                     </Heading>
                   </VStack>
                 </HStack>

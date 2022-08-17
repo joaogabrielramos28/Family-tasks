@@ -1,7 +1,7 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export interface IAuthContextProps {
-  user: FirebaseAuthTypes.UserCredential | null;
+  user: IUser | null;
   signUpWithEmailAndPassword: (
     email: string,
     password: string
@@ -14,4 +14,11 @@ export interface IAuthContextProps {
   updateUser: (name?: string, email?: string) => Promise<void>;
   initializing: boolean;
   signInWithGoogle(): Promise<void>;
+}
+
+export interface IUser {
+  displayName?: string;
+  email: string;
+  phoneNumber?: string;
+  photoURL?: string;
 }

@@ -21,8 +21,8 @@ const Profile = () => {
   const theme = useTheme();
   const { user, updateUser } = useAuth();
 
-  const [email, setEmail] = useState(user?.user?.email);
-  const [name, setName] = useState(user?.user?.displayName);
+  const [email, setEmail] = useState(user?.email);
+  const [name, setName] = useState(user?.displayName);
   const [loading, setLoading] = useState(false);
 
   const handleUpdateUser = async () => {
@@ -99,7 +99,7 @@ const Profile = () => {
               </BorderlessButton>
             </Avatar.Badge>
           </Avatar>
-          <Heading color={"light.300"}>{user?.user?.displayName}</Heading>
+          <Heading color={"light.300"}>{name}</Heading>
         </VStack>
 
         <HStack paddingX={10} justifyContent="space-around">

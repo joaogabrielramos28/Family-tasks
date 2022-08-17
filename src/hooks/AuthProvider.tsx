@@ -1,6 +1,6 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { IAuthContextProps } from "./types";
+import { IAuthContextProps, IUser } from "./types";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 GoogleSignin.configure({
@@ -12,10 +12,7 @@ GoogleSignin.configure({
 const AuthContext = createContext({} as IAuthContextProps);
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState<FirebaseAuthTypes.UserCredential | null>(
-    null
-  );
-  console.log(user);
+  const [user, setUser] = useState<IUser | null>(null);
 
   const [initializing, setInitializing] = useState(true);
 
@@ -24,7 +21,10 @@ const AuthProvider = ({ children }) => {
     password: string
   ) => {
     try {
-      const user = await auth().createUserWithEmailAndPassword(email, password);
+      const { user } = await auth().createUserWithEmailAndPassword(
+        email,
+        password
+      );
       setUser(user);
     } catch (error) {
       console.log(error);
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
     password: string
   ) => {
     try {
-      const user = await auth().signInWithEmailAndPassword(email, password);
+      const { user } = await auth().signInWithEmailAndPassword(email, password);
       setUser(user);
     } catch (error) {
       console.log(error);
@@ -45,9 +45,8 @@ const AuthProvider = ({ children }) => {
 
   const updateUser = async (name?: string, email?: string) => {
     try {
-      email !== user?.user?.email &&
-        (await auth().currentUser.updateEmail(email));
-      name !== user?.user?.displayName &&
+      email !== user?.email && (await auth().currentUser.updateEmail(email));
+      name !== user?.displayName &&
         (await auth().currentUser.updateProfile({
           displayName: name,
           //TODO: update photoURL
@@ -67,7 +66,8 @@ const AuthProvider = ({ children }) => {
   };
 
   function onAuthStateChanged(user) {
-    setUser(user);
+    if (user) setUser(user);
+
     if (initializing) setInitializing(false);
   }
 
@@ -84,7 +84,7 @@ const AuthProvider = ({ children }) => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    const user = await auth().signInWithCredential(googleCredential);
+    const { user } = await auth().signInWithCredential(googleCredential);
 
     setUser(user);
   }

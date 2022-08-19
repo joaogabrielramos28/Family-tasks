@@ -1,23 +1,19 @@
 module.exports = {
   env: {
-    es2021: true
+    es2021: true,
   },
   extends: [
     'plugin:react/recommended',
     'standard-with-typescript',
-    'prettier'
+    'prettier',
+    '@react-native-community',
   ],
-  overrides: [
-  ],
+  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  plugins: [
-    'react',
-    'react-native',
-    'prettier'
-  ],
+  plugins: ['react', 'react-native', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
     'react-native/no-unused-styles': 2,
@@ -25,7 +21,6 @@ module.exports = {
     'react-native/no-inline-styles': 2,
     'react-native/no-color-literals': 2,
     'react-native/no-raw-text': 2,
-    'react-native/no-single-element-style-arrays': 2
-
-  }
-}
+    'react-native/no-single-element-style-arrays': 2,
+  },
+};

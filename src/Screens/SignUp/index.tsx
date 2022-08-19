@@ -76,12 +76,6 @@ const SignUp = () => {
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
-                {/* <FormControl.Label>
-                  <Heading size={"sm"} color={"light.200"}>
-                    Nome
-                  </Heading>
-                </FormControl.Label>
-                <Input placeholder="John doe" /> */}
                 <FormControl.Label>
                   <Heading size={'sm'} color={'light.200'}>
                     E-mail

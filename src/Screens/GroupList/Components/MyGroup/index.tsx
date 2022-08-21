@@ -1,28 +1,59 @@
-import {FlatList} from 'native-base';
-import React from 'react';
+import {FlatList, Text, VStack} from 'native-base';
+import React, {useEffect} from 'react';
 import {GroupCard} from '../GroupCard';
-
-const MY_GROUPS = [
-  {
-    id: '1',
-    name: 'Meu Grupo',
-    description: 'Minha descrição',
-  },
-];
+import firestore from '@react-native-firebase/firestore';
+import {useAuth} from '../../../../hooks';
+import {IGroupDto, IMember} from '../../../../DTOs/GroupDto';
 
 const MyGroup = () => {
+  const {user} = useAuth();
+  const [myGroups, setMyGroups] = React.useState<IGroupDto[]>([]);
+
+  useEffect(() => {
+    const me: IMember = {
+      id: user.uid,
+      photoURL: user.photoURL,
+      name: user.displayName,
+    };
+    firestore()
+      .collection('Groups')
+      .where('members', 'array-contains', me)
+      .onSnapshot(querySnapshot => {
+        const myGroups = querySnapshot.docs.map(doc => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        }) as IGroupDto[];
+        setMyGroups(myGroups);
+      });
+  }, [user]);
   return (
-    <FlatList
-      marginTop={10}
-      data={MY_GROUPS}
-      contentContainerStyle={{
-        paddingHorizontal: 20,
-      }}
-      keyExtractor={item => item.id}
-      renderItem={({item}) => (
-        <GroupCard name={item.name} description={item.description} />
+    <>
+      {myGroups.length > 0 ? (
+        <FlatList
+          marginTop={10}
+          data={myGroups}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+          }}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <GroupCard
+              name={item.name}
+              description={item.description}
+              members={item.members}
+            />
+          )}
+        />
+      ) : (
+        <VStack alignItems={'center'} justifyContent={'center'} marginTop={20}>
+          <Text color={'light.300'} fontSize={'xl'}>
+            Você não está em nenhum grupo {':('}
+          </Text>
+        </VStack>
       )}
-    />
+    </>
   );
 };
 

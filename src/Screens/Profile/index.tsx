@@ -14,7 +14,7 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {ActionSheet, Button, Input} from '../../Components';
@@ -30,7 +30,7 @@ const Profile = () => {
   const [name, setName] = useState(user?.displayName);
   const [imageUri] = useState(user?.photoURL);
   const [loading, setLoading] = useState(false);
-  const [loadingPicture, setLoadingPicture] = useState(true);
+  const [loadingImage, setLoadingImage] = useState(true);
 
   const {isOpen, onOpen, onClose} = useDisclose();
 
@@ -44,6 +44,11 @@ const Profile = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (user.photoURL === null) setLoadingImage(false);
+    else setLoadingImage(true);
+  }, [user.photoURL]);
 
   const handleLaunchCamera = async (): Promise<void> => {
     await launchCamera(
@@ -142,7 +147,7 @@ const Profile = () => {
             ],
           }}
           space={2}>
-          {loadingPicture && <Spinner size="lg" color={'violet.500'} />}
+          {loadingImage && <Spinner size="lg" color={'violet.500'} />}
           <Avatar
             size={'2xl'}
             borderColor={'light.50'}
@@ -151,7 +156,7 @@ const Profile = () => {
               uri: imageUri,
             }}
             _image={{
-              onLoad: () => setLoadingPicture(false),
+              onLoad: () => setLoadingImage(false),
               resizeMode: 'cover',
             }}>
             <Avatar.Badge

@@ -1,35 +1,42 @@
 import {FlatList} from 'native-base';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {IGroupDto} from '../../../../DTOs/GroupDto';
 import {GroupCard} from '../GroupCard';
-const INITIAL_GROUPS = [
-  {
-    id: '1',
-    name: 'Group 1',
-    description: 'Description 1',
-  },
-  {
-    id: '2',
-    name: 'Group 2',
-    description: 'Description 2',
-  },
-  {
-    id: '3',
-    name: 'Group 3',
-    description: 'Description 3',
-  },
-];
+import firestore from '@react-native-firebase/firestore';
 
 const AllGroups = () => {
+  const [groups, setGroups] = useState<IGroupDto[]>([]);
+
+  useEffect(() => {
+    const subscribe = firestore()
+      .collectionGroup('Groups')
+      .onSnapshot(querySnapshot => {
+        const groups = querySnapshot.docs.map(doc => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        }) as IGroupDto[];
+
+        setGroups(groups);
+      });
+    return () => subscribe();
+  }, []);
+
   return (
     <FlatList
       marginTop={10}
-      data={INITIAL_GROUPS}
+      data={groups}
       contentContainerStyle={{
         paddingHorizontal: 20,
       }}
       keyExtractor={item => item.id}
       renderItem={({item}) => (
-        <GroupCard name={item.name} description={item.description} />
+        <GroupCard
+          name={item.name}
+          description={item.description}
+          members={item.members || []}
+        />
       )}
     />
   );

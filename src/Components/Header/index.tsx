@@ -1,13 +1,18 @@
 import {MaterialIcons} from '@expo/vector-icons';
 import {Avatar, Box, Heading, HStack, Spinner, Text, VStack} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useAuth} from '../../hooks';
 
 const Header = () => {
   const {signOut, user} = useAuth();
-  const [loadingImage, setLoadingImage] = useState(true);
+  const [loadingImage, setLoadingImage] = useState(false);
+
+  useEffect(() => {
+    if (user.photoURL === null) setLoadingImage(false);
+    else setLoadingImage(true);
+  }, [user.photoURL]);
 
   const handleLogout = async () => {
     await signOut();
@@ -30,7 +35,7 @@ const Header = () => {
           <Avatar
             size={'md'}
             source={{
-              uri: user.photoURL,
+              uri: user.photoURL || '',
             }}
             _image={{
               onLoad: () => setLoadingImage(false),

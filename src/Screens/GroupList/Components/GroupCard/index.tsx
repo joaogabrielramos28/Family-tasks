@@ -5,7 +5,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {IGroupCardProps} from './types';
 
-const GroupCard = ({name, description}: IGroupCardProps) => {
+const GroupCard = ({name, description, members}: IGroupCardProps) => {
   const {navigate} = useNavigation<any>();
 
   const handleGoToGroup = () => {
@@ -26,32 +26,28 @@ const GroupCard = ({name, description}: IGroupCardProps) => {
           <Heading color={'light.200'}>{name}</Heading>
           <Text color={'light.400'}>{description}</Text>
 
-          <Avatar.Group
-            key={name}
-            w={'100%'}
-            alignItems={'flex-start'}
-            marginTop={4}
-            space={-3}
-            max={2}
-            _avatar={{
-              size: RFValue(36),
-            }}>
-            <Avatar
-              source={{
-                uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-              }}
-            />
-            <Avatar
-              source={{
-                uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-              }}
-            />
-            <Avatar
-              source={{
-                uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-              }}
-            />
-          </Avatar.Group>
+          {members?.length > 0 ? (
+            <Avatar.Group
+              w={'100%'}
+              alignItems={'flex-start'}
+              marginTop={4}
+              space={-3}
+              max={2}
+              _avatar={{
+                size: RFValue(36),
+              }}>
+              {members?.map(member => (
+                <Avatar
+                  key={member.id}
+                  source={{
+                    uri: member.photoURL,
+                  }}
+                />
+              ))}
+            </Avatar.Group>
+          ) : (
+            <Text color={'light.400'}>Nenhum membro</Text>
+          )}
         </VStack>
       </Box>
     </BorderlessButton>

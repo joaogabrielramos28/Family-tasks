@@ -1,5 +1,6 @@
 import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 import {
   Box,
   FormControl,
@@ -13,37 +14,45 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {BorderlessButton, RectButton} from 'react-native-gesture-handler';
+import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {Button, Input, SocialLoginButton} from '../../Components';
+import {Button, Input} from '../../Components';
+import {IGroupDto, IMember} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
+import uuid from 'react-native-uuid';
 
-const SignIn = () => {
-  const {goBack, navigate} = useNavigation<any>();
-  const {signInWithEmailAndPassword, signInWithGoogle} = useAuth();
-  const [_, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+const CreateGroup = () => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
+  const {user} = useAuth();
+  const {goBack} = useNavigation<any>();
   const handleGoBack = () => {
     goBack();
   };
 
-  const handleGoToSignUp = () => {
-    navigate('SignUp');
-  };
-
-  const handleGoToPhoneSignIn = () => {
-    navigate('SignInPhone');
-  };
-
-  const handleLoginWithEmailAndPassword = async () => {
+  const handleCreateGroup = async () => {
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(email, password);
-    } catch (error) {
+      const admin: IMember = {
+        id: user.uid,
+        name: user.displayName,
+        photoURL: user.photoURL,
+      };
+      const group: IGroupDto = {
+        id: uuid.v4() as string,
+        name,
+        description,
+        admin,
+        members: [admin],
+        tasks: [],
+        createdAt: new Date(),
+        background: '',
+      };
+      await firestore().collection('Groups').add(group);
       setLoading(false);
-      console.log(error);
+    } catch {
+      setLoading(false);
     }
   };
   return (
@@ -70,59 +79,38 @@ const SignIn = () => {
                 />
               </BorderlessButton>
               <Heading size={'xl'} color={'light.100'}>
-                Fazer login
+                Criar grupo
               </Heading>
             </HStack>
 
             <Text color={'light.300'}>
-              Faça seu login com uma das contas abaixo
+              Crie um grupo para compartilhar suas atividades
             </Text>
-
-            <HStack marginTop={4} space={4}>
-              <SocialLoginButton
-                iconName={'google'}
-                onPress={signInWithGoogle}
-              />
-              <SocialLoginButton
-                iconName={'phone'}
-                onPress={handleGoToPhoneSignIn}
-              />
-            </HStack>
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
                 <FormControl.Label>
                   <Heading size={'sm'} color={'light.200'}>
-                    E-mail
+                    Nome do grupo
                   </Heading>
                 </FormControl.Label>
-                <Input
-                  placeholder="john.doe@example.com"
-                  onChangeText={setEmail}
-                />
+                <Input placeholder="Familia Doe" onChangeText={setName} />
                 <FormControl.Label>
                   <Heading size={'sm'} color={'light.200'}>
-                    Senha
+                    Descrição
                   </Heading>
                 </FormControl.Label>
                 <Input
-                  placeholder="Digite sua senha"
-                  type="password"
-                  onChangeText={setPassword}
-                />
-                <Button
-                  marginTop={6}
-                  borderRadius={4}
-                  title={'Entrar'}
-                  onPress={handleLoginWithEmailAndPassword}
+                  placeholder="Descreva seu grupo"
+                  onChangeText={setDescription}
                 />
 
-                <Text marginTop={4} textAlign={'center'} color={'light.300'}>
-                  Não possui conta?{' '}
-                  <Text color={'violet.500'} onPress={handleGoToSignUp}>
-                    Criar conta
-                  </Text>
-                </Text>
+                <Button
+                  title={'Criar'}
+                  onPress={handleCreateGroup}
+                  marginTop={10}
+                  isLoading={loading}
+                />
               </FormControl>
             </VStack>
           </VStack>
@@ -132,4 +120,4 @@ const SignIn = () => {
   );
 };
 
-export {SignIn};
+export {CreateGroup};

@@ -5,6 +5,7 @@ import {TaskDetails} from './TaskDetails';
 import {Profile} from './Profile';
 import {GroupList} from './GroupList';
 import {GroupDetails} from './GroupDetails';
+import {CreateGroup} from './CreateGroup';
 import {Welcome} from './Welcome';
 import {SignUp} from './SignUp';
 import {SignIn} from './SignIn';
@@ -18,6 +19,7 @@ export {
   Profile,
   GroupList,
   GroupDetails,
+  CreateGroup,
   Welcome,
   SignUp,
   SignIn,

@@ -20,4 +20,5 @@ export interface IUser {
   email: string;
   phoneNumber?: string;
   photoURL?: string;
+  uid: string;
 }

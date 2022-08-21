@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Heading,
   HStack,
@@ -11,20 +10,19 @@ import {
   TextArea,
   useTheme,
   VStack,
-} from "native-base";
-import React, { useState } from "react";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Dimensions, Keyboard } from "react-native";
-import { Badge } from "./Components/Badge";
-import { TaskResponsible } from "./Components/TaskResponsible";
-import { getStatusBarHeight } from "react-native-iphone-x-helper";
-import { Button } from "../../Components";
+} from 'native-base';
+import React, {useState} from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {Dimensions} from 'react-native';
+import {Badge} from './Components/Badge';
+import {TaskResponsible} from './Components/TaskResponsible';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {Button} from '../../Components';
 
 const CreateTask = () => {
   const [date, setDate] = useState(new Date());
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [categorySelected, setCategorySelected] = useState("");
-  const [responsible, setResponsible] = useState("");
+  const [categorySelected, setCategorySelected] = useState('');
+  const [responsible, setResponsible] = useState('');
 
   const changeDate = (event: any, date) => {
     setDate(date);
@@ -32,7 +30,7 @@ const CreateTask = () => {
 
   const theme = useTheme();
 
-  const { height } = Dimensions.get("screen");
+  const {height} = Dimensions.get('screen');
 
   const handleSelectCategory = (category: string) => {
     setCategorySelected(category);
@@ -44,101 +42,95 @@ const CreateTask = () => {
       <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView behavior="height" enabled>
         <ScrollView
-          bgColor={"warmGray.900"}
+          bgColor={'warmGray.900'}
           _contentContainerStyle={{
             padding: 6,
             marginTop: getStatusBarHeight(),
-          }}
-        >
+          }}>
           <Box
-            bgColor={"warmGray.900"}
-            alignItems={"center"}
-            display={"flex"}
-            height={height}
-          >
+            bgColor={'warmGray.900'}
+            alignItems={'center'}
+            display={'flex'}
+            height={height}>
             <HStack justifyContent="space-between" alignItems="center">
-              <Heading color={"light.50"} marginBottom={2}>
+              <Heading color={'light.50'} marginBottom={2}>
                 Adicionar Task
               </Heading>
             </HStack>
             <VStack>
               <VStack>
                 <Text
-                  color={"light.50"}
+                  color={'light.50'}
                   marginBottom={2}
                   fontSize={14}
-                  fontWeight={"bold"}
-                >
+                  fontWeight={'bold'}>
                   Nome
                 </Text>
                 <Input
-                  color={"light.50"}
-                  bgColor={"warmGray.800"}
-                  _focus={{ borderWidth: 1, borderColor: "violet.500" }}
+                  color={'light.50'}
+                  bgColor={'warmGray.800'}
+                  _focus={{borderWidth: 1, borderColor: 'violet.500'}}
                   borderWidth={1}
-                  borderColor={"warmGray.600"}
+                  borderColor={'warmGray.600'}
                   placeholder="Nome da task"
                 />
               </VStack>
               <VStack marginY={2}>
                 <Text
-                  color={"light.50"}
+                  color={'light.50'}
                   marginBottom={2}
                   fontSize={14}
-                  fontWeight={"bold"}
-                >
+                  fontWeight={'bold'}>
                   Descriçao
                 </Text>
                 <TextArea
-                  autoCompleteType={"off"}
+                  autoCompleteType={'off'}
                   h={20}
-                  placeholder={"Digite a descriçao"}
-                  color={"light.50"}
-                  bgColor={"warmGray.800"}
-                  _focus={{ borderWidth: 1, borderColor: "violet.500" }}
+                  placeholder={'Digite a descriçao'}
+                  color={'light.50'}
+                  bgColor={'warmGray.800'}
+                  _focus={{borderWidth: 1, borderColor: 'violet.500'}}
                   borderWidth={1}
-                  borderColor={"warmGray.600"}
+                  borderColor={'warmGray.600'}
                 />
               </VStack>
               <HStack>
                 <VStack>
                   <Text
-                    color={"light.50"}
+                    color={'light.50'}
                     marginBottom={2}
                     fontSize={14}
-                    fontWeight={"bold"}
-                  >
+                    fontWeight={'bold'}>
                     Categoria
                   </Text>
                   <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     maxWidth="250px"
-                    marginY={2}
-                  >
+                    marginY={2}>
                     <Badge
                       title="Limpeza"
                       isPress={categorySelected}
                       setIsPress={setCategorySelected}
-                      name={"clean"}
+                      name={'clean'}
                     />
                     <Badge
                       title="Estudos"
                       isPress={categorySelected}
                       setIsPress={setCategorySelected}
-                      name={"study"}
+                      name={'study'}
                     />
                     <Badge
                       title="Animal de Estimação"
                       isPress={categorySelected}
                       setIsPress={setCategorySelected}
-                      name={"pet"}
+                      name={'pet'}
                     />
                     <Badge
                       title="Alimentação"
                       isPress={categorySelected}
                       setIsPress={setCategorySelected}
-                      name={"food"}
+                      name={'food'}
                     />
                   </ScrollView>
                 </VStack>
@@ -146,19 +138,17 @@ const CreateTask = () => {
               <HStack marginY={2}>
                 <VStack>
                   <Text
-                    color={"light.50"}
+                    color={'light.50'}
                     marginBottom={2}
                     fontSize={14}
-                    fontWeight={"bold"}
-                  >
+                    fontWeight={'bold'}>
                     Responsável
                   </Text>
                   <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     maxWidth="250px"
-                    marginY={2}
-                  >
+                    marginY={2}>
                     <TaskResponsible
                       id="1"
                       responsible={responsible}
@@ -178,14 +168,13 @@ const CreateTask = () => {
                 </VStack>
               </HStack>
 
-              <HStack marginY={"10px"}>
+              <HStack marginY={'10px'}>
                 <VStack>
                   <Text
-                    color={"light.50"}
+                    color={'light.50'}
                     marginBottom={2}
                     fontSize={14}
-                    fontWeight={"bold"}
-                  >
+                    fontWeight={'bold'}>
                     Data
                   </Text>
 
@@ -205,7 +194,7 @@ const CreateTask = () => {
                   />
                 </VStack>
               </HStack>
-              <Button marginTop={5} p={4} title={" Criar Task"} />
+              <Button marginTop={5} p={4} title={' Criar Task'} />
             </VStack>
           </Box>
         </ScrollView>
@@ -214,4 +203,4 @@ const CreateTask = () => {
   );
 };
 
-export { CreateTask };
+export {CreateTask};

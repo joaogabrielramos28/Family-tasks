@@ -1,16 +1,15 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { SignIn, SignInPhone, SignUp, Welcome } from "../Screens";
-import { ConfirmationCodeScreen } from "../Screens/SignInPhone/Confirmation";
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import {SignIn, SignInPhone, SignUp, Welcome} from '../Screens';
+import {ConfirmationCodeScreen} from '../Screens/SignInPhone/Confirmation';
 
-const { Navigator, Screen } = createStackNavigator();
+const {Navigator, Screen} = createStackNavigator();
 
 const AuthRoutes = () => {
   return (
     <Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName={"Welcome"}
-    >
+      screenOptions={{headerShown: false}}
+      initialRouteName={'Welcome'}>
       <Screen name="Welcome" component={Welcome} />
       <Screen name="SignIn" component={SignIn} />
       <Screen name="SignUp" component={SignUp} />
@@ -20,4 +19,4 @@ const AuthRoutes = () => {
   );
 };
 
-export { AuthRoutes };
+export {AuthRoutes};

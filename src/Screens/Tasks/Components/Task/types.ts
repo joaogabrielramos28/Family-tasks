@@ -4,6 +4,6 @@ export interface ITask {
 }
 
 export enum Status {
-  Doing = "Doing",
-  Completed = "Completed",
+  Doing = 'Doing',
+  Completed = 'Completed',
 }

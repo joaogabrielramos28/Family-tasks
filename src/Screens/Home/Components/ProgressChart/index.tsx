@@ -1,15 +1,15 @@
-import { Box, Heading, Text, useTheme } from "native-base";
-import React from "react";
-import { ProgressChart as CustomProgressChart } from "react-native-chart-kit";
+import {Box, Heading, useTheme} from 'native-base';
+import React from 'react';
+import {ProgressChart as CustomProgressChart} from 'react-native-chart-kit';
 
 const ProgressChart = () => {
   const theme = useTheme();
   const data = {
-    labels: ["Jan"],
+    labels: ['Jan'],
     data: [0.6],
   };
   return (
-    <Box display={"flex"} alignItems="center" position={"relative"}>
+    <Box display={'flex'} alignItems="center" position={'relative'}>
       <CustomProgressChart
         data={data}
         width={250}
@@ -31,24 +31,23 @@ const ProgressChart = () => {
         }}
         style={{
           marginVertical: 8,
-          position: "relative",
+          position: 'relative',
           borderRadius: 16,
         }}
       />
       <Box
-        position={"absolute"}
+        position={'absolute'}
         borderRadius={100}
         height={150}
         width={150}
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
+        display={'flex'}
+        alignItems={'center'}
+        justifyContent={'center'}
         style={{
           backgroundColor: theme.colors.light[200],
-          bottom: "21%",
-        }}
-      >
-        <Heading color={"indigo.600"} fontSize={"4xl"}>
+          bottom: '21%',
+        }}>
+        <Heading color={'indigo.600'} fontSize={'4xl'}>
           42%
         </Heading>
       </Box>
@@ -56,4 +55,4 @@ const ProgressChart = () => {
   );
 };
 
-export { ProgressChart };
+export {ProgressChart};

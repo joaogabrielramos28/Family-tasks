@@ -32,11 +32,6 @@ const CreateTask = () => {
 
   const {height} = Dimensions.get('screen');
 
-  const handleSelectCategory = (category: string) => {
-    setCategorySelected(category);
-    console.log(categorySelected);
-  };
-
   return (
     <KeyboardAvoidingView>
       <StatusBar barStyle="light-content" />

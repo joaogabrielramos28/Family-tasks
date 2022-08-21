@@ -1,7 +1,7 @@
-import { Box, Icon, Text } from "native-base";
-import React from "react";
-import { ITasksStatisticsProps } from "./types";
-import { FontAwesome5 } from "@expo/vector-icons";
+import {Box, Icon, Text} from 'native-base';
+import React from 'react';
+import {ITasksStatisticsProps} from './types';
+import {FontAwesome5} from '@expo/vector-icons';
 const TasksStatistics = ({
   value,
   title,
@@ -10,16 +10,15 @@ const TasksStatistics = ({
 }: ITasksStatisticsProps): JSX.Element => {
   return (
     <Box
-      display={"flex"}
-      background={"light.700"}
-      width={"140px"}
-      height={"80px"}
+      display={'flex'}
+      background={'light.700'}
+      width={'140px'}
+      height={'80px'}
       borderRadius={12}
-      alignItems={"center"}
-      justifyContent={"center"}
-      padding={6}
-    >
-      <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+      alignItems={'center'}
+      justifyContent={'center'}
+      padding={6}>
+      <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
         <Icon
           name={icon}
           as={FontAwesome5}
@@ -28,15 +27,15 @@ const TasksStatistics = ({
           marginRight={2}
         />
 
-        <Text color={"light.100"} fontWeight={"bold"}>
+        <Text color={'light.100'} fontWeight={'bold'}>
           {title}
         </Text>
       </Box>
-      <Text color={"light.100"} fontSize={"22"} fontWeight={"bold"}>
+      <Text color={'light.100'} fontSize={'22'} fontWeight={'bold'}>
         {value}
       </Text>
     </Box>
   );
 };
 
-export { TasksStatistics };
+export {TasksStatistics};

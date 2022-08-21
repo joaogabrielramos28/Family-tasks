@@ -11,12 +11,7 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import MaskInput, {
-  Mask,
-  formatWithMask,
-  Masks,
-  useMaskedInputProps,
-} from 'react-native-mask-input';
+import {Masks, useMaskedInputProps} from 'react-native-mask-input';
 import React, {useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
@@ -27,7 +22,6 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 const SignInPhone = () => {
   const {goBack, navigate} = useNavigation<any>();
 
-  const [displayOTPInput, setDisplayOTPInput] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const countryCode = '+55';
 
@@ -38,12 +32,10 @@ const SignInPhone = () => {
   const goToConfirmationScreen = (
     confirmation: FirebaseAuthTypes.ConfirmationResult,
   ) => {
-    setDisplayOTPInput(true);
     navigate('ConfirmationCode', {confirmation});
   };
 
   const requestOTP = async () => {
-    setDisplayOTPInput(true);
     const confirmation = await auth().signInWithPhoneNumber(
       `${countryCode}${phoneNumber}`,
     );

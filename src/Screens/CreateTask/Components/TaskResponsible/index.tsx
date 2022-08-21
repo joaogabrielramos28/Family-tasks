@@ -1,7 +1,7 @@
-import { Avatar, useTheme } from "native-base";
-import React from "react";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { ITaskResponsibleProps } from "./types";
+import {Avatar, useTheme} from 'native-base';
+import React from 'react';
+import {BorderlessButton} from 'react-native-gesture-handler';
+import {ITaskResponsibleProps} from './types';
 
 const TaskResponsible = ({
   id,
@@ -25,4 +25,4 @@ const TaskResponsible = ({
   );
 };
 
-export { TaskResponsible };
+export {TaskResponsible};

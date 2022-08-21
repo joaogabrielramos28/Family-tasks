@@ -13,7 +13,7 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {BorderlessButton, RectButton} from 'react-native-gesture-handler';
+import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input, SocialLoginButton} from '../../Components';
 import {useAuth} from '../../hooks';
@@ -21,7 +21,7 @@ import {useAuth} from '../../hooks';
 const SignIn = () => {
   const {goBack, navigate} = useNavigation<any>();
   const {signInWithEmailAndPassword, signInWithGoogle} = useAuth();
-  const [_, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -115,6 +115,7 @@ const SignIn = () => {
                   borderRadius={4}
                   title={'Entrar'}
                   onPress={handleLoginWithEmailAndPassword}
+                  isLoading={loading}
                 />
 
                 <Text marginTop={4} textAlign={'center'} color={'light.300'}>

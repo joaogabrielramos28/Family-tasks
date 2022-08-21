@@ -1,5 +1,5 @@
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import {AntDesign} from '@expo/vector-icons';
+import {useNavigation} from '@react-navigation/native';
 import {
   Box,
   FlatList,
@@ -7,78 +7,78 @@ import {
   HStack,
   Icon,
   IconButton,
-  ScrollView,
   Text,
   VStack,
-} from "native-base";
-import React from "react";
+} from 'native-base';
+import React from 'react';
 
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-import { Button } from "../../Components";
-import { Participant } from "./Components/Participant";
-import { IParticipantProps } from "./types";
+import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
+import {Button} from '../../Components';
+import {Participant} from './Components/Participant';
+import {IParticipantProps} from './types';
 
 const INITIAL_PARTICIPANTS: IParticipantProps[] = [
   {
-    id: "1",
-    name: "John Doe",
-    avatar: "https://bit.ly/dan-abramov",
-    position: "Membro",
+    id: '1',
+    name: 'John Doe',
+    avatar: 'https://bit.ly/dan-abramov',
+    position: 'Membro',
   },
   {
-    id: "2",
-    name: "John Doe",
-    avatar: "https://bit.ly/dan-abramov",
-    position: "Membro",
+    id: '2',
+    name: 'John Doe',
+    avatar: 'https://bit.ly/dan-abramov',
+    position: 'Membro',
   },
   {
-    id: "22",
-    name: "John Doe",
-    avatar: "https://bit.ly/dan-abramov",
-    position: "Membro",
+    id: '22',
+    name: 'John Doe',
+    avatar: 'https://bit.ly/dan-abramov',
+    position: 'Membro',
   },
   {
-    id: "r",
-    name: "John Doe",
-    avatar: "https://bit.ly/dan-abramov",
-    position: "Membro",
+    id: 'r',
+    name: 'John Doe',
+    avatar: 'https://bit.ly/dan-abramov',
+    position: 'Membro',
   },
 
   {
-    id: "3",
-    name: "John Doe",
-    avatar: "https://bit.ly/dan-abramov",
-    position: "Administrador",
+    id: '3',
+    name: 'John Doe',
+    avatar: 'https://bit.ly/dan-abramov',
+    position: 'Administrador',
   },
 ];
 
 const GroupDetails = () => {
-  const { goBack } = useNavigation();
+  const {goBack} = useNavigation();
 
   const handleGoBack = () => {
     goBack();
   };
 
   const sortParticipants = (participants: IParticipantProps[]) => {
-    return participants.sort((a: IParticipantProps, b: IParticipantProps) => {
-      if (a.position === "Administrador") {
+    return participants.sort((a: IParticipantProps) => {
+      if (a.position === 'Administrador') {
         return -1;
       }
+      return 1;
     });
   };
 
   return (
-    <Box flex={1} bg={"warmGray.900"}>
-      <Box bg={"warmGray.800"} height={RFValue(200)} padding={RFValue(4)}>
-        <HStack marginTop={10} justifyContent={"space-between"}>
+    <Box flex={1} bg={'warmGray.900'}>
+      <Box bg={'warmGray.800'} height={RFValue(200)} padding={RFValue(4)}>
+        <HStack marginTop={10} justifyContent={'space-between'}>
           <IconButton
             onPress={handleGoBack}
             icon={
               <Icon
                 as={AntDesign}
-                size={"xl"}
-                name={"arrowleft"}
-                color={"light.50"}
+                size={'xl'}
+                name={'arrowleft'}
+                color={'light.50'}
               />
             }
           />
@@ -86,42 +86,41 @@ const GroupDetails = () => {
             icon={
               <Icon
                 as={AntDesign}
-                size={"xl"}
-                name={"ellipsis1"}
-                color={"light.50"}
+                size={'xl'}
+                name={'ellipsis1'}
+                color={'light.50'}
               />
             }
           />
         </HStack>
       </Box>
       <VStack flex={1} paddingX={8}>
-        <Heading color={"light.50"} textAlign={"center"} marginTop={6}>
+        <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
           Nome do grupo
         </Heading>
 
-        <Button marginTop={4} title={"Solicitar entrada"} />
+        <Button marginTop={4} title={'Solicitar entrada'} />
 
         <HStack
-          alignItems={"flex-start"}
+          alignItems={'flex-start'}
           marginTop={10}
-          justifyContent={"space-between"}
-        >
-          <VStack alignItems={"center"}>
-            <Heading color={"light.300"} size={"md"}>
+          justifyContent={'space-between'}>
+          <VStack alignItems={'center'}>
+            <Heading color={'light.300'} size={'md'}>
               Total de Tasks
             </Heading>
-            <Text color={"light.100"}>10</Text>
+            <Text color={'light.100'}>10</Text>
           </VStack>
-          <VStack alignItems={"center"}>
-            <Heading color={"light.300"} size={"md"}>
+          <VStack alignItems={'center'}>
+            <Heading color={'light.300'} size={'md'}>
               Participantes
             </Heading>
-            <Text color={"light.100"}>4</Text>
+            <Text color={'light.100'}>4</Text>
           </VStack>
         </HStack>
         <Box marginTop={6}>
           <HStack>
-            <Heading color={"light.100"}>Membros</Heading>
+            <Heading color={'light.100'}>Membros</Heading>
           </HStack>
 
           <FlatList
@@ -131,8 +130,8 @@ const GroupDetails = () => {
               paddingVertical: 20,
             }}
             data={sortParticipants(INITIAL_PARTICIPANTS)}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <Participant {...item} />}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => <Participant {...item} />}
             showsVerticalScrollIndicator={false}
           />
         </Box>
@@ -141,4 +140,4 @@ const GroupDetails = () => {
   );
 };
 
-export { GroupDetails };
+export {GroupDetails};

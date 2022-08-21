@@ -11,11 +11,11 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {BorderlessButton, RectButton} from 'react-native-gesture-handler';
+import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {Button, Input, SocialLoginButton} from '../../Components';
+import {Button, Input} from '../../Components';
 import {useAuth} from '../../hooks';
 
 const SignUp = () => {

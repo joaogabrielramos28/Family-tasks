@@ -1,12 +1,17 @@
+import React from 'react';
 import {Actionsheet, IActionsheetItemProps} from 'native-base';
 import {BorderlessButton} from 'react-native-gesture-handler';
 
-interface ActionSheetItem extends IActionsheetItemProps {
+interface ActionSheetItemProps extends IActionsheetItemProps {
   children: React.ReactNode;
   onPress: () => void;
 }
 
-const ActionSheetItem = ({children, onPress, ...rest}: ActionSheetItem) => {
+const ActionSheetItem = ({
+  children,
+  onPress,
+  ...rest
+}: ActionSheetItemProps) => {
   return (
     <BorderlessButton onPress={onPress}>
       <Actionsheet.Item

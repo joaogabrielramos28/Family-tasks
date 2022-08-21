@@ -1,35 +1,36 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import { Icon, IconButton, useTheme } from "native-base";
+import {Icon, IconButton, useTheme} from 'native-base';
 
 import {
   AntDesign,
   FontAwesome,
   FontAwesome5,
   Ionicons,
-} from "@expo/vector-icons";
-import { BorderlessButton } from "react-native-gesture-handler";
+} from '@expo/vector-icons';
+import {BorderlessButton} from 'react-native-gesture-handler';
 
-import { CreateTask, Home, Profile, TaskDetails, Tasks } from "../Screens";
-import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import {CreateTask, Home, Profile} from '../Screens';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
-const { Screen, Navigator } = createBottomTabNavigator();
+import {StackTasksRoutes, StackGroupsRoutes} from './app.stack.routes';
 
-import { StackTasksRoutes, StackGroupsRoutes } from "./app.stack.routes";
+const {Screen, Navigator} = createBottomTabNavigator();
 
 const TabsRoutes = () => {
   const theme = useTheme();
   return (
     <Navigator
       initialRouteName="Home"
-      screenOptions={({}) => ({
+      screenOptions={() => ({
         headerShown: false,
-        tabBarInactiveBackgroundColor: "transparent",
+        tabBarInactiveBackgroundColor: 'transparent',
 
         tabBarStyle: {
           borderTopWidth: 0,
           backgroundColor: theme.colors.muted[900],
-          position: "absolute",
+          position: 'absolute',
           bottom: getStatusBarHeight(),
           left: 20,
           right: 20,
@@ -41,13 +42,12 @@ const TabsRoutes = () => {
         tabBarActiveTintColor: theme.colors.indigo[500],
         tabBarInactiveTintColor: theme.colors.light[500],
         tabBarShowLabel: false,
-      })}
-    >
+      })}>
       <Screen
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <Ionicons name="home" size={24} color={color} />
           ),
         }}
@@ -56,7 +56,7 @@ const TabsRoutes = () => {
         name="Tasks"
         component={StackTasksRoutes}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <FontAwesome5 name="tasks" size={24} color={color} />
           ),
         }}
@@ -65,7 +65,7 @@ const TabsRoutes = () => {
         name="New"
         component={CreateTask}
         options={{
-          tabBarIcon: ({}) => (
+          tabBarIcon: () => (
             <BorderlessButton>
               <IconButton
                 style={{
@@ -75,15 +75,15 @@ const TabsRoutes = () => {
                   borderRadius: 50,
                   backgroundColor: theme.colors.light[50],
                   shadowColor: theme.colors.indigo[300],
-                  shadowOffset: { width: 1.8, height: 0 },
+                  shadowOffset: {width: 1.8, height: 0},
                   shadowOpacity: 1.0,
                 }}
                 icon={
                   <Icon
                     as={AntDesign}
                     color={theme.colors.indigo[500]}
-                    size={"4xl"}
-                    name={"plus"}
+                    size={'4xl'}
+                    name={'plus'}
                   />
                 }
               />
@@ -95,7 +95,7 @@ const TabsRoutes = () => {
         name="Group"
         component={StackGroupsRoutes}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <FontAwesome name="group" size={24} color={color} />
           ),
         }}
@@ -104,7 +104,7 @@ const TabsRoutes = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({color}) => (
             <FontAwesome name="user" size={26} color={color} />
           ),
         }}
@@ -113,4 +113,4 @@ const TabsRoutes = () => {
   );
 };
 
-export { TabsRoutes };
+export {TabsRoutes};

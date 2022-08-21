@@ -1,48 +1,46 @@
-import { Box, Heading, HStack, Image, Text, VStack } from "native-base";
-import { RFValue } from "react-native-responsive-fontsize";
-import OTPImg from "../../../assets/otp-img.svg";
+import {Box, Heading, Text, VStack} from 'native-base';
+import {RFValue} from 'react-native-responsive-fontsize';
+import OTPImg from '../../../assets/otp-img.svg';
 
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
-} from "react-native-confirmation-code-field";
-import { StyleSheet, View } from "react-native";
-import { useState } from "react";
-import { Button } from "../../../Components";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+} from 'react-native-confirmation-code-field';
+import {StyleSheet, View} from 'react-native';
+import {useState} from 'react';
+import {Button} from '../../../Components';
+import {useRoute} from '@react-navigation/native';
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const CELL_COUNT = 6;
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 20 },
-  title: { textAlign: "center", fontSize: 30 },
-  codeFieldRoot: { marginTop: 20 },
+  codeFieldRoot: {marginTop: 20},
   cell: {
     width: 40,
     height: 40,
     lineHeight: 38,
     fontSize: 24,
     borderWidth: 2,
-    borderColor: "#e7e5e4",
-    textAlign: "center",
-    color: "#f5f5f4",
+    borderColor: '#e7e5e4',
+    textAlign: 'center',
+    color: '#f5f5f4',
   },
   focusCell: {
-    borderColor: "#8b5cf6",
+    borderColor: '#8b5cf6',
   },
 });
 
-type Params = {
+interface Params {
   confirmation: FirebaseAuthTypes.ConfirmationResult;
-};
+}
 
 const ConfirmationCodeScreen = () => {
   const route = useRoute();
-  const [value, setValue] = useState("");
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -50,15 +48,15 @@ const ConfirmationCodeScreen = () => {
 
   const [loading, setIsLoading] = useState(false);
 
-  const { confirmation } = route.params as Params;
+  const {confirmation} = route.params as Params;
 
   const signIn = async () => {
     try {
       setIsLoading(true);
       await confirmation.confirm(value);
     } catch (error) {
-      setIsLoading;
-      false;
+      setIsLoading(false);
+
       console.log(error);
     }
   };
@@ -66,18 +64,17 @@ const ConfirmationCodeScreen = () => {
   return (
     <Box
       flex={1}
-      bg={"warmGray.900"}
-      display={"flex"}
-      justifyContent={"center"}
-      paddingX={8}
-    >
-      <VStack w={"100%"} alignItems={"center"}>
-        <Heading color={"light.100"} textAlign={"center"}>
+      bg={'warmGray.900'}
+      display={'flex'}
+      justifyContent={'center'}
+      paddingX={8}>
+      <VStack w={'100%'} alignItems={'center'}>
+        <Heading color={'light.100'} textAlign={'center'}>
           Verificação de código de segurança
         </Heading>
         <OTPImg width={240} height={RFValue(240)} />
-        <Text color={"light.200"} textAlign={"center"}>
-          Digite o código de segurança {"\n"} enviado para o seu número de
+        <Text color={'light.200'} textAlign={'center'}>
+          Digite o código de segurança {'\n'} enviado para o seu número de
           telefone
         </Text>
         <CodeField
@@ -90,7 +87,7 @@ const ConfirmationCodeScreen = () => {
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
+          renderCell={({index, symbol, isFocused}) => (
             <View key={index} onLayout={getCellOnLayoutHandler(index)}>
               <Text style={[styles.cell, isFocused && styles.focusCell]}>
                 {symbol || (isFocused ? <Cursor /> : null)}
@@ -101,7 +98,7 @@ const ConfirmationCodeScreen = () => {
 
         <Button
           title="Verificar"
-          w={"100%"}
+          w={'100%'}
           marginTop={4}
           onPress={signIn}
           isLoading={loading}
@@ -111,4 +108,4 @@ const ConfirmationCodeScreen = () => {
   );
 };
 
-export { ConfirmationCodeScreen };
+export {ConfirmationCodeScreen};

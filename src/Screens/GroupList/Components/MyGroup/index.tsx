@@ -1,12 +1,12 @@
-import { Box, FlatList } from "native-base";
-import React from "react";
-import { GroupCard } from "../GroupCard";
+import {FlatList} from 'native-base';
+import React from 'react';
+import {GroupCard} from '../GroupCard';
 
 const MY_GROUPS = [
   {
-    id: "1",
-    name: "Meu Grupo",
-    description: "Minha descrição",
+    id: '1',
+    name: 'Meu Grupo',
+    description: 'Minha descrição',
   },
 ];
 
@@ -18,12 +18,12 @@ const MyGroup = () => {
       contentContainerStyle={{
         paddingHorizontal: 20,
       }}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
+      keyExtractor={item => item.id}
+      renderItem={({item}) => (
         <GroupCard name={item.name} description={item.description} />
       )}
     />
   );
 };
 
-export { MyGroup };
+export {MyGroup};

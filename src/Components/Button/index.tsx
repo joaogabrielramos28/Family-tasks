@@ -1,25 +1,20 @@
-import React from "react";
-import { Button as ButtonNative } from "native-base";
-import { IButtonComponentProps } from "./types";
+import React from 'react';
+import {Button as ButtonNative} from 'native-base';
+import {IButtonComponentProps} from './types';
 
-const Button = ({
-  title,
-  bg = "violet.500",
-  ...rest
-}: IButtonComponentProps) => {
+const Button = ({title, bg = 'violet.500', ...rest}: IButtonComponentProps) => {
   return (
     <ButtonNative
       bg={bg}
-      _text={{ fontWeight: "bold" }}
+      _text={{fontWeight: 'bold'}}
       _pressed={{
-        bg: bg,
+        bg,
         opacity: 0.5,
       }}
-      {...rest}
-    >
+      {...rest}>
       {title}
     </ButtonNative>
   );
 };
 
-export { Button };
+export {Button};

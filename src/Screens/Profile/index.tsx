@@ -152,6 +152,7 @@ const Profile = () => {
             }}
             _image={{
               onLoad: () => setLoadingPicture(false),
+              resizeMode: 'cover',
             }}>
             <Avatar.Badge
               bg={'violet.500'}

@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     semi: ['error', 'always'],
     'prettier/prettier': 'error',
+    'react/no-unstable-nested-components': 'off',
     'react-native/no-unused-styles': 2,
     'react-native/split-platform-components': 2,
     'react-native/no-inline-styles': 0,

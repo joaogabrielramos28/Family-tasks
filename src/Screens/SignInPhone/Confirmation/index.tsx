@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {Box, Heading, Text, VStack} from 'native-base';
 import {RFValue} from 'react-native-responsive-fontsize';
 import OTPImg from '../../../assets/otp-img.svg';
@@ -9,7 +10,6 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {StyleSheet, View} from 'react-native';
-import {useState} from 'react';
 import {Button} from '../../../Components';
 import {useRoute} from '@react-navigation/native';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';

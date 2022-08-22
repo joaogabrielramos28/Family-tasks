@@ -19,6 +19,7 @@ const AuthContext = createContext({} as IAuthContextProps);
 
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState<IUser | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   const [initializing, setInitializing] = useState(true);
 
@@ -27,12 +28,14 @@ const AuthProvider = ({children}) => {
     password: string,
   ) => {
     try {
+      setLoadingAuth(true);
       const {user} = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
       setUser(user);
     } catch (error) {
+      setLoadingAuth(false);
       console.log(error);
     }
   };
@@ -42,9 +45,11 @@ const AuthProvider = ({children}) => {
     password: string,
   ) => {
     try {
+      setLoadingAuth(true);
       const {user} = await auth().signInWithEmailAndPassword(email, password);
       setUser(user);
     } catch (error) {
+      setLoadingAuth(false);
       console.log(error);
     }
   };
@@ -55,7 +60,6 @@ const AuthProvider = ({children}) => {
       name !== user?.displayName &&
         (await auth().currentUser.updateProfile({
           displayName: name,
-          // TODO: update photoURL
         }));
     } catch (error) {
       console.log(error);
@@ -117,6 +121,7 @@ const AuthProvider = ({children}) => {
         updateUser,
         updateUserPhoto,
         initializing,
+        loadingAuth,
       }}>
       {children}
     </AuthContext.Provider>

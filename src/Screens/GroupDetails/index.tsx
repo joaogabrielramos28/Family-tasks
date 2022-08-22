@@ -20,10 +20,11 @@ import firestore from '@react-native-firebase/firestore';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {Button} from '../../Components';
 import {Member} from './Components/Member';
-import {IGroupDto, IMember} from '../../DTOs/GroupDto';
+import {IGroupDto, IMember, INotification} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import {ActionSheetBg} from './Components/ActionSheetBg';
 import {Dimensions} from 'react-native';
+import uuid from 'react-native-uuid';
 
 interface Params {
   id: string;
@@ -35,9 +36,18 @@ const GroupDetails = () => {
   const {goBack} = useNavigation();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
+  const [sentNotification, setSentNotification] = useState(false);
   const [loadingChangeBackground, setLoadingChangeBackground] = useState(true);
   const route = useRoute();
   const {isOpen, onOpen, onClose} = useDisclose();
+
+  useEffect(() => {
+    group.notifications?.find(
+      notification => notification.member.id === user.uid,
+    )
+      ? setSentNotification(true)
+      : setSentNotification(false);
+  }, [group, user.uid]);
 
   const handleGoBack = () => {
     goBack();
@@ -48,6 +58,33 @@ const GroupDetails = () => {
   const handleChangeLoading = useCallback((state: boolean) => {
     return setLoadingChangeBackground(state);
   }, []);
+
+  const handleRequestEntry = async () => {
+    const member: IMember = {
+      id: user?.uid,
+      name: user?.displayName,
+      photoURL: user?.photoURL,
+    };
+
+    const notification: INotification = {
+      id: uuid.v4() as string,
+      group_id: group?.id,
+      member,
+      message: `${user?.displayName} solicitou entrada no grupo ${group?.name}`,
+      createdAt: new Date(),
+    };
+
+    try {
+      await firestore()
+        .collection('Groups')
+        .doc(id)
+        .update({
+          notifications: [...group?.notifications, notification],
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     firestore()
@@ -173,7 +210,15 @@ const GroupDetails = () => {
 
             <Button
               marginTop={4}
-              title={memberIsIngroup ? 'Sair do grupo' : 'Solicitar entrada'}
+              title={
+                memberIsIngroup
+                  ? 'Sair do grupo'
+                  : !memberIsIngroup && !sentNotification
+                  ? 'Solicitar entrada'
+                  : 'Solicitação enviada'
+              }
+              isDisabled={sentNotification}
+              onPress={memberIsIngroup ? () => {} : handleRequestEntry}
             />
 
             <HStack

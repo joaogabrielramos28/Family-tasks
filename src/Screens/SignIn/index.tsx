@@ -19,9 +19,8 @@ import {Button, Input, SocialLoginButton} from '../../Components';
 import {useAuth} from '../../hooks';
 
 const SignIn = () => {
+  const {signInWithEmailAndPassword, signInWithGoogle, loadingAuth} = useAuth();
   const {goBack, navigate} = useNavigation<any>();
-  const {signInWithEmailAndPassword, signInWithGoogle} = useAuth();
-  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,13 +37,7 @@ const SignIn = () => {
   };
 
   const handleLoginWithEmailAndPassword = async () => {
-    try {
-      setLoading(true);
-      await signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
+    await signInWithEmailAndPassword(email, password);
   };
   return (
     <Box
@@ -115,7 +108,7 @@ const SignIn = () => {
                   borderRadius={4}
                   title={'Entrar'}
                   onPress={handleLoginWithEmailAndPassword}
-                  isLoading={loading}
+                  isLoading={loadingAuth}
                 />
 
                 <Text marginTop={4} textAlign={'center'} color={'light.300'}>

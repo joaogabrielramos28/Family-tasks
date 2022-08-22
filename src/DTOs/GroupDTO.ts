@@ -4,6 +4,7 @@ export interface IGroupDto {
   admin: IMember;
   members: IMember[];
   tasks: ITask[];
+  notifications: INotification[];
   description: string;
   background: string;
   createdAt: Date;
@@ -13,7 +14,7 @@ export interface IMember {
   id: string;
   name: string;
   photoURL: string;
-  position: string;
+  position?: string;
 }
 
 export interface ITask {
@@ -24,4 +25,12 @@ export interface ITask {
   responsible: IMember;
   status: string;
   createdAt: string;
+}
+
+export interface INotification {
+  id: string;
+  member: IMember;
+  group_id: string;
+  message: string;
+  createdAt: Date;
 }

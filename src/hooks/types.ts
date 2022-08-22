@@ -13,6 +13,7 @@ export interface IAuthContextProps {
   updateUserPhoto: (uri: string) => Promise<void>;
   initializing: boolean;
   signInWithGoogle: () => Promise<void>;
+  loadingAuth: boolean;
 }
 
 export interface IUser {
@@ -21,4 +22,5 @@ export interface IUser {
   phoneNumber?: string;
   photoURL?: string;
   uid: string;
+  hasGroup?: boolean;
 }

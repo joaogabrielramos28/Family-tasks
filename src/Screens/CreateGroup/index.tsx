@@ -47,6 +47,7 @@ const CreateGroup = () => {
         admin,
         members: [admin],
         tasks: [],
+        notifications: [],
         createdAt: new Date(),
         background: '',
       };

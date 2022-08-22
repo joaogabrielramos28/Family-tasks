@@ -14,8 +14,9 @@ const MyGroup = () => {
       id: user.uid,
       photoURL: user.photoURL,
       name: user.displayName,
+      position: 'Administrator',
     };
-    firestore()
+    const subscribe = firestore()
       .collection('Groups')
       .where('members', 'array-contains', me)
       .onSnapshot(querySnapshot => {
@@ -27,6 +28,7 @@ const MyGroup = () => {
         }) as IGroupDto[];
         setMyGroups(myGroups);
       });
+    return () => subscribe();
   }, [user]);
   return (
     <>
@@ -40,6 +42,7 @@ const MyGroup = () => {
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <GroupCard
+              id={item.id}
               name={item.name}
               description={item.description}
               members={item.members}

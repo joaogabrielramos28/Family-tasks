@@ -9,7 +9,7 @@ const AllGroups = () => {
 
   useEffect(() => {
     const subscribe = firestore()
-      .collectionGroup('Groups')
+      .collection('Groups')
       .onSnapshot(querySnapshot => {
         const groups = querySnapshot.docs.map(doc => {
           return {
@@ -33,6 +33,7 @@ const AllGroups = () => {
       keyExtractor={item => item.id}
       renderItem={({item}) => (
         <GroupCard
+          id={item.id}
           name={item.name}
           description={item.description}
           members={item.members || []}

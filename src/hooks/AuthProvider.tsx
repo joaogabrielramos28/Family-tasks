@@ -8,7 +8,7 @@ import React, {
 import auth from '@react-native-firebase/auth';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import storage from '@react-native-firebase/storage';
+import {uploadFile} from '../Utils/uploadFile';
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
   webClientId:
@@ -63,17 +63,10 @@ const AuthProvider = ({children}) => {
   };
 
   const updateUserPhoto = async (uri: string) => {
-    const timeStamp = new Date().getTime();
-
-    const fetchFile = await fetch(uri);
-    const blob = await fetchFile.blob();
-    const reference = storage().ref(`/users/${timeStamp}`);
-
-    await reference.put(blob);
-    const getDownloadURL = await reference.getDownloadURL();
+    const urlDownloadFile = await uploadFile(uri, 'users');
 
     await auth().currentUser.updateProfile({
-      photoURL: getDownloadURL,
+      photoURL: urlDownloadFile,
     });
   };
 

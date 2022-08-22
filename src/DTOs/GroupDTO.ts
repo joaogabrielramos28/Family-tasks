@@ -13,6 +13,7 @@ export interface IMember {
   id: string;
   name: string;
   photoURL: string;
+  position: string;
 }
 
 export interface ITask {

@@ -1,5 +1,5 @@
 import {AntDesign} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Box,
   FlatList,
@@ -8,59 +8,65 @@ import {
   Icon,
   IconButton,
   Text,
+  useDisclose,
+  Image,
   VStack,
+  Spinner,
 } from 'native-base';
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import firestore from '@react-native-firebase/firestore';
 
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {Button} from '../../Components';
-import {Participant} from './Components/Participant';
-import {IParticipantProps} from './types';
+import {Member} from './Components/Member';
+import {IGroupDto, IMember} from '../../DTOs/GroupDto';
+import {useAuth} from '../../hooks';
+import {ActionSheetBg} from './Components/ActionSheetBg';
+import {Dimensions} from 'react-native';
 
-const INITIAL_PARTICIPANTS: IParticipantProps[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    avatar: 'https://bit.ly/dan-abramov',
-    position: 'Membro',
-  },
-  {
-    id: '2',
-    name: 'John Doe',
-    avatar: 'https://bit.ly/dan-abramov',
-    position: 'Membro',
-  },
-  {
-    id: '22',
-    name: 'John Doe',
-    avatar: 'https://bit.ly/dan-abramov',
-    position: 'Membro',
-  },
-  {
-    id: 'r',
-    name: 'John Doe',
-    avatar: 'https://bit.ly/dan-abramov',
-    position: 'Membro',
-  },
-
-  {
-    id: '3',
-    name: 'John Doe',
-    avatar: 'https://bit.ly/dan-abramov',
-    position: 'Administrador',
-  },
-];
+interface Params {
+  id: string;
+}
 
 const GroupDetails = () => {
+  const width = Dimensions.get('window').width;
+  const {user} = useAuth();
   const {goBack} = useNavigation();
+  const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
+  const [memberIsIngroup, setMemberIsIngroup] = useState(false);
+  const [loadingChangeBackground, setLoadingChangeBackground] = useState(true);
+  const route = useRoute();
+  const {isOpen, onOpen, onClose} = useDisclose();
 
   const handleGoBack = () => {
     goBack();
   };
 
-  const sortParticipants = (participants: IParticipantProps[]) => {
-    return participants.sort((a: IParticipantProps) => {
-      if (a.position === 'Administrador') {
+  const {id} = route.params as Params;
+
+  const handleChangeLoading = useCallback((state: boolean) => {
+    return setLoadingChangeBackground(state);
+  }, []);
+
+  useEffect(() => {
+    firestore()
+      .collection('Groups')
+      .where('id', '==', id)
+      .onSnapshot(querySnapshot => {
+        const group = querySnapshot.docs[0].data() as IGroupDto;
+        setGroup(group);
+        const checkIfMemberIsInGroup = group.members.find(
+          member => member.id === user.uid,
+        );
+        if (checkIfMemberIsInGroup) {
+          setMemberIsIngroup(true);
+        }
+      });
+  }, [id, user.uid]);
+
+  const sortParticipants = (members: IMember[]) => {
+    return members?.sort((a: IMember) => {
+      if (a.position === 'Administrator') {
         return -1;
       }
       return 1;
@@ -69,73 +75,117 @@ const GroupDetails = () => {
 
   return (
     <Box flex={1} bg={'warmGray.900'}>
-      <Box bg={'warmGray.800'} height={RFValue(200)} padding={RFValue(4)}>
-        <HStack marginTop={10} justifyContent={'space-between'}>
-          <IconButton
-            onPress={handleGoBack}
-            icon={
-              <Icon
-                as={AntDesign}
-                size={'xl'}
-                name={'arrowleft'}
-                color={'light.50'}
+      {group.name ? (
+        <>
+          <Box
+            background={'warmGray.900'}
+            height={RFValue(200)}
+            padding={RFValue(4)}>
+            {loadingChangeBackground && (
+              <Spinner
+                size="lg"
+                color={'violet.500'}
+                zIndex={1}
+                position={'absolute'}
+                top={RFValue(100)}
+                left={width / 2 - RFValue(20)}
               />
-            }
-          />
-          <IconButton
-            icon={
-              <Icon
-                as={AntDesign}
-                size={'xl'}
-                name={'ellipsis1'}
-                color={'light.50'}
+            )}
+            <Image
+              source={{
+                uri: group.background,
+              }}
+              onLoad={() => setLoadingChangeBackground(false)}
+              position="absolute"
+              width={width}
+              resizeMode="cover"
+              height={RFValue(200)}
+              alt={'background'}
+            />
+            <ActionSheetBg
+              isOpen={isOpen}
+              onClose={onClose}
+              groupId={id}
+              handleChangeLoading={handleChangeLoading}
+            />
+            <HStack marginTop={10} justifyContent={'space-between'}>
+              <IconButton
+                onPress={handleGoBack}
+                icon={
+                  <Icon
+                    as={AntDesign}
+                    size={'xl'}
+                    name={'arrowleft'}
+                    color={'light.50'}
+                  />
+                }
               />
-            }
-          />
-        </HStack>
-      </Box>
-      <VStack flex={1} paddingX={8}>
-        <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
-          Nome do grupo
-        </Heading>
-
-        <Button marginTop={4} title={'Solicitar entrada'} />
-
-        <HStack
-          alignItems={'flex-start'}
-          marginTop={10}
-          justifyContent={'space-between'}>
-          <VStack alignItems={'center'}>
-            <Heading color={'light.300'} size={'md'}>
-              Total de Tasks
+              {memberIsIngroup && (
+                <IconButton
+                  onPress={onOpen}
+                  icon={
+                    <Icon
+                      as={AntDesign}
+                      size={'xl'}
+                      name={'ellipsis1'}
+                      color={'light.50'}
+                    />
+                  }
+                />
+              )}
+            </HStack>
+          </Box>
+          <VStack flex={1} paddingX={8}>
+            <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
+              {group.name}
             </Heading>
-            <Text color={'light.100'}>10</Text>
-          </VStack>
-          <VStack alignItems={'center'}>
-            <Heading color={'light.300'} size={'md'}>
-              Participantes
-            </Heading>
-            <Text color={'light.100'}>4</Text>
-          </VStack>
-        </HStack>
-        <Box marginTop={6}>
-          <HStack>
-            <Heading color={'light.100'}>Membros</Heading>
-          </HStack>
 
-          <FlatList
-            marginTop={4}
-            height={RFPercentage(25)}
-            contentContainerStyle={{
-              paddingVertical: 20,
-            }}
-            data={sortParticipants(INITIAL_PARTICIPANTS)}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => <Participant {...item} />}
-            showsVerticalScrollIndicator={false}
-          />
-        </Box>
-      </VStack>
+            <Button
+              marginTop={4}
+              title={memberIsIngroup ? 'Sair do grupo' : 'Solicitar entrada'}
+            />
+
+            <HStack
+              alignItems={'flex-start'}
+              marginTop={10}
+              justifyContent={'space-between'}>
+              <VStack alignItems={'center'}>
+                <Heading color={'light.300'} size={'md'}>
+                  Total de Tasks
+                </Heading>
+                <Text color={'light.100'}>{group.tasks?.length}</Text>
+              </VStack>
+              <VStack alignItems={'center'}>
+                <Heading color={'light.300'} size={'md'}>
+                  Participantes
+                </Heading>
+                <Text color={'light.100'}>{group.members?.length}</Text>
+              </VStack>
+            </HStack>
+            <Box marginTop={6}>
+              <HStack>
+                <Heading color={'light.100'}>Membros</Heading>
+              </HStack>
+
+              <FlatList
+                marginTop={4}
+                height={RFPercentage(25)}
+                contentContainerStyle={{
+                  paddingVertical: 20,
+                }}
+                data={sortParticipants(group.members)}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => <Member {...item} />}
+                showsVerticalScrollIndicator={false}
+              />
+            </Box>
+          </VStack>
+        </>
+      ) : (
+        <VStack flex={1} alignItems={'center'} justifyContent={'center'}>
+          <Spinner size="large" color={'violet.500'} />
+        </VStack>
+      )}
     </Box>
   );
 };

@@ -81,7 +81,6 @@ const Profile = () => {
           console.log(response.errorMessage);
           return;
         }
-        console.log(response.assets[0]);
         await updateUserPhoto(response.assets[0].uri);
       },
     );

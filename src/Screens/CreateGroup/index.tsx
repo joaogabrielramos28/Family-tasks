@@ -38,6 +38,7 @@ const CreateGroup = () => {
         id: user.uid,
         name: user.displayName,
         photoURL: user.photoURL,
+        position: 'Administrator',
       };
       const group: IGroupDto = {
         id: uuid.v4() as string,
@@ -49,9 +50,11 @@ const CreateGroup = () => {
         createdAt: new Date(),
         background: '',
       };
-      await firestore().collection('Groups').add(group);
+      await firestore().collection('Groups').doc(group.id).set(group);
       setLoading(false);
     } catch {
+      console.log('erro');
+
       setLoading(false);
     }
   };

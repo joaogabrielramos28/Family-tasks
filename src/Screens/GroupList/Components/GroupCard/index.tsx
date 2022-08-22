@@ -5,12 +5,13 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {IGroupCardProps} from './types';
 
-const GroupCard = ({name, description, members}: IGroupCardProps) => {
+const GroupCard = ({name, description, members, id}: IGroupCardProps) => {
   const {navigate} = useNavigation<any>();
 
   const handleGoToGroup = () => {
-    navigate('GroupDetails');
+    navigate('GroupDetails', {id});
   };
+
   return (
     <BorderlessButton onPress={handleGoToGroup}>
       <Box

@@ -1,4 +1,4 @@
-import {AntDesign} from '@expo/vector-icons';
+import {AntDesign, Ionicons} from '@expo/vector-icons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Box,
@@ -12,6 +12,7 @@ import {
   Image,
   VStack,
   Spinner,
+  Badge,
 } from 'native-base';
 import React, {useCallback, useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
@@ -121,17 +122,47 @@ const GroupDetails = () => {
                 }
               />
               {memberIsIngroup && (
-                <IconButton
-                  onPress={onOpen}
-                  icon={
-                    <Icon
-                      as={AntDesign}
-                      size={'xl'}
-                      name={'ellipsis1'}
-                      color={'light.50'}
-                    />
-                  }
-                />
+                <HStack>
+                  <IconButton
+                    onPress={onOpen}
+                    icon={
+                      <Icon
+                        as={AntDesign}
+                        size={'xl'}
+                        name={'ellipsis1'}
+                        color={'light.50'}
+                      />
+                    }
+                  />
+                  <IconButton
+                    onPress={() => {}}
+                    icon={
+                      <>
+                        <Icon
+                          as={Ionicons}
+                          size={'md'}
+                          name={'notifications'}
+                          color={'light.50'}
+                        />
+                        <Badge
+                          background={'violet.500'}
+                          position="absolute"
+                          top={-4}
+                          right={-2}
+                          borderRadius={'2xl'}
+                          width={6}
+                          height={6}>
+                          <Text
+                            width={'100%'}
+                            color={'light.300'}
+                            fontSize={14}>
+                            2
+                          </Text>
+                        </Badge>
+                      </>
+                    }
+                  />
+                </HStack>
               )}
             </HStack>
           </Box>

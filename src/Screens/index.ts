@@ -10,6 +10,7 @@ import {Welcome} from './Welcome';
 import {SignUp} from './SignUp';
 import {SignIn} from './SignIn';
 import {SignInPhone} from './SignInPhone';
+import {Notifications} from './Notifications';
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   SignUp,
   SignIn,
   SignInPhone,
+  Notifications,
 };

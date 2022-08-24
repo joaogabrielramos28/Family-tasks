@@ -4,6 +4,7 @@ import {
   CreateGroup,
   GroupDetails,
   GroupList,
+  Notifications,
   SignIn,
   SignUp,
   TaskDetails,
@@ -27,6 +28,7 @@ const StackGroupsRoutes = () => {
     <Navigator screenOptions={{headerShown: false}}>
       <Screen name="GroupList" component={GroupList} />
       <Screen name="GroupDetails" component={GroupDetails} />
+      <Screen name="Notifications" component={Notifications} />
       <Screen name="CreateGroup" component={CreateGroup} />
     </Navigator>
   );

@@ -33,7 +33,7 @@ interface Params {
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
   const {user} = useAuth();
-  const {goBack} = useNavigation();
+  const {goBack, navigate} = useNavigation<any>();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);
@@ -51,6 +51,10 @@ const GroupDetails = () => {
 
   const handleGoBack = () => {
     goBack();
+  };
+
+  const handleGoToNotificationsScreen = () => {
+    navigate('Notifications', {groupId: id});
   };
 
   const {id} = route.params as Params;
@@ -87,11 +91,11 @@ const GroupDetails = () => {
   };
 
   useEffect(() => {
-    firestore()
+    const subscribe = firestore()
       .collection('Groups')
-      .where('id', '==', id)
+      .doc(id)
       .onSnapshot(querySnapshot => {
-        const group = querySnapshot.docs[0].data() as IGroupDto;
+        const group = querySnapshot.data() as IGroupDto;
         setGroup(group);
         const checkIfMemberIsInGroup = group.members.find(
           member => member.id === user.uid,
@@ -100,6 +104,7 @@ const GroupDetails = () => {
           setMemberIsIngroup(true);
         }
       });
+    return () => subscribe();
   }, [id, user.uid]);
 
   const sortParticipants = (members: IMember[]) => {
@@ -172,7 +177,7 @@ const GroupDetails = () => {
                     }
                   />
                   <IconButton
-                    onPress={() => {}}
+                    onPress={handleGoToNotificationsScreen}
                     icon={
                       <>
                         <Icon
@@ -181,21 +186,23 @@ const GroupDetails = () => {
                           name={'notifications'}
                           color={'light.50'}
                         />
-                        <Badge
-                          background={'violet.500'}
-                          position="absolute"
-                          top={-4}
-                          right={-2}
-                          borderRadius={'2xl'}
-                          width={6}
-                          height={6}>
-                          <Text
-                            width={'100%'}
-                            color={'light.300'}
-                            fontSize={14}>
-                            2
-                          </Text>
-                        </Badge>
+                        {group.notifications.length > 0 && (
+                          <Badge
+                            background={'violet.500'}
+                            position="absolute"
+                            top={-4}
+                            right={-2}
+                            borderRadius={'2xl'}
+                            width={6}
+                            height={6}>
+                            <Text
+                              width={'100%'}
+                              color={'light.300'}
+                              fontSize={14}>
+                              {group.notifications.length}
+                            </Text>
+                          </Badge>
+                        )}
                       </>
                     }
                   />

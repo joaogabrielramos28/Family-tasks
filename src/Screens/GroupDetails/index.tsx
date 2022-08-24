@@ -116,6 +116,22 @@ const GroupDetails = () => {
     });
   };
 
+  const handleExitOfGroup = async () => {
+    const membersWithoutTheRemovedUser = group.members.filter(
+      member => member.id !== user.uid,
+    );
+
+    try {
+      await firestore().collection('Groups').doc(id).update({
+        members: membersWithoutTheRemovedUser,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setSentNotification(false);
+    setMemberIsIngroup(false);
+  };
+
   return (
     <Box flex={1} bg={'warmGray.900'}>
       {group.name ? (
@@ -225,7 +241,7 @@ const GroupDetails = () => {
                   : 'Solicitação enviada'
               }
               isDisabled={sentNotification}
-              onPress={memberIsIngroup ? () => {} : handleRequestEntry}
+              onPress={memberIsIngroup ? handleExitOfGroup : handleRequestEntry}
             />
 
             <HStack

@@ -22,5 +22,6 @@ export interface IUser {
   phoneNumber?: string;
   photoURL?: string;
   uid: string;
-  hasGroup?: boolean;
+  groupId?: string;
+  background?: string;
 }

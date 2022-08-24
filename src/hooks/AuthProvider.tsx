@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {uploadFile} from '../Utils/uploadFile';
@@ -33,6 +34,8 @@ const AuthProvider = ({children}) => {
         email,
         password,
       );
+      await firestore().collection('Users').doc(user.uid).set({});
+
       setUser(user);
     } catch (error) {
       setLoadingAuth(false);
@@ -94,20 +97,23 @@ const AuthProvider = ({children}) => {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
   }, [onAuthStateChanged]);
 
   async function signInWithGoogle() {
-    // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    try {
+      setLoadingAuth(true);
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Sign-in the user with the credential
-    const {user} = await auth().signInWithCredential(googleCredential);
+      const {user} = await auth().signInWithCredential(googleCredential);
 
-    setUser(user);
+      setUser(user);
+    } catch (error) {
+      setLoadingAuth(false);
+      console.log(error);
+    }
   }
 
   return (

@@ -25,6 +25,7 @@ import {useAuth} from '../../hooks';
 import {ActionSheetBg} from './Components/ActionSheetBg';
 import {Dimensions} from 'react-native';
 import uuid from 'react-native-uuid';
+import {AlertDialog} from '../../Components/AlertDialog';
 
 interface Params {
   id: string;
@@ -38,8 +39,13 @@ const GroupDetails = () => {
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);
   const [loadingChangeBackground, setLoadingChangeBackground] = useState(true);
+  const [confirmationToExitIsOpen, setConfirmationToExitIsOpen] =
+    useState(false);
   const route = useRoute();
   const {isOpen, onOpen, onClose} = useDisclose();
+
+  const onToggleAlertDialog = () =>
+    setConfirmationToExitIsOpen(!confirmationToExitIsOpen);
 
   useEffect(() => {
     group.notifications?.find(
@@ -130,6 +136,7 @@ const GroupDetails = () => {
     }
     setSentNotification(false);
     setMemberIsIngroup(false);
+    onToggleAlertDialog();
   };
 
   return (
@@ -241,7 +248,9 @@ const GroupDetails = () => {
                   : 'Solicitação enviada'
               }
               isDisabled={sentNotification}
-              onPress={memberIsIngroup ? handleExitOfGroup : handleRequestEntry}
+              onPress={
+                memberIsIngroup ? onToggleAlertDialog : handleRequestEntry
+              }
             />
 
             <HStack
@@ -285,6 +294,16 @@ const GroupDetails = () => {
           <Spinner size="large" color={'violet.500'} />
         </VStack>
       )}
+      <AlertDialog
+        isOpen={confirmationToExitIsOpen}
+        title={'Sair do grupo'}
+        body={'Tem certeza que deseja sair do grupo?'}
+        buttonCancelTitle={'Cancelar'}
+        buttonSuccesTitle={'Sair'}
+        onSuccess={handleExitOfGroup}
+        onCancel={onToggleAlertDialog}
+        onClose={onToggleAlertDialog}
+      />
     </Box>
   );
 };

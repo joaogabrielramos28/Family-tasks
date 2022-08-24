@@ -89,6 +89,7 @@ const NotificationCard = ({
         body={`Você deseja aceitar ${member.name} no seu grupo?`}
         buttonCancelTitle={'Negar'}
         buttonSuccesTitle={'Aceitar'}
+        onClose={onClose}
       />
     </BorderlessButton>
   );

@@ -3,7 +3,7 @@ import {AlertDialog as AlertDialogNative, Button} from 'native-base';
 
 interface AlertDialogProps {
   isOpen: boolean;
-  onClose?: () => void;
+  onClose: () => void;
   title: string;
   body: string;
   buttonCancelTitle: string;

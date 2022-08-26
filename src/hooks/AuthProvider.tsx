@@ -116,6 +116,14 @@ const AuthProvider = ({children}) => {
     }
   }
 
+  const resetPassword = async (email: string) => {
+    try {
+      await auth().sendPasswordResetEmail(email);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -128,6 +136,7 @@ const AuthProvider = ({children}) => {
         updateUserPhoto,
         initializing,
         loadingAuth,
+        resetPassword,
       }}>
       {children}
     </AuthContext.Provider>

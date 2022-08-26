@@ -14,6 +14,7 @@ export interface IAuthContextProps {
   initializing: boolean;
   signInWithGoogle: () => Promise<void>;
   loadingAuth: boolean;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 export interface IUser {

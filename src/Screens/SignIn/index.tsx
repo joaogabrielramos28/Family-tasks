@@ -17,12 +17,14 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input, SocialLoginButton} from '../../Components';
 import {useAuth} from '../../hooks';
+import {Modal} from './Components/Modal';
 
 const SignIn = () => {
   const {signInWithEmailAndPassword, signInWithGoogle, loadingAuth} = useAuth();
   const {goBack, navigate} = useNavigation<any>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const handleGoBack = () => {
     goBack();
@@ -36,6 +38,9 @@ const SignIn = () => {
     navigate('SignInPhone');
   };
 
+  const onOpenModal = () => setModalIsVisible(true);
+  const onCloseModal = () => setModalIsVisible(false);
+
   const handleLoginWithEmailAndPassword = async () => {
     await signInWithEmailAndPassword(email, password);
   };
@@ -48,6 +53,9 @@ const SignIn = () => {
       <KeyboardAvoidingView enabled behavior="position">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack marginTop={4}>
+            {modalIsVisible && (
+              <Modal onClose={onCloseModal} isOpen={modalIsVisible} />
+            )}
             <HStack alignItems={'center'}>
               <BorderlessButton onPress={handleGoBack}>
                 <IconButton
@@ -103,6 +111,12 @@ const SignIn = () => {
                   type="password"
                   onChangeText={setPassword}
                 />
+                <BorderlessButton onPress={onOpenModal}>
+                  <Text textAlign={'right'} color={'violet.500'}>
+                    Esqueceu a senha?
+                  </Text>
+                </BorderlessButton>
+
                 <Button
                   marginTop={6}
                   borderRadius={4}

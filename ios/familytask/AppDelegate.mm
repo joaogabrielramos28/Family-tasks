@@ -5,7 +5,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
-
+#import "RNSplashScreen.h" 
 #import <React/RCTAppSetupUtils.h>
 
 #if RCT_NEW_ARCH_ENABLED
@@ -54,7 +54,7 @@
   [self.window makeKeyAndVisible];
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-
+  [RNSplashScreen show]; 
   return YES;
 }
 

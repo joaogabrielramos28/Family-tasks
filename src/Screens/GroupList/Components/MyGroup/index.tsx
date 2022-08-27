@@ -1,35 +1,50 @@
 import {FlatList, Text, VStack} from 'native-base';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {GroupCard} from '../GroupCard';
 import firestore from '@react-native-firebase/firestore';
-import {useAuth} from '../../../../hooks';
-import {IGroupDto, IMember} from '../../../../DTOs/GroupDto';
+import {IGroupDto} from '../../../../DTOs/GroupDto';
+import {ActivityIndicator} from 'react-native';
 
 const MyGroup = () => {
-  const {user} = useAuth();
   const [myGroups, setMyGroups] = React.useState<IGroupDto[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const me: IMember = {
-      id: user.uid,
-      photoURL: user.photoURL,
-      name: user.displayName,
-      position: 'Administrator',
-    };
     const subscribe = firestore()
       .collection('Groups')
-      .where('members', 'array-contains', me)
       .onSnapshot(querySnapshot => {
-        const myGroups = querySnapshot.docs.map(doc => {
-          return {
-            ...doc.data(),
+        const groups = querySnapshot.docs.map(async doc => {
+          const group = doc.data();
+          const members = await Promise.all(
+            group.members.map(async doc => {
+              return await doc.get();
+            }),
+          );
+          const membersGroups = members.map(doc => ({
             id: doc.id,
+            ...doc.data(),
+          }));
+
+          return {
+            id: doc.id,
+            ...doc.data(),
+            members: membersGroups,
           };
-        }) as IGroupDto[];
-        setMyGroups(myGroups);
+        }) as unknown as IGroupDto[];
+        Promise.all(groups)
+          .then(group => {
+            setLoading(false);
+            setMyGroups(group);
+          })
+          .catch(e => console.log(e));
       });
+
     return () => subscribe();
-  }, [user]);
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
   return (
     <>
       {myGroups.length > 0 ? (

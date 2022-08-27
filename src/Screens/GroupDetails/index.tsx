@@ -137,13 +137,21 @@ const GroupDetails = () => {
   };
 
   const handleExitOfGroup = async () => {
-    const membersWithoutTheRemovedUser = group.members.filter(
-      member => member.id !== user.uid,
-    );
+    const items = [];
+    for (let i = 0; i < group.members.length; i++) {
+      if (group.members[i].id !== user.uid) {
+        const ref = firestore().collection('Users').doc(group.members[i].id);
+
+        items.push(ref);
+      }
+    }
 
     try {
       await firestore().collection('Groups').doc(id).update({
-        members: membersWithoutTheRemovedUser,
+        members: items,
+      });
+      await firestore().collection('Users').doc(user.uid).update({
+        groupInfo: {},
       });
     } catch (error) {
       console.log(error);

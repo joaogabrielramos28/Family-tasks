@@ -42,13 +42,23 @@ const NotificationCard = ({
     const removeNotification = group?.notifications.filter(
       notification => notification?.id !== id,
     );
+    const memberRef = firestore().collection('Users').doc(member.id);
 
     await firestore()
       .collection('Groups')
       .doc(groupId)
       .update({
-        members: [...group?.members, {...member, position: 'member'}],
+        members: [...group?.members, memberRef],
         notifications: removeNotification,
+      });
+    await firestore()
+      .collection('Users')
+      .doc(member.id)
+      .update({
+        groupInfo: {
+          id: group.id,
+          position: 'Member',
+        },
       });
     onClose();
   };

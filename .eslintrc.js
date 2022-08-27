@@ -30,5 +30,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/return-await': 'off',
   },
 };

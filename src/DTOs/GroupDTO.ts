@@ -1,6 +1,7 @@
 export interface IGroupDto {
   id: string;
   name: string;
+
   admin: IMember;
   members: IMember[];
   tasks: ITask[];
@@ -12,9 +13,15 @@ export interface IGroupDto {
 
 export interface IMember {
   id: string;
-  name: string;
-  photoURL: string;
+  email: string;
+  name?: string;
+  photoURL?: string;
   position?: string;
+  pushTokenId?: string;
+  groupInfo?: {
+    id: string;
+    position: string;
+  };
 }
 
 export interface ITask {

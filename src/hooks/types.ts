@@ -3,6 +3,7 @@ export interface IAuthContextProps {
   signUpWithEmailAndPassword: (
     email: string,
     password: string,
+    name: string,
   ) => Promise<void>;
   signInWithEmailAndPassword: (
     email: string,

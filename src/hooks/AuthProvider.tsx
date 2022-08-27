@@ -7,9 +7,11 @@ import React, {
 } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {uploadFile} from '../Utils/uploadFile';
+
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
   webClientId:
@@ -27,6 +29,7 @@ const AuthProvider = ({children}) => {
   const signUpWithEmailAndPassword = async (
     email: string,
     password: string,
+    name: string,
   ) => {
     try {
       setLoadingAuth(true);
@@ -34,9 +37,16 @@ const AuthProvider = ({children}) => {
         email,
         password,
       );
-      await firestore().collection('Users').doc(user.uid).set({});
 
-      setUser(user);
+      await firestore().collection('Users').doc(user?.uid).set({
+        email,
+        name,
+      });
+      await auth().currentUser.updateProfile({
+        displayName: name,
+      });
+
+      setUser({...user, displayName: name, email});
     } catch (error) {
       setLoadingAuth(false);
       console.log(error);
@@ -75,6 +85,9 @@ const AuthProvider = ({children}) => {
     await auth().currentUser.updateProfile({
       photoURL: urlDownloadFile,
     });
+    await firestore().collection('Users').doc(user?.uid).update({
+      photoURL: urlDownloadFile,
+    });
   };
 
   const signOut = async () => {
@@ -88,7 +101,9 @@ const AuthProvider = ({children}) => {
 
   const onAuthStateChanged = useCallback(
     (user): void => {
-      if (user) setUser(user);
+      if (user) {
+        setUser(user);
+      }
 
       if (initializing) setInitializing(false);
     },
@@ -123,6 +138,46 @@ const AuthProvider = ({children}) => {
       console.log(e);
     }
   };
+
+  const getPushToken = useCallback(
+    async (pushToken: string) => {
+      if (user?.uid) {
+        const member = (
+          await firestore().collection('Users').doc(user?.uid).get()
+        ).data();
+
+        if (member.pushTokenId !== null) {
+          await firestore().collection('Users').doc(user?.uid).update({
+            pushTokenId: pushToken,
+          });
+        }
+      }
+    },
+    [user?.uid],
+  );
+
+  useEffect(() => {
+    async function requestUserPermission() {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        const tokenFcm = messaging().getToken();
+
+        return tokenFcm;
+      }
+    }
+
+    requestUserPermission()
+      .then(async res => {
+        await getPushToken(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [getPushToken]);
 
   return (
     <AuthContext.Provider

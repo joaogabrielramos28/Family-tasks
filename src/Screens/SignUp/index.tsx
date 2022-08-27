@@ -21,14 +21,15 @@ import {useAuth} from '../../hooks';
 const SignUp = () => {
   const {goBack, navigate} = useNavigation<any>();
   const {signUpWithEmailAndPassword} = useAuth();
-  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
   const handleRegister = async () => {
     try {
       setLoading(true);
-      await signUpWithEmailAndPassword(email, password);
+      await signUpWithEmailAndPassword(email, password, name);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -76,6 +77,15 @@ const SignUp = () => {
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
+                <FormControl.Label>
+                  <Heading size={'sm'} color={'light.200'}>
+                    Nome
+                  </Heading>
+                </FormControl.Label>
+                <Input
+                  placeholder="john.doe@example.com"
+                  onChangeText={setName}
+                />
                 <FormControl.Label>
                   <Heading size={'sm'} color={'light.200'}>
                     E-mail

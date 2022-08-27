@@ -1,10 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import {Box, Heading, ScrollView, Text, VStack} from 'native-base';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {RFValue} from 'react-native-responsive-fontsize';
 import WelcomeImg from '../../assets/welcome-bg.svg';
 import {Button} from '../../Components';
-import messaging from '@react-native-firebase/messaging';
 
 const Welcome = () => {
   const {navigate} = useNavigation<any>();
@@ -17,22 +16,6 @@ const Welcome = () => {
     navigate('SignIn');
   };
 
-  useEffect(() => {
-    async function requestUserPermission() {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
-      }
-    }
-
-    requestUserPermission().catch(err => {
-      console.log(err);
-    });
-  }, []);
   return (
     <ScrollView flex={1} bgColor={'warmGray.900'}>
       <Box alignItems={'center'}>

@@ -1,6 +1,8 @@
 import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
+import firestore, {
+  FirebaseFirestoreTypes,
+} from '@react-native-firebase/firestore';
 import {
   Box,
   FormControl,
@@ -17,9 +19,23 @@ import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input} from '../../Components';
-import {IGroupDto, IMember} from '../../DTOs/GroupDto';
+import {INotification, ITask} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
+
+interface ICreateGroup {
+  id: string;
+  name: string;
+  description: string;
+  admin: FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>;
+  members: Array<
+    FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
+  >;
+  tasks: ITask[];
+  notifications: INotification[];
+  createdAt: Date;
+  background: string;
+}
 
 const CreateGroup = () => {
   const [name, setName] = useState('');
@@ -34,18 +50,14 @@ const CreateGroup = () => {
   const handleCreateGroup = async () => {
     try {
       setLoading(true);
-      const admin: IMember = {
-        id: user.uid,
-        name: user.displayName,
-        photoURL: user.photoURL,
-        position: 'Administrator',
-      };
-      const group: IGroupDto = {
+
+      const userRef = firestore().collection('Users').doc(user.uid);
+      const group: ICreateGroup = {
         id: uuid.v4() as string,
         name,
         description,
-        admin,
-        members: [admin],
+        admin: userRef,
+        members: [userRef],
         tasks: [],
         notifications: [],
         createdAt: new Date(),

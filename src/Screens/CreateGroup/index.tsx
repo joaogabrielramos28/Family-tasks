@@ -64,6 +64,12 @@ const CreateGroup = () => {
         background: '',
       };
       await firestore().collection('Groups').doc(group.id).set(group);
+      await userRef.update({
+        groupInfo: {
+          id: group.id,
+          position: 'Administrator',
+        },
+      });
       setLoading(false);
     } catch {
       console.log('erro');

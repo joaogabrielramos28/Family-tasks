@@ -38,7 +38,7 @@ const GroupDetails = () => {
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);
-  const [loadingChangeBackground, setLoadingChangeBackground] = useState(true);
+  const [loadingChangeBackground, setLoadingChangeBackground] = useState(false);
   const [confirmationToExitIsOpen, setConfirmationToExitIsOpen] =
     useState(false);
   const route = useRoute();
@@ -74,6 +74,7 @@ const GroupDetails = () => {
       id: user?.uid,
       name: user?.displayName,
       photoURL: user?.photoURL,
+      email: user?.email,
     };
 
     const notification: INotification = {
@@ -100,15 +101,28 @@ const GroupDetails = () => {
     const subscribe = firestore()
       .collection('Groups')
       .doc(id)
-      .onSnapshot(querySnapshot => {
-        const group = querySnapshot.data() as IGroupDto;
-        setGroup(group);
-        const checkIfMemberIsInGroup = group.members.find(
-          member => member.id === user.uid,
-        );
-        if (checkIfMemberIsInGroup) {
-          setMemberIsIngroup(true);
-        }
+      .onSnapshot(async querySnapshot => {
+        const group = querySnapshot.data();
+        setGroup(group as IGroupDto);
+
+        Promise.all(
+          group.members.map(async doc => {
+            return await doc.get().then(member => {
+              return {...member.data(), id: member.id};
+            });
+          }),
+        )
+          .then(members => {
+            setGroup({...(group as IGroupDto), members});
+            const checkIfMemberIsInGroup = members.find(
+              member => member.id === user.uid,
+            );
+
+            if (checkIfMemberIsInGroup) {
+              setMemberIsIngroup(true);
+            }
+          })
+          .catch(e => console.log(e));
       });
     return () => subscribe();
   }, [id, user.uid]);

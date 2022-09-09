@@ -2,7 +2,7 @@ import {Avatar, Box, Heading, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import {IMember} from '../../../../DTOs/GroupDto';
 
-const Member = ({name, photoURL, groupInfo}: IMember) => {
+const Member = ({name, photo_url: photoURL, groupInfo}: IMember) => {
   return (
     <Box marginBottom={8}>
       <HStack alignItems={'center'}>

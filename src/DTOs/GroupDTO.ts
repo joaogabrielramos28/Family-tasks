@@ -15,7 +15,7 @@ export interface IMember {
   id: string;
   email: string;
   name?: string;
-  photoURL?: string;
+  photo_url?: string;
   position?: string;
   pushTokenId?: string;
   groupInfo?: {

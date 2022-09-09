@@ -22,6 +22,7 @@ import {Button, Input} from '../../Components';
 import {INotification, ITask} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ICreateGroup {
   id: string;
@@ -41,7 +42,7 @@ const CreateGroup = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const {user} = useAuth();
+  const {user, USER_STORAGE_KEY} = useAuth();
   const {goBack} = useNavigation<any>();
   const handleGoBack = () => {
     goBack();
@@ -51,7 +52,7 @@ const CreateGroup = () => {
     try {
       setLoading(true);
 
-      const userRef = firestore().collection('Users').doc(user.uid);
+      const userRef = firestore().collection('Users').doc(user.id);
       const group: ICreateGroup = {
         id: uuid.v4() as string,
         name,
@@ -64,12 +65,24 @@ const CreateGroup = () => {
         background: '',
       };
       await firestore().collection('Groups').doc(group.id).set(group);
+
       await userRef.update({
         groupInfo: {
           id: group.id,
           position: 'Administrator',
         },
       });
+
+      const userUpdated = {
+        ...user,
+        groupInfo: {
+          id: group.id,
+          position: 'Administrator',
+        },
+      };
+
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
+
       setLoading(false);
     } catch {
       console.log('erro');

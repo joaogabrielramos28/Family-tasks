@@ -296,6 +296,7 @@ const AuthProvider = ({children}) => {
         updateUserPhoto,
         loadingAuth,
         resetPassword,
+        USER_STORAGE_KEY,
       }}>
       {children}
     </AuthContext.Provider>

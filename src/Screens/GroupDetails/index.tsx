@@ -49,11 +49,11 @@ const GroupDetails = () => {
 
   useEffect(() => {
     group.notifications?.find(
-      notification => notification.member.id === user.uid,
+      notification => notification.member.id === user.id,
     )
       ? setSentNotification(true)
       : setSentNotification(false);
-  }, [group, user.uid]);
+  }, [group, user.id]);
 
   const handleGoBack = () => {
     goBack();
@@ -71,9 +71,9 @@ const GroupDetails = () => {
 
   const handleRequestEntry = async () => {
     const member: IMember = {
-      id: user?.uid,
-      name: user?.displayName,
-      photoURL: user?.photoURL,
+      id: user?.id,
+      name: user?.name,
+      photo_url: user?.photo_url,
       email: user?.email,
     };
 
@@ -81,7 +81,7 @@ const GroupDetails = () => {
       id: uuid.v4() as string,
       group_id: group?.id,
       member,
-      message: `${user?.displayName} solicitou entrada no grupo ${group?.name}`,
+      message: `${user?.name} solicitou entrada no grupo ${group?.name}`,
       createdAt: new Date(),
     };
 
@@ -115,7 +115,7 @@ const GroupDetails = () => {
           .then(members => {
             setGroup({...(group as IGroupDto), members});
             const checkIfMemberIsInGroup = members.find(
-              member => member.id === user.uid,
+              member => member.id === user.id,
             );
 
             if (checkIfMemberIsInGroup) {
@@ -125,7 +125,7 @@ const GroupDetails = () => {
           .catch(e => console.log(e));
       });
     return () => subscribe();
-  }, [id, user.uid]);
+  }, [id, user.id]);
 
   const sortParticipants = (members: IMember[]) => {
     return members?.sort((a: IMember) => {
@@ -139,7 +139,7 @@ const GroupDetails = () => {
   const handleExitOfGroup = async () => {
     const items = [];
     for (let i = 0; i < group.members.length; i++) {
-      if (group.members[i].id !== user.uid) {
+      if (group.members[i].id !== user.id) {
         const ref = firestore().collection('Users').doc(group.members[i].id);
 
         items.push(ref);
@@ -150,7 +150,7 @@ const GroupDetails = () => {
       await firestore().collection('Groups').doc(id).update({
         members: items,
       });
-      await firestore().collection('Users').doc(user.uid).update({
+      await firestore().collection('Users').doc(user.id).update({
         groupInfo: {},
       });
     } catch (error) {

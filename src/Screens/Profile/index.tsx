@@ -73,8 +73,6 @@ const Profile = () => {
   //   );
   // };
 
-  console.log(!!user.photo_url, user.photo_url);
-
   const handleLaunchGallery = async (): Promise<void> => {
     await launchImageLibrary(
       {

@@ -1,16 +1,19 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, {
   useContext,
   createContext,
   useState,
   useEffect,
-  useCallback,
+  // useCallback,
 } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {uploadFile} from '../Utils/uploadFile';
+// import {uploadFile} from '../Utils/uploadFile';
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
@@ -20,11 +23,13 @@ GoogleSignin.configure({
 
 const AuthContext = createContext({} as IAuthContextProps);
 
+const USER_STORAGE_KEY = '@taskfy:user';
+
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
 
-  const [initializing, setInitializing] = useState(true);
+  console.log(user);
 
   const signUpWithEmailAndPassword = async (
     email: string,
@@ -33,20 +38,45 @@ const AuthProvider = ({children}) => {
   ) => {
     try {
       setLoadingAuth(true);
-      const {user} = await auth().createUserWithEmailAndPassword(
-        email,
-        password,
-      );
+      await auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(account => {
+          firestore()
+            .collection('Users')
+            .doc(account.user.uid)
+            .set({
+              email,
+              name,
+            })
+            .then(() => {
+              firestore()
+                .collection('Users')
+                .doc(account.user.uid)
+                .get()
+                .then(async userFirestore => {
+                  if (userFirestore.exists) {
+                    const userData = {
+                      id: userFirestore.id,
+                      ...userFirestore.data(),
+                    } as IUser;
 
-      await firestore().collection('Users').doc(user?.uid).set({
-        email,
-        name,
-      });
-      await auth().currentUser.updateProfile({
-        displayName: name,
-      });
+                    await AsyncStorage.setItem(
+                      USER_STORAGE_KEY,
+                      JSON.stringify(userData),
+                    );
 
-      setUser({...user, displayName: name, email});
+                    setUser(userData);
+                  }
+                })
+                .catch((error: any) => {
+                  console.log(error);
+                });
+            })
+            .catch((error: any) => {
+              console.log(error);
+            });
+        })
+        .catch(() => Alert.alert('Registro', 'Houve um erro ao registar.'));
     } catch (error) {
       setLoadingAuth(false);
       console.log(error);
@@ -59,61 +89,69 @@ const AuthProvider = ({children}) => {
   ) => {
     try {
       setLoadingAuth(true);
-      const {user} = await auth().signInWithEmailAndPassword(email, password);
-      setUser(user);
+      await auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(account => {
+          firestore()
+            .collection('Users')
+            .doc(account.user.uid)
+            .get()
+            .then(async user => {
+              if (user.exists) {
+                const userData = {
+                  ...user.data(),
+                  id: user.id,
+                } as IUser;
+
+                await AsyncStorage.setItem(
+                  USER_STORAGE_KEY,
+                  JSON.stringify(userData),
+                );
+                setUser(userData);
+              }
+            })
+            .catch((error: any) => {
+              console.log(error);
+            });
+        });
     } catch (error) {
       setLoadingAuth(false);
       console.log(error);
     }
   };
 
-  const updateUser = async (name?: string, email?: string) => {
-    try {
-      email !== user?.email && (await auth().currentUser.updateEmail(email));
-      name !== user?.displayName &&
-        (await auth().currentUser.updateProfile({
-          displayName: name,
-        }));
-    } catch (error) {
-      console.log(error);
-    }
+  const loadStoragedUser = async () => {
+    const storagedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
+    const user = storagedUser ? JSON.parse(storagedUser) : {};
+
+    setUser(user);
   };
 
-  const updateUserPhoto = async (uri: string) => {
-    const urlDownloadFile = await uploadFile(uri, 'users');
+  useEffect(() => {
+    loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
+  }, []);
 
-    await auth().currentUser.updateProfile({
-      photoURL: urlDownloadFile,
-    });
-    await firestore().collection('Users').doc(user?.uid).update({
-      photoURL: urlDownloadFile,
-    });
-  };
+  // const updateUser = async (name?: string, email?: string) => {
+  //   try {
+  //     email !== user?.email && (await auth().currentUser.updateEmail(email));
+  //     name !== user?.displayName &&
+  //       (await auth().currentUser.updateProfile({
+  //         displayName: name,
+  //       }));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const signOut = async () => {
     try {
       await auth().signOut();
       setUser(null);
+      await AsyncStorage.removeItem(USER_STORAGE_KEY);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const onAuthStateChanged = useCallback(
-    (user): void => {
-      if (user) {
-        setUser(user);
-      }
-
-      if (initializing) setInitializing(false);
-    },
-    [initializing],
-  );
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, [onAuthStateChanged]);
 
   async function signInWithGoogle() {
     const {idToken} = await GoogleSignin.signIn();
@@ -122,7 +160,39 @@ const AuthProvider = ({children}) => {
       setLoadingAuth(true);
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      const {user} = await auth().signInWithCredential(googleCredential);
+      await auth()
+        .signInWithCredential(googleCredential)
+        .then(account => {
+          firestore()
+            .collection('Users')
+            .doc(account.user.uid)
+            .get()
+            .then(user => {
+              if (!user.exists) {
+                firestore().collection('Users').doc(account.user.uid).set({
+                  email: account.user.email,
+                  name: account.user.displayName,
+                });
+              }
+              firestore()
+                .collection('Users')
+                .doc(account.user.uid)
+                .get()
+                .then(async userFirestore => {
+                  const userData = {
+                    id: userFirestore.id,
+                    ...userFirestore.data(),
+                  } as IUser;
+
+                  await AsyncStorage.setItem(
+                    USER_STORAGE_KEY,
+                    JSON.stringify(userData),
+                  );
+
+                  setUser(userData);
+                });
+            });
+        });
 
       setUser(user);
     } catch (error) {
@@ -139,45 +209,45 @@ const AuthProvider = ({children}) => {
     }
   };
 
-  const getPushToken = useCallback(
-    async (pushToken: string) => {
-      if (user?.uid) {
-        const member = (
-          await firestore().collection('Users').doc(user?.uid).get()
-        ).data();
+  // const getPushToken = useCallback(
+  //   async (pushToken: string) => {
+  //     if (user?.uid) {
+  //       const member = (
+  //         await firestore().collection('Users').doc(user?.uid).get()
+  //       ).data();
 
-        if (member.pushTokenId !== null) {
-          await firestore().collection('Users').doc(user?.uid).update({
-            pushTokenId: pushToken,
-          });
-        }
-      }
-    },
-    [user?.uid],
-  );
+  //       if (member.pushTokenId !== null) {
+  //         await firestore().collection('Users').doc(user?.uid).update({
+  //           pushTokenId: pushToken,
+  //         });
+  //       }
+  //     }
+  //   },
+  //   [user?.uid],
+  // );
 
-  useEffect(() => {
-    async function requestUserPermission() {
-      const authStatus = await messaging().requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // useEffect(() => {
+  //   async function requestUserPermission() {
+  //     const authStatus = await messaging().requestPermission();
+  //     const enabled =
+  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-      if (enabled) {
-        const tokenFcm = messaging().getToken();
+  //     if (enabled) {
+  //       const tokenFcm = messaging().getToken();
 
-        return tokenFcm;
-      }
-    }
+  //       return tokenFcm;
+  //     }
+  //   }
 
-    requestUserPermission()
-      .then(async res => {
-        await getPushToken(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [getPushToken]);
+  //   requestUserPermission()
+  //     .then(async res => {
+  //       await getPushToken(res);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, [getPushToken]);
 
   return (
     <AuthContext.Provider
@@ -187,9 +257,6 @@ const AuthProvider = ({children}) => {
         signInWithEmailAndPassword,
         signInWithGoogle,
         signOut,
-        updateUser,
-        updateUserPhoto,
-        initializing,
         loadingAuth,
         resetPassword,
       }}>

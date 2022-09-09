@@ -10,20 +10,25 @@ export interface IAuthContextProps {
     password: string,
   ) => Promise<void>;
   signOut: () => Promise<void>;
-  updateUser: (name?: string, email?: string) => Promise<void>;
-  updateUserPhoto: (uri: string) => Promise<void>;
-  initializing: boolean;
+  // updateUser: (name?: string, email?: string) => Promise<void>;
+  // updateUserPhoto: (uri: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   loadingAuth: boolean;
   resetPassword: (email: string) => Promise<void>;
 }
 
+// export interface IUser {
+//   displayName?: string;
+//   email: string;
+//   phoneNumber?: string;
+//   photoURL?: string;
+//   uid: string;
+//   groupId?: string;
+//   background?: string;
+// }
+
 export interface IUser {
-  displayName?: string;
+  id: string;
   email: string;
-  phoneNumber?: string;
-  photoURL?: string;
-  uid: string;
-  groupId?: string;
-  background?: string;
+  name: String;
 }

@@ -258,7 +258,7 @@ const AuthProvider = ({children}) => {
           await firestore().collection('Users').doc(user?.id).get()
         ).data();
 
-        if (firestoreUser.pushTokenId === null) {
+        if (firestoreUser.pushTokenId !== null) {
           await firestore().collection('Users').doc(user?.id).update({
             pushTokenId: pushToken,
           });

@@ -25,6 +25,7 @@
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/stack": "^6.2.2",
+    "axios": "^0.27.2",
     "date-fns": "^2.29.2",
     "eslint-plugin-react-native": "^4.0.0",
     "expo": "~45.0.0",

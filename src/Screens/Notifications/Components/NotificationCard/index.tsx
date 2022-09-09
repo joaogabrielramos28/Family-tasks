@@ -1,10 +1,11 @@
 import {Avatar, Box, HStack, Text} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {IGroupDto, IMember} from '../../../../DTOs/GroupDTO';
-import {Dimensions} from 'react-native';
+import {Alert, Dimensions} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {AlertDialog} from '../../../../Components/AlertDialog';
 import firestore from '@react-native-firebase/firestore';
+import {api} from '../../../../services/api';
 
 interface NotificationCardProps {
   member: IMember;
@@ -43,23 +44,33 @@ const NotificationCard = ({
     );
     const memberRef = firestore().collection('Users').doc(member.id);
 
-    await firestore()
-      .collection('Groups')
-      .doc(groupId)
-      .update({
-        members: [...group?.members, memberRef],
-        notifications: removeNotification,
+    try {
+      await firestore()
+        .collection('Groups')
+        .doc(groupId)
+        .update({
+          members: [...group?.members, memberRef],
+          notifications: removeNotification,
+        });
+
+      await firestore()
+        .collection('Users')
+        .doc(member.id)
+        .update({
+          groupInfo: {
+            id: group.id,
+            position: 'Member',
+          },
+        });
+      await api.post('/', {
+        token: member.pushTokenId,
+        title: 'Parabéns!',
+        body: `${member.name} você foi aceito no ${group.name}`,
       });
-    await firestore()
-      .collection('Users')
-      .doc(member.id)
-      .update({
-        groupInfo: {
-          id: group.id,
-          position: 'Member',
-        },
-      });
-    onClose();
+    } catch (e) {
+      Alert.alert('Ocorreu um erro ao aceitar');
+      console.log(e);
+    }
   };
 
   const onCancel = async () => {

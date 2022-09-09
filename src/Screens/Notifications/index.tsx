@@ -65,13 +65,15 @@ const Notifications = () => {
         ItemSeparatorComponent={() => <Divider background={'warmGray.600'} />}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <NotificationCard
-            id={item.id}
-            groupId={item.group_id}
-            member={item.member}
-            message={item.message}
-            createdAt={item.createdAt}
-          />
+          <>
+            <NotificationCard
+              id={item.id}
+              groupId={item.group_id}
+              member={item.member}
+              message={item.message}
+              createdAt={item.createdAt}
+            />
+          </>
         )}
         showsVerticalScrollIndicator={false}
       />

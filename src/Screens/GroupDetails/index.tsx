@@ -27,6 +27,7 @@ import {Dimensions} from 'react-native';
 import uuid from 'react-native-uuid';
 import {AlertDialog} from '../../Components/AlertDialog';
 import FastImage from 'react-native-fast-image';
+import {api} from '../../services/api';
 
 interface Params {
   id: string;
@@ -74,12 +75,23 @@ const GroupDetails = () => {
   }, []);
 
   const handleRequestEntry = async () => {
+    const admin = group.members.filter(
+      member => member.groupInfo.position === 'Administrator',
+    );
+
     const member: IMember = {
       id: user?.id,
       name: user?.name,
       photo_url: user?.photo_url,
       email: user?.email,
+      pushTokenId: user.pushTokenId,
     };
+
+    await api.post('/', {
+      token: admin[0].pushTokenId,
+      title: 'Solicitação de entrada!',
+      body: `${member.name} solicitou entrada no ${group.name}`,
+    });
 
     const notification: INotification = {
       id: uuid.v4() as string,

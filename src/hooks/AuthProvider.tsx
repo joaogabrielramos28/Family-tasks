@@ -11,7 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 // import messaging from '@react-native-firebase/messaging';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-// import {uploadFile} from '../Utils/uploadFile';
+import {uploadFile} from '../Utils/uploadFile';
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -120,51 +120,6 @@ const AuthProvider = ({children}) => {
     }
   };
 
-  const loadStoragedUser = async () => {
-    const storagedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
-    const user = storagedUser ? JSON.parse(storagedUser) : {};
-
-    setUser(user);
-  };
-
-  useEffect(() => {
-    loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
-  }, []);
-
-  const updateUser = async (name?: string, email?: string) => {
-    try {
-      if (!name || !email) {
-        Alert.alert('Editar Perfil', 'Preencha todos os campos');
-      }
-
-      firestore().collection('Users').doc(user.id).update({
-        email,
-        name,
-      });
-
-      const userUpdated = {
-        ...user,
-        email,
-        name,
-      };
-
-      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
-      setUser(userUpdated);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const signOut = async () => {
-    try {
-      await auth().signOut();
-      setUser(null);
-      await AsyncStorage.removeItem(USER_STORAGE_KEY);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   async function signInWithGoogle() {
     const {idToken} = await GoogleSignin.signIn();
 
@@ -214,6 +169,62 @@ const AuthProvider = ({children}) => {
     }
   }
 
+  const updateUser = async (name?: string, email?: string) => {
+    try {
+      if (!name || !email) {
+        Alert.alert('Editar Perfil', 'Preencha todos os campos');
+      }
+
+      firestore().collection('Users').doc(user.id).update({
+        email,
+        name,
+      });
+
+      const userUpdated = {
+        ...user,
+        email,
+        name,
+      };
+
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
+      setUser(userUpdated);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateUserPhoto = async (uri: string): Promise<string> => {
+    const photoUrlDownload = await uploadFile(uri, 'users');
+
+    firestore().collection('Users').doc(user.id).update({
+      photo_url: photoUrlDownload,
+    });
+
+    const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
+    const storageUser = response ? JSON.parse(response) : {};
+
+    const updatedUser = {
+      ...storageUser,
+      photo_url: photoUrlDownload,
+    };
+
+    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));
+
+    setUser(updatedUser);
+
+    return photoUrlDownload;
+  };
+
+  const signOut = async () => {
+    try {
+      await auth().signOut();
+      setUser(null);
+      await AsyncStorage.removeItem(USER_STORAGE_KEY);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const resetPassword = async (email: string) => {
     try {
       await auth().sendPasswordResetEmail(email);
@@ -221,6 +232,17 @@ const AuthProvider = ({children}) => {
       console.log(e);
     }
   };
+
+  const loadStoragedUser = async () => {
+    const storagedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
+    const user = storagedUser ? JSON.parse(storagedUser) : {};
+
+    setUser(user);
+  };
+
+  useEffect(() => {
+    loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
+  }, []);
 
   // const getPushToken = useCallback(
   //   async (pushToken: string) => {
@@ -271,6 +293,7 @@ const AuthProvider = ({children}) => {
         signInWithGoogle,
         signOut,
         updateUser,
+        updateUserPhoto,
         loadingAuth,
         resetPassword,
       }}>

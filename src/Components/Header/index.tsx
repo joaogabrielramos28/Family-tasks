@@ -10,9 +10,9 @@ const Header = () => {
   const [loadingImage, setLoadingImage] = useState(false);
 
   useEffect(() => {
-    if (user.photoURL === null) setLoadingImage(false);
+    if (user.photo_url === null) setLoadingImage(false);
     else setLoadingImage(true);
-  }, [user.photoURL]);
+  }, [user.photo_url]);
 
   const handleLogout = async () => {
     await signOut();
@@ -29,26 +29,36 @@ const Header = () => {
       paddingTop={RFValue(6)}>
       <HStack alignItems={'center'} justifyContent={'space-around'}>
         <HStack w={'100%'} space={4}>
-          {loadingImage && (
+          {loadingImage && user.photo_url && (
             <Spinner size="sm" color={'violet.500'} position={'absolute'} />
           )}
-          <Avatar
-            size={'md'}
-            source={{
-              uri: user.photoURL || '',
-            }}
-            _image={{
-              onLoad: () => setLoadingImage(false),
-              resizeMode: 'cover',
-            }}>
-            <Avatar.Badge bg="green.500" />
-          </Avatar>
+          {!user.photo_url ? (
+            <Box
+              height={12}
+              width={12}
+              borderRadius={'full'}
+              background={'warmGray.400'}
+            />
+          ) : (
+            <Avatar
+              size={'md'}
+              source={{
+                uri: user.photo_url || '',
+              }}
+              _image={{
+                onLoad: () => setLoadingImage(false),
+                resizeMode: 'cover',
+              }}>
+              <Avatar.Badge bg="green.500" />
+            </Avatar>
+          )}
+
           <VStack>
             <Text color={'light.400'} fontSize={RFValue(14)}>
               Bem vindo,
             </Text>
             <Heading fontSize={RFValue(18)} color={'light.200'}>
-              {user.displayName}
+              {user.name}
             </Heading>
           </VStack>
         </HStack>

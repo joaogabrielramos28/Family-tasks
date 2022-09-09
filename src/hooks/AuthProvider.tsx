@@ -172,6 +172,7 @@ const AuthProvider = ({children}) => {
                 firestore().collection('Users').doc(account.user.uid).set({
                   email: account.user.email,
                   name: account.user.displayName,
+                  photo_url: account.user.photoURL,
                 });
               }
               firestore()

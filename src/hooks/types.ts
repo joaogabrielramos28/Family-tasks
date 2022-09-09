@@ -31,4 +31,5 @@ export interface IUser {
   id: string;
   email: string;
   name: String;
+  photo_url?: string;
 }

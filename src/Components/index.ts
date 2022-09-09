@@ -4,6 +4,7 @@ import {Button} from './Button';
 import {ActionSheet} from './ActionSheet';
 import {Header} from './Header';
 import {AvatarPlaceholder} from './AvatarPlaceholder';
+import {Load} from './Load';
 
 export {
   Input,
@@ -12,4 +13,5 @@ export {
   ActionSheet,
   Header,
   AvatarPlaceholder,
+  Load,
 };

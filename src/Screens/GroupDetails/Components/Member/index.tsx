@@ -12,7 +12,7 @@ const Member = ({name, photo_url: photoURL, groupInfo}: IMember) => {
           source={{
             uri: photoURL,
           }}
-          size={'16'}
+          size={'12'}
           rounded={'full'}
         />
         <VStack marginLeft={4}>

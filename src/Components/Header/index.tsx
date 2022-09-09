@@ -31,7 +31,7 @@ const Header = () => {
             <AvatarPlaceholder />
           ) : (
             <FastImageFactory
-              size={'16'}
+              size={'12'}
               source={{
                 uri: user.photo_url || '',
               }}

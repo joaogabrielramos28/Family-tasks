@@ -38,4 +38,5 @@ export interface IUser {
     id: string;
     position: string;
   };
+  pushTokenId?: string;
 }

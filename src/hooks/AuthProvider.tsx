@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, {useContext, createContext, useState, useEffect} from 'react';
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -8,6 +14,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {uploadFile} from '../Utils/uploadFile';
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 
 GoogleSignin.configure({
   scopes: ['profile', 'email'],
@@ -244,45 +251,59 @@ const AuthProvider = ({children}) => {
     loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
   }, []);
 
-  // const getPushToken = useCallback(
-  //   async (pushToken: string) => {
-  //     if (user?.uid) {
-  //       const member = (
-  //         await firestore().collection('Users').doc(user?.uid).get()
-  //       ).data();
+  const getPushToken = useCallback(
+    async (pushToken: string) => {
+      if (user?.id) {
+        const firestoreUser = (
+          await firestore().collection('Users').doc(user?.id).get()
+        ).data();
 
-  //       if (member.pushTokenId !== null) {
-  //         await firestore().collection('Users').doc(user?.uid).update({
-  //           pushTokenId: pushToken,
-  //         });
-  //       }
-  //     }
-  //   },
-  //   [user?.uid],
-  // );
+        if (firestoreUser.pushTokenId === null) {
+          await firestore().collection('Users').doc(user?.id).update({
+            pushTokenId: pushToken,
+          });
 
-  // useEffect(() => {
-  //   async function requestUserPermission() {
-  //     const authStatus = await messaging().requestPermission();
-  //     const enabled =
-  //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+          const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
+          const storageUser = response ? JSON.parse(response) : {};
 
-  //     if (enabled) {
-  //       const tokenFcm = messaging().getToken();
+          const userData = {
+            ...storageUser,
+            pushTokenId: pushToken,
+          } as IUser;
 
-  //       return tokenFcm;
-  //     }
-  //   }
+          await AsyncStorage.setItem(
+            USER_STORAGE_KEY,
+            JSON.stringify(userData),
+          );
+          setUser(userData);
+        }
+      }
+    },
+    [user?.id],
+  );
 
-  //   requestUserPermission()
-  //     .then(async res => {
-  //       await getPushToken(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, [getPushToken]);
+  useEffect(() => {
+    async function requestUserPermission() {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        const tokenFcm = messaging().getToken();
+
+        return tokenFcm;
+      }
+    }
+
+    requestUserPermission()
+      .then(async res => {
+        await getPushToken(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [getPushToken]);
 
   return (
     <AuthContext.Provider

@@ -293,7 +293,7 @@ const GroupDetails = () => {
                 ? 'Solicitar entrada'
                 : 'Solicitação enviada'
             }
-            isDisabled={sentNotification}
+            isDisabled={sentNotification || !!user.groupInfo}
             onPress={memberIsIngroup ? onToggleAlertDialog : handleRequestEntry}
           />
 

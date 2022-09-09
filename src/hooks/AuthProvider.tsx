@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, {
-  useContext,
-  createContext,
-  useState,
-  useEffect,
-  // useCallback,
-} from 'react';
+import React, {useContext, createContext, useState, useEffect} from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-// import messaging from '@react-native-firebase/messaging';
+import storage from '@react-native-firebase/storage';
 import {IAuthContextProps, IUser} from './types';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {uploadFile} from '../Utils/uploadFile';
@@ -194,10 +188,15 @@ const AuthProvider = ({children}) => {
   };
 
   const updateUserPhoto = async (uri: string): Promise<string> => {
-    const photoUrlDownload = await uploadFile(uri, 'users');
+    const {getDownloadURL, photoPath} = await uploadFile(uri, 'users');
+
+    if (photoPath) {
+      storage().ref(photoPath).delete();
+    }
 
     firestore().collection('Users').doc(user.id).update({
-      photo_url: photoUrlDownload,
+      photo_url: getDownloadURL,
+      photo_path: photoPath,
     });
 
     const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
@@ -205,14 +204,14 @@ const AuthProvider = ({children}) => {
 
     const updatedUser = {
       ...storageUser,
-      photo_url: photoUrlDownload,
+      photo_url: getDownloadURL,
     };
 
     await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));
 
     setUser(updatedUser);
 
-    return photoUrlDownload;
+    return getDownloadURL;
   };
 
   const signOut = async () => {

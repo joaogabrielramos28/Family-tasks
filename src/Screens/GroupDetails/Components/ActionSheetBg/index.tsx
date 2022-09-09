@@ -26,24 +26,18 @@ const ActionSheetBg = ({
 }: IActionSheetBGProps) => {
   const handleUpdateGroupBackground = async (uri: string) => {
     handleChangeLoading(true);
-    storage()
-      .ref(backgroundPath)
-      .delete()
-      .then(async () => {
-        const {getDownloadURL, photoPath} = await uploadFile(
-          uri,
-          'backgrounds',
-        );
-
-        await firestore().collection('Groups').doc(groupId).update({
-          background: getDownloadURL,
-          photo_path: photoPath,
-        });
-      })
-      .catch(() => Alert.alert('Erro ao atualizar background'))
-      .finally(() => {
-        handleChangeLoading(false);
-      });
+    if (backgroundPath) {
+      storage()
+        .ref(backgroundPath)
+        .delete()
+        .catch(() => Alert.alert('Erro ao trocar foto'));
+    }
+    const {getDownloadURL, photoPath} = await uploadFile(uri, 'backgrounds');
+    await firestore().collection('Groups').doc(groupId).update({
+      background: getDownloadURL,
+      photo_path: photoPath,
+    });
+    handleChangeLoading(false);
   };
 
   const handleLaunchCamera = async (): Promise<void> => {

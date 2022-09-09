@@ -6,9 +6,10 @@ import {useAuth} from '../hooks';
 
 const Routes = () => {
   const {user} = useAuth();
+
   return (
     <NavigationContainer>
-      {user ? <TabsRoutes /> : <AuthRoutes />}
+      {user?.id ? <TabsRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 };

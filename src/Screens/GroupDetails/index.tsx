@@ -9,10 +9,10 @@ import {
   IconButton,
   Text,
   useDisclose,
-  Image,
   VStack,
   Spinner,
   Badge,
+  Factory,
 } from 'native-base';
 import React, {useCallback, useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
@@ -26,6 +26,7 @@ import {ActionSheetBg} from './Components/ActionSheetBg';
 import {Dimensions} from 'react-native';
 import uuid from 'react-native-uuid';
 import {AlertDialog} from '../../Components/AlertDialog';
+import FastImage from 'react-native-fast-image';
 
 interface Params {
   id: string;
@@ -44,6 +45,8 @@ const GroupDetails = () => {
   const [load, setLoad] = useState(true);
   const route = useRoute();
   const {isOpen, onOpen, onClose} = useDisclose();
+
+  const FastImageFactory = Factory(FastImage);
 
   const onToggleAlertDialog = () =>
     setConfirmationToExitIsOpen(!confirmationToExitIsOpen);
@@ -186,7 +189,7 @@ const GroupDetails = () => {
             />
           )}
           {group.background && (
-            <Image
+            <FastImageFactory
               source={{
                 uri: group.background,
               }}
@@ -195,7 +198,6 @@ const GroupDetails = () => {
               width={width}
               resizeMode="cover"
               height={RFValue(200)}
-              alt={'background'}
             />
           )}
 

@@ -1,21 +1,22 @@
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   AspectRatio,
   Box,
   Center,
+  Factory,
   Heading,
   HStack,
-  Image,
   Stack,
   Text,
 } from 'native-base';
-import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {IGroupCardProps} from './types';
 
 const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
   const {navigate} = useNavigation<any>();
-
+  const FastImageFactory = Factory(FastImage);
   const handleGoToGroup = () => {
     navigate('GroupDetails', {id});
   };
@@ -42,13 +43,12 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
           }}>
           <Box>
             <AspectRatio w="100%" ratio={16 / 9}>
-              <Image
+              <FastImageFactory
                 source={{
                   uri:
                     background ||
                     'https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg',
                 }}
-                alt="image"
               />
             </AspectRatio>
             <Center

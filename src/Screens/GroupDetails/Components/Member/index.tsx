@@ -1,15 +1,19 @@
-import {Avatar, Box, Heading, HStack, Text, VStack} from 'native-base';
+import {Box, Factory, Heading, HStack, Text, VStack} from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {IMember} from '../../../../DTOs/GroupDto';
 
 const Member = ({name, photo_url: photoURL, groupInfo}: IMember) => {
+  const FastImageFactory = Factory(FastImage);
   return (
     <Box marginBottom={8}>
       <HStack alignItems={'center'}>
-        <Avatar
+        <FastImageFactory
           source={{
             uri: photoURL,
           }}
+          size={'16'}
+          rounded={'full'}
         />
         <VStack marginLeft={4}>
           <Heading color={'light.50'} size={'md'}>

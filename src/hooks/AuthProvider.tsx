@@ -190,8 +190,8 @@ const AuthProvider = ({children}) => {
   const updateUserPhoto = async (uri: string): Promise<string> => {
     const {getDownloadURL, photoPath} = await uploadFile(uri, 'users');
 
-    if (photoPath) {
-      storage().ref(photoPath).delete();
+    if (user.photo_path) {
+      storage().ref(user.photo_path).delete();
     }
 
     firestore().collection('Users').doc(user.id).update({
@@ -205,6 +205,7 @@ const AuthProvider = ({children}) => {
     const updatedUser = {
       ...storageUser,
       photo_url: getDownloadURL,
+      photo_path: photoPath,
     };
 
     await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));

@@ -33,6 +33,7 @@ export interface IUser {
   email: string;
   name: string;
   photo_url?: string;
+  photo_path: string;
   groupInfo: {
     id: string;
     position: string;

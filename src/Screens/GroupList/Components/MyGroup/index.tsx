@@ -56,6 +56,7 @@ const MyGroup = () => {
         <Box marginTop={10} paddingX={6}>
           <GroupCard
             id={myGroups.id}
+            background={myGroups.background}
             name={myGroups.name}
             description={myGroups.description}
             members={myGroups.members}

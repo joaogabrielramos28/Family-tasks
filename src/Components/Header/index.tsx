@@ -1,23 +1,20 @@
 import {MaterialIcons} from '@expo/vector-icons';
-import {Avatar, Box, Heading, HStack, Spinner, Text, VStack} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import {Box, Heading, HStack, Text, VStack, Factory} from 'native-base';
+import React from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useAuth} from '../../hooks';
 import {AvatarPlaceholder} from '../AvatarPlaceholder';
+import FastImage from 'react-native-fast-image';
 
 const Header = () => {
   const {signOut, user} = useAuth();
-  const [loadingImage, setLoadingImage] = useState(false);
-
-  useEffect(() => {
-    if (user.photo_url === null) setLoadingImage(false);
-    else setLoadingImage(true);
-  }, [user.photo_url]);
 
   const handleLogout = async () => {
     await signOut();
   };
+
+  const FastImageFactory = Factory(FastImage);
   return (
     <Box
       bg={'warmGray.800'}
@@ -30,23 +27,16 @@ const Header = () => {
       paddingTop={RFValue(6)}>
       <HStack alignItems={'center'} justifyContent={'space-around'}>
         <HStack w={'100%'} space={4}>
-          {loadingImage && user.photo_url && (
-            <Spinner size="sm" color={'violet.500'} position={'absolute'} />
-          )}
           {!user.photo_url ? (
             <AvatarPlaceholder />
           ) : (
-            <Avatar
-              size={'md'}
+            <FastImageFactory
+              size={'16'}
               source={{
                 uri: user.photo_url || '',
               }}
-              _image={{
-                onLoad: () => setLoadingImage(false),
-                resizeMode: 'cover',
-              }}>
-              <Avatar.Badge bg="green.500" />
-            </Avatar>
+              rounded={'full'}
+            />
           )}
 
           <VStack>

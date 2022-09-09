@@ -33,4 +33,8 @@ export interface IUser {
   email: string;
   name: string;
   photo_url?: string;
+  groupInfo: {
+    id: string;
+    position: string;
+  };
 }

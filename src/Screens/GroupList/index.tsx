@@ -3,6 +3,7 @@ import {Box, useTheme} from 'native-base';
 import React, {useState} from 'react';
 import {SceneMap, TabView, TabBar} from 'react-native-tab-view';
 import {Button, Header} from '../../Components';
+import {useAuth} from '../../hooks';
 import {AllGroups} from './Components/AllGroups';
 import {MyGroup} from './Components/MyGroup';
 
@@ -16,8 +17,10 @@ const renderScene = SceneMap({
 });
 
 const GroupList = () => {
+  const {user} = useAuth();
   const {navigate} = useNavigation<any>();
   const [index, setIndex] = useState(0);
+  const [canCreateGroup] = useState(!!user.groupInfo);
   const [routes] = useState([
     {key: 'allGroups', title: 'Todos Grupos'},
     {key: 'myGroup', title: 'Meu Grupo'},
@@ -53,6 +56,7 @@ const GroupList = () => {
               title="Criar grupo"
               marginTop={4}
               onPress={handleGoToCreateGroupScreen}
+              isDisabled={canCreateGroup}
             />
           </>
         )}

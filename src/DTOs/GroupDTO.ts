@@ -1,13 +1,12 @@
 export interface IGroupDto {
   id: string;
   name: string;
-
   admin: IMember;
   members: IMember[];
   tasks: ITask[];
   notifications: INotification[];
   description: string;
-  background: string;
+  background?: string;
   createdAt: Date;
 }
 

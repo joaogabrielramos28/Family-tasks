@@ -11,6 +11,9 @@ const Button = ({title, bg = 'violet.500', ...rest}: IButtonComponentProps) => {
         bg,
         opacity: 0.5,
       }}
+      _disabled={{
+        opacity: 0.3,
+      }}
       {...rest}>
       {title}
     </ButtonNative>

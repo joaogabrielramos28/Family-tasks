@@ -59,8 +59,9 @@ const AllGroups = () => {
             <GroupCard
               id={item.id}
               name={item.name}
+              background={item.background}
               description={item.description}
-              members={item.members || []}
+              members={item.members}
             />
           </>
         )}

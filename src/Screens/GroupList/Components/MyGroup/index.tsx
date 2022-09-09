@@ -14,7 +14,7 @@ const MyGroup = () => {
   useEffect(() => {
     firestore()
       .collection('Users')
-      .doc(user.uid)
+      .doc(user.id)
       .get()
       .then(member => {
         if (member.data().groupInfo.id === undefined) {
@@ -40,11 +40,12 @@ const MyGroup = () => {
               setMyGroups({id: group.id, ...group, members: membersGroups});
               setLoading(false);
             });
+
           return () => subscribe();
         }
       })
       .catch(e => console.log(e));
-  }, [user.uid]);
+  }, [user.id]);
 
   if (loading) {
     return <ActivityIndicator />;

@@ -7,6 +7,7 @@ export interface IGroupDto {
   notifications: INotification[];
   description: string;
   background?: string;
+  photo_path?: string;
   createdAt: Date;
 }
 

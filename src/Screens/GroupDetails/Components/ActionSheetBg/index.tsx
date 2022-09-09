@@ -5,12 +5,15 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ActionSheet} from '../../../../Components';
 import {ActionSheetItem} from '../../../../Components/ActionSheet/Components/ActionSheetItem';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import {uploadFile} from '../../../../Utils/uploadFile';
+import {Alert} from 'react-native';
 
 interface IActionSheetBGProps {
   onClose: () => void;
   isOpen: boolean;
   groupId: string;
+  backgroundPath?: string;
   handleChangeLoading: (state: any) => void;
 }
 
@@ -19,15 +22,28 @@ const ActionSheetBg = ({
   onClose,
   groupId,
   handleChangeLoading,
+  backgroundPath,
 }: IActionSheetBGProps) => {
   const handleUpdateGroupBackground = async (uri: string) => {
     handleChangeLoading(true);
-    const backgroundFileDownloadURL = await uploadFile(uri, 'backgrounds');
+    storage()
+      .ref(backgroundPath)
+      .delete()
+      .then(async () => {
+        const {getDownloadURL, photoPath} = await uploadFile(
+          uri,
+          'backgrounds',
+        );
 
-    await firestore().collection('Groups').doc(groupId).update({
-      background: backgroundFileDownloadURL,
-    });
-    handleChangeLoading(false);
+        await firestore().collection('Groups').doc(groupId).update({
+          background: getDownloadURL,
+          photo_path: photoPath,
+        });
+      })
+      .catch(() => Alert.alert('Erro ao atualizar background'))
+      .finally(() => {
+        handleChangeLoading(false);
+      });
   };
 
   const handleLaunchCamera = async (): Promise<void> => {

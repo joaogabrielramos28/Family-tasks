@@ -6,10 +6,12 @@ const uploadFile = async (uri: string, folder: string) => {
   const blob = await fetchFile.blob();
   const reference = storage().ref(`/${folder}/${timeStamp}`);
 
+  const photoPath = reference.fullPath;
+
   await reference.put(blob);
   const getDownloadURL = await reference.getDownloadURL();
 
-  return getDownloadURL;
+  return {getDownloadURL, photoPath};
 };
 
 export {uploadFile};

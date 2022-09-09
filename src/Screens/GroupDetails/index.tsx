@@ -194,6 +194,7 @@ const GroupDetails = () => {
             )}
 
             <ActionSheetBg
+              backgroundPath={group.photo_path}
               isOpen={isOpen}
               onClose={onClose}
               groupId={id}

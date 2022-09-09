@@ -179,17 +179,20 @@ const GroupDetails = () => {
                 left={width / 2 - RFValue(20)}
               />
             )}
-            <Image
-              source={{
-                uri: group.background,
-              }}
-              onLoad={() => setLoadingChangeBackground(false)}
-              position="absolute"
-              width={width}
-              resizeMode="cover"
-              height={RFValue(200)}
-              alt={'background'}
-            />
+            {group.background && (
+              <Image
+                source={{
+                  uri: group.background,
+                }}
+                onLoad={() => setLoadingChangeBackground(false)}
+                position="absolute"
+                width={width}
+                resizeMode="cover"
+                height={RFValue(200)}
+                alt={'background'}
+              />
+            )}
+
             <ActionSheetBg
               isOpen={isOpen}
               onClose={onClose}

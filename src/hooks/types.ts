@@ -30,6 +30,6 @@ export interface IAuthContextProps {
 export interface IUser {
   id: string;
   email: string;
-  name: String;
+  name: string;
   photo_url?: string;
 }

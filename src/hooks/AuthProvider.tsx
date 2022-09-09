@@ -68,11 +68,11 @@ const AuthProvider = ({children}) => {
                     setUser(userData);
                   }
                 })
-                .catch((error: any) => {
+                .catch(error => {
                   console.log(error);
                 });
             })
-            .catch((error: any) => {
+            .catch(error => {
               console.log(error);
             });
         })
@@ -110,7 +110,7 @@ const AuthProvider = ({children}) => {
                 setUser(userData);
               }
             })
-            .catch((error: any) => {
+            .catch(error => {
               console.log(error);
             });
         });

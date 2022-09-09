@@ -17,74 +17,74 @@ import {
 import React, {useEffect, useState} from 'react';
 
 import {BorderlessButton} from 'react-native-gesture-handler';
-import {ActionSheet, Button, Input} from '../../Components';
+import {ActionSheet, AvatarPlaceholder, Button, Input} from '../../Components';
 import {ActionSheetItem} from '../../Components/ActionSheet/Components/ActionSheetItem';
 import {useAuth} from '../../hooks';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+// import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = () => {
   const theme = useTheme();
-  const {user, updateUser, updateUserPhoto} = useAuth();
+  const {user} = useAuth();
 
   const [email, setEmail] = useState(user?.email);
-  const [name, setName] = useState(user?.displayName);
-  const [imageUri] = useState(user?.photoURL);
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState(user?.name);
+  const [imageUri] = useState(user?.photo_url);
+  const [loading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(true);
 
   const {isOpen, onOpen, onClose} = useDisclose();
 
-  const handleUpdateUser = async () => {
-    try {
-      setLoading(true);
-      await updateUser(name, email);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+  // const handleUpdateUser = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await updateUser(name, email);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
-    if (user.photoURL === null) setLoadingImage(false);
+    if (user.photo_url === null) setLoadingImage(false);
     else setLoadingImage(true);
-  }, [user.photoURL]);
+  }, [user.photo_url]);
 
-  const handleLaunchCamera = async (): Promise<void> => {
-    await launchCamera(
-      {
-        mediaType: 'photo',
-        saveToPhotos: true,
-      },
-      async response => {
-        if (response.didCancel) {
-          return;
-        }
-        if (response.errorCode) {
-          console.log(response.errorMessage);
-        }
-      },
-    );
-  };
+  // const handleLaunchCamera = async (): Promise<void> => {
+  //   await launchCamera(
+  //     {
+  //       mediaType: 'photo',
+  //       saveToPhotos: true,
+  //     },
+  //     async response => {
+  //       if (response.didCancel) {
+  //         return;
+  //       }
+  //       if (response.errorCode) {
+  //         console.log(response.errorMessage);
+  //       }
+  //     },
+  //   );
+  // };
 
-  const handleLaunchGallery = async (): Promise<void> => {
-    await launchImageLibrary(
-      {
-        mediaType: 'photo',
-        selectionLimit: 1,
-      },
-      async response => {
-        if (response.didCancel) {
-          return;
-        }
-        if (response.errorCode) {
-          console.log(response.errorMessage);
-          return;
-        }
-        await updateUserPhoto(response.assets[0].uri);
-      },
-    );
-  };
+  // const handleLaunchGallery = async (): Promise<void> => {
+  //   await launchImageLibrary(
+  //     {
+  //       mediaType: 'photo',
+  //       selectionLimit: 1,
+  //     },
+  //     async response => {
+  //       if (response.didCancel) {
+  //         return;
+  //       }
+  //       if (response.errorCode) {
+  //         console.log(response.errorMessage);
+  //         return;
+  //       }
+  //       await updateUserPhoto(response.assets[0].uri);
+  //     },
+  //   );
+  // };
 
   return (
     <ScrollView
@@ -96,7 +96,8 @@ const Profile = () => {
       <KeyboardAvoidingView behavior="position" enabled>
         <ActionSheet isOpen={isOpen} onClose={onClose}>
           <ActionSheetItem
-            onPress={handleLaunchGallery}
+            // onPress={handleLaunchGallery}
+            onPress={() => {}}
             startIcon={
               <Icon
                 as={MaterialIcons}
@@ -109,7 +110,8 @@ const Profile = () => {
             Abrir galeria
           </ActionSheetItem>
           <ActionSheetItem
-            onPress={handleLaunchCamera}
+            // onPress={handleLaunchCamera}
+            onPress={() => {}}
             startIcon={
               <Icon
                 as={MaterialIcons}
@@ -146,38 +148,44 @@ const Profile = () => {
             ],
           }}
           space={2}>
-          {loadingImage && <Spinner size="lg" color={'violet.500'} />}
-          <Avatar
-            size={'2xl'}
-            borderColor={'light.50'}
-            borderWidth={4}
-            source={{
-              uri: imageUri,
-            }}
-            _image={{
-              onLoad: () => setLoadingImage(false),
-              resizeMode: 'cover',
-            }}>
-            <Avatar.Badge
-              bg={'violet.500'}
-              borderWidth={0}
-              display="flex"
-              alignItems={'center'}
-              justifyContent={'center'}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 240,
+          {loadingImage && user.photo_url && (
+            <Spinner size="lg" color={'violet.500'} />
+          )}
+          {!user.photo_url ? (
+            <AvatarPlaceholder size={32} />
+          ) : (
+            <Avatar
+              size={'2xl'}
+              borderColor={'light.50'}
+              borderWidth={4}
+              source={{
+                uri: imageUri,
+              }}
+              _image={{
+                onLoad: () => setLoadingImage(false),
+                resizeMode: 'cover',
               }}>
-              <BorderlessButton onPress={onOpen}>
-                <AntDesign
-                  name="camera"
-                  size={20}
-                  color={theme.colors.light[200]}
-                />
-              </BorderlessButton>
-            </Avatar.Badge>
-          </Avatar>
+              <Avatar.Badge
+                bg={'violet.500'}
+                borderWidth={0}
+                display="flex"
+                alignItems={'center'}
+                justifyContent={'center'}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 240,
+                }}>
+                <BorderlessButton onPress={onOpen}>
+                  <AntDesign
+                    name="camera"
+                    size={20}
+                    color={theme.colors.light[200]}
+                  />
+                </BorderlessButton>
+              </Avatar.Badge>
+            </Avatar>
+          )}
 
           <Heading color={'light.300'}>{name}</Heading>
         </VStack>
@@ -238,7 +246,7 @@ const Profile = () => {
               <Button
                 title="Atualizar perfil"
                 p={4}
-                onPress={handleUpdateUser}
+                // onPress={handleUpdateUser}
                 isLoading={loading}
               />
             </Box>

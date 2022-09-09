@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useAuth} from '../../hooks';
+import {AvatarPlaceholder} from '../AvatarPlaceholder';
 
 const Header = () => {
   const {signOut, user} = useAuth();
@@ -33,12 +34,7 @@ const Header = () => {
             <Spinner size="sm" color={'violet.500'} position={'absolute'} />
           )}
           {!user.photo_url ? (
-            <Box
-              height={12}
-              width={12}
-              borderRadius={'full'}
-              background={'warmGray.400'}
-            />
+            <AvatarPlaceholder />
           ) : (
             <Avatar
               size={'md'}

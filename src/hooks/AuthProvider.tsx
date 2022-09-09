@@ -131,17 +131,29 @@ const AuthProvider = ({children}) => {
     loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
   }, []);
 
-  // const updateUser = async (name?: string, email?: string) => {
-  //   try {
-  //     email !== user?.email && (await auth().currentUser.updateEmail(email));
-  //     name !== user?.displayName &&
-  //       (await auth().currentUser.updateProfile({
-  //         displayName: name,
-  //       }));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const updateUser = async (name?: string, email?: string) => {
+    try {
+      if (!name || !email) {
+        Alert.alert('Editar Perfil', 'Preencha todos os campos');
+      }
+
+      firestore().collection('Users').doc(user.id).update({
+        email,
+        name,
+      });
+
+      const userUpdated = {
+        ...user,
+        email,
+        name,
+      };
+
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
+      setUser(userUpdated);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const signOut = async () => {
     try {
@@ -258,6 +270,7 @@ const AuthProvider = ({children}) => {
         signInWithEmailAndPassword,
         signInWithGoogle,
         signOut,
+        updateUser,
         loadingAuth,
         resetPassword,
       }}>

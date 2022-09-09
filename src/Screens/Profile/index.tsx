@@ -15,6 +15,7 @@ import {
   VStack,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {ActionSheet, AvatarPlaceholder, Button, Input} from '../../Components';
@@ -24,26 +25,30 @@ import {useAuth} from '../../hooks';
 
 const Profile = () => {
   const theme = useTheme();
-  const {user} = useAuth();
+  const {user, updateUser} = useAuth();
 
   const [email, setEmail] = useState(user?.email);
   const [name, setName] = useState(user?.name);
   const [imageUri] = useState(user?.photo_url);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(true);
 
   const {isOpen, onOpen, onClose} = useDisclose();
 
-  // const handleUpdateUser = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await updateUser(name, email);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.log(error);
-  //   }
-  // };
+  const handleUpdateUser = async () => {
+    try {
+      setLoading(true);
+      await updateUser(name, email);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert(
+        'Atualizar perfil',
+        'Ocorreu um erro ao atualizar seu perfil',
+      );
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (user.photo_url === null) setLoadingImage(false);
@@ -246,7 +251,7 @@ const Profile = () => {
               <Button
                 title="Atualizar perfil"
                 p={4}
-                // onPress={handleUpdateUser}
+                onPress={handleUpdateUser}
                 isLoading={loading}
               />
             </Box>

@@ -27,7 +27,7 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
           maxW="80"
           rounded="lg"
           overflow="hidden"
-          borderColor="coolGray.200"
+          borderColor="coolGray.600"
           borderWidth="1"
           _dark={{
             borderColor: 'coolGray.600',
@@ -53,9 +53,6 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
             </AspectRatio>
             <Center
               bg="violet.500"
-              _dark={{
-                bg: 'violet.400',
-              }}
               _text={{
                 color: 'warmGray.50',
                 fontWeight: '700',
@@ -68,26 +65,23 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
               Grupo
             </Center>
           </Box>
-          <Stack p="4" space={3}>
+          <Stack p="4" space={3} bgColor={'warmGray.600'}>
             <Stack space={2}>
-              <Heading size="md" ml="-1">
+              <Heading size="md" ml="-1" color={'light.50'}>
                 {name}
               </Heading>
               <Text
                 fontSize="xs"
-                _light={{
-                  color: 'violet.500',
-                }}
-                _dark={{
-                  color: 'violet.400',
-                }}
+                color={'violet.500'}
                 fontWeight="500"
                 ml="-0.5"
                 mt="-1">
                 The Silicon Valley of India.
               </Text>
             </Stack>
-            <Text fontWeight="400">{description}</Text>
+            <Text fontWeight="400" color={'light.300'}>
+              {description}
+            </Text>
             <HStack
               alignItems="center"
               space={4}

@@ -17,7 +17,6 @@ interface NotificationCardProps {
 const NotificationCard = ({
   member,
   message,
-  // createdAt,
   id,
   groupId,
 }: NotificationCardProps) => {
@@ -71,7 +70,6 @@ const NotificationCard = ({
     await firestore().collection('Groups').doc(groupId).update({
       notifications: removeNotification,
     });
-    onClose();
   };
 
   return (
@@ -83,7 +81,7 @@ const NotificationCard = ({
         height={'80px'}
         justifyContent={'center'}>
         <HStack justifyContent={'space-between'} alignItems={'center'}>
-          <Avatar source={{uri: member?.photoURL}} />
+          <Avatar source={{uri: member?.photo_url}} />
           <Text fontSize={12} color={'light.300'} maxW={width - 140}>
             {message}
           </Text>

@@ -169,7 +169,7 @@ const GroupDetails = () => {
         members: items,
       });
       await firestore().collection('Users').doc(user.id).update({
-        groupInfo: {},
+        groupInfo: firestore.FieldValue.delete(),
       });
     } catch (error) {
       console.log(error);

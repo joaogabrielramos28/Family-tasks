@@ -2,7 +2,6 @@ import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import {
   Box,
-  FormControl,
   Heading,
   HStack,
   Icon,
@@ -91,21 +90,23 @@ const SignIn = () => {
             </HStack>
 
             <VStack space={6} marginTop={8}>
-              <FormControl paddingX={2}>
-                <FormControl.Label>
+              <Box paddingX={2}>
+                <Box marginY={1}>
                   <Heading size={'sm'} color={'light.200'}>
                     E-mail
                   </Heading>
-                </FormControl.Label>
-                <Input
-                  placeholder="john.doe@example.com"
-                  onChangeText={setEmail}
-                />
-                <FormControl.Label>
+
+                  <Input
+                    placeholder="john.doe@example.com"
+                    onChangeText={setEmail}
+                  />
+                </Box>
+
+                <Box marginY={1}>
                   <Heading size={'sm'} color={'light.200'}>
                     Senha
                   </Heading>
-                </FormControl.Label>
+                </Box>
                 <Input
                   placeholder="Digite sua senha"
                   type="password"
@@ -131,7 +132,7 @@ const SignIn = () => {
                     Criar conta
                   </Text>
                 </Text>
-              </FormControl>
+              </Box>
             </VStack>
           </VStack>
         </TouchableWithoutFeedback>

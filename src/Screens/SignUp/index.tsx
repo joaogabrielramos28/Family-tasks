@@ -2,7 +2,6 @@ import {AntDesign} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import {
   Box,
-  FormControl,
   Heading,
   HStack,
   Icon,
@@ -76,35 +75,38 @@ const SignUp = () => {
             </Text>
 
             <VStack space={6} marginTop={8}>
-              <FormControl paddingX={2}>
-                <FormControl.Label>
+              <Box paddingX={2}>
+                <Box marginY={2}>
                   <Heading size={'sm'} color={'light.200'}>
                     Nome
                   </Heading>
-                </FormControl.Label>
-                <Input
-                  placeholder="john.doe@example.com"
-                  onChangeText={setName}
-                />
-                <FormControl.Label>
+
+                  <Input
+                    placeholder="john.doe@example.com"
+                    onChangeText={setName}
+                  />
+                </Box>
+                <Box marginY={2}>
                   <Heading size={'sm'} color={'light.200'}>
                     E-mail
                   </Heading>
-                </FormControl.Label>
-                <Input
-                  placeholder="john.doe@example.com"
-                  onChangeText={setEmail}
-                />
-                <FormControl.Label>
+
+                  <Input
+                    placeholder="john.doe@example.com"
+                    onChangeText={setEmail}
+                  />
+                </Box>
+                <Box marginY={2}>
                   <Heading size={'sm'} color={'light.200'}>
                     Senha
                   </Heading>
-                </FormControl.Label>
-                <Input
-                  placeholder="Digite sua senha"
-                  type="password"
-                  onChangeText={setPassword}
-                />
+
+                  <Input
+                    placeholder="Digite sua senha"
+                    type="password"
+                    onChangeText={setPassword}
+                  />
+                </Box>
 
                 <Button
                   marginTop={6}
@@ -120,7 +122,7 @@ const SignUp = () => {
                     Entrar
                   </Text>
                 </Text>
-              </FormControl>
+              </Box>
             </VStack>
           </VStack>
         </TouchableWithoutFeedback>

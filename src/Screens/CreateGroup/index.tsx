@@ -5,7 +5,6 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import {
   Box,
-  FormControl,
   Heading,
   HStack,
   Icon,
@@ -123,18 +122,17 @@ const CreateGroup = () => {
             </Text>
 
             <VStack space={6} marginTop={8}>
-              <FormControl paddingX={2}>
-                <FormControl.Label>
-                  <Heading size={'sm'} color={'light.200'}>
-                    Nome do grupo
-                  </Heading>
-                </FormControl.Label>
+              <Box paddingX={2}>
+                <Heading size={'sm'} color={'light.200'} marginBottom={2}>
+                  Nome do grupo
+                </Heading>
+
                 <Input placeholder="Familia Doe" onChangeText={setName} />
-                <FormControl.Label>
-                  <Heading size={'sm'} color={'light.200'}>
-                    Descrição
-                  </Heading>
-                </FormControl.Label>
+
+                <Heading size={'sm'} color={'light.200'} marginY={2}>
+                  Descrição
+                </Heading>
+
                 <Input
                   placeholder="Descreva seu grupo"
                   onChangeText={setDescription}
@@ -146,7 +144,7 @@ const CreateGroup = () => {
                   marginTop={10}
                   isLoading={loading}
                 />
-              </FormControl>
+              </Box>
             </VStack>
           </VStack>
         </TouchableWithoutFeedback>

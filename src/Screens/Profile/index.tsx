@@ -230,11 +230,10 @@ const Profile = () => {
         </HStack>
 
         <VStack marginTop={4}>
-          <FormControl paddingX={10}>
-            <FormControl.Label
-              _text={{color: 'light.300', fontSize: 'sm', fontWeight: 600}}>
+          <Box paddingX={10}>
+            <Text color="light.300" fontSize={'sm'} fontWeight={600}>
               Nome
-            </FormControl.Label>
+            </Text>
             <Input
               placeholder="Digite seu nome"
               onChangeText={setName}
@@ -278,7 +277,7 @@ const Profile = () => {
                 isLoading={loading}
               />
             </Box>
-          </FormControl>
+          </Box>
         </VStack>
       </KeyboardAvoidingView>
     </ScrollView>

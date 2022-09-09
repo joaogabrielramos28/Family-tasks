@@ -52,7 +52,9 @@ const AllGroups = () => {
         data={groups}
         contentContainerStyle={{
           paddingHorizontal: 20,
+          paddingBottom: 125,
         }}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <>

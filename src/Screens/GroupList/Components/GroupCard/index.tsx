@@ -23,7 +23,7 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
 
   return (
     <BorderlessButton onPress={handleGoToGroup}>
-      <Box alignItems="center">
+      <Box alignItems="center" marginTop={4}>
         <Box
           maxW="80"
           rounded="lg"

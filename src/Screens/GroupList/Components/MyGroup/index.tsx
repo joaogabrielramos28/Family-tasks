@@ -17,7 +17,7 @@ const MyGroup = () => {
       .doc(user.id)
       .get()
       .then(member => {
-        if (member.data().groupInfo.id === undefined) {
+        if (member.data()?.groupInfo?.id === undefined) {
           setMyGroups({} as IGroupDto);
           setLoading(false);
         } else {

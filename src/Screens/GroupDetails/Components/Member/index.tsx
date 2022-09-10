@@ -5,9 +5,12 @@ import {IMember} from '../../../../DTOs/GroupDto';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
+import firestore from '@react-native-firebase/firestore';
 
-type ImemberProps = IMember & {
+type IMemberProps = IMember & {
   isAdmin: boolean;
+  members: IMember[];
+  handleResetUser: () => void;
 };
 
 const Member = ({
@@ -15,8 +18,35 @@ const Member = ({
   photo_url: photoURL,
   groupInfo,
   isAdmin,
-}: ImemberProps) => {
+  id,
+  members,
+  handleResetUser,
+}: IMemberProps) => {
   const FastImageFactory = Factory(FastImage);
+
+  const handleRemoveUser = async () => {
+    const items = [];
+    for (let i = 0; i < members.length; i++) {
+      if (members[i].id !== id) {
+        const ref = firestore().collection('Users').doc(members[i].id);
+
+        items.push(ref);
+      }
+    }
+
+    try {
+      await firestore().collection('Groups').doc(groupInfo.id).update({
+        members: items,
+      });
+      await firestore().collection('Users').doc(id).update({
+        groupInfo: firestore.FieldValue.delete(),
+      });
+      handleResetUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {groupInfo?.position === 'Administrator' || !isAdmin ? (
@@ -43,11 +73,17 @@ const Member = ({
           renderRightActions={() => (
             <VStack>
               <Box>
-                <BorderlessButton>
+                <BorderlessButton
+                  onPress={handleRemoveUser}
+                  style={{
+                    alignItems: 'center',
+                    paddingVertical: 10,
+                    justifyContent: 'center',
+                  }}>
                   <Icon
                     as={<Feather name="trash" />}
                     color={'violet.500'}
-                    size={8}
+                    size={6}
                   />
                 </BorderlessButton>
               </Box>

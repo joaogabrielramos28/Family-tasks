@@ -138,6 +138,8 @@ const GroupDetails = () => {
 
             if (checkIfMemberIsInGroup) {
               setMemberIsIngroup(true);
+            } else {
+              setMemberIsIngroup(false);
             }
             setLoad(false);
           })
@@ -179,6 +181,11 @@ const GroupDetails = () => {
     setMemberIsIngroup(false);
     onToggleAlertDialog();
   };
+
+  const handleResetUser = useCallback(() => {
+    setSentNotification(false);
+    setMemberIsIngroup(false);
+  }, []);
 
   const checkUserIsAdmin = useCallback(() => {
     if (user.groupInfo?.id === id) {
@@ -340,7 +347,14 @@ const GroupDetails = () => {
               }}
               data={sortParticipants(group.members)}
               keyExtractor={item => item.id}
-              renderItem={({item}) => <Member {...item} isAdmin={isAdmin} />}
+              renderItem={({item}) => (
+                <Member
+                  {...item}
+                  isAdmin={isAdmin}
+                  members={group.members}
+                  handleResetUser={handleResetUser}
+                />
+              )}
               showsVerticalScrollIndicator={false}
             />
           </Box>

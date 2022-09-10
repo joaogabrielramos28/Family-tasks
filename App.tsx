@@ -14,7 +14,7 @@ export default function App() {
     <SSRProvider>
       <NativeBaseProvider>
         <AuthProvider>
-          <StatusBar style="dark" />
+          <StatusBar style="light" translucent />
           <Routes />
         </AuthProvider>
       </NativeBaseProvider>

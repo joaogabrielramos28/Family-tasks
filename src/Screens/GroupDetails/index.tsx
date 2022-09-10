@@ -44,6 +44,7 @@ const GroupDetails = () => {
   const [confirmationToExitIsOpen, setConfirmationToExitIsOpen] =
     useState(false);
   const [load, setLoad] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const route = useRoute();
   const {isOpen, onOpen, onClose} = useDisclose();
 
@@ -179,6 +180,16 @@ const GroupDetails = () => {
     onToggleAlertDialog();
   };
 
+  const checkUserIsAdmin = useCallback(() => {
+    if (user.groupInfo?.id === id) {
+      setIsAdmin(user.groupInfo?.position === 'Administrator');
+    }
+  }, [id, user?.groupInfo]);
+
+  useEffect(() => {
+    checkUserIsAdmin();
+  }, [checkUserIsAdmin]);
+
   if (load || !group.name) {
     return <Load />;
   }
@@ -232,7 +243,7 @@ const GroupDetails = () => {
                 />
               }
             />
-            {memberIsIngroup && (
+            {memberIsIngroup && isAdmin && (
               <HStack>
                 <IconButton
                   onPress={onOpen}
@@ -293,7 +304,9 @@ const GroupDetails = () => {
                 ? 'Solicitar entrada'
                 : 'Solicitação enviada'
             }
-            isDisabled={sentNotification || !!user.groupInfo}
+            isDisabled={
+              sentNotification || (!!user.groupInfo && !memberIsIngroup)
+            }
             onPress={memberIsIngroup ? onToggleAlertDialog : handleRequestEntry}
           />
 
@@ -327,7 +340,7 @@ const GroupDetails = () => {
               }}
               data={sortParticipants(group.members)}
               keyExtractor={item => item.id}
-              renderItem={({item}) => <Member {...item} />}
+              renderItem={({item}) => <Member {...item} isAdmin={isAdmin} />}
               showsVerticalScrollIndicator={false}
             />
           </Box>

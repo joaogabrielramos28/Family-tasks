@@ -27,7 +27,7 @@ export interface IUser {
   photo_path: string;
   groupInfo: {
     id: string;
-    position: string;
+    position: 'Administrator' | 'Member';
   };
   pushTokenId?: string;
 }

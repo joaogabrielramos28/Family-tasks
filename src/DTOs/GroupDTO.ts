@@ -20,7 +20,7 @@ export interface IMember {
   pushTokenId?: string;
   groupInfo?: {
     id: string;
-    position: string;
+    position: 'Administrator' | 'Member';
   };
 }
 

@@ -277,6 +277,7 @@ const AuthProvider = ({children}) => {
   const signOut = async () => {
     try {
       await auth().signOut();
+      setLoadingAuth(false);
       setUser(null);
       await AsyncStorage.removeItem(USER_STORAGE_KEY);
     } catch (error) {

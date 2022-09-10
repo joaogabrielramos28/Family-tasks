@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, FormControl, Modal as ModalBase} from 'native-base';
+import {Box, Button, Heading, Modal as ModalBase} from 'native-base';
 import {Input} from '../../../../Components';
 import {useAuth} from '../../../../hooks';
 
@@ -28,15 +28,12 @@ const Modal = ({isOpen, onClose}: ModalProps) => {
           Resetar senha
         </ModalBase.Header>
         <ModalBase.Body>
-          <FormControl mt="3">
-            <FormControl.Label
-              _text={{
-                color: 'light.300',
-              }}>
-              Email
-            </FormControl.Label>
+          <Box mt="3">
+            <Heading color="light.300" fontSize={14}>
+              E-mail
+            </Heading>
             <Input onChangeText={setResetEmail} />
-          </FormControl>
+          </Box>
         </ModalBase.Body>
         <ModalBase.Footer bg={'warmGray.800'} borderColor={'warmGray.700'}>
           <Button.Group space={2}>

@@ -19,20 +19,14 @@ import {useAuth} from '../../hooks';
 
 const SignUp = () => {
   const {goBack, navigate} = useNavigation<any>();
-  const {signUpWithEmailAndPassword} = useAuth();
-  const [loading, setLoading] = useState(false);
+  const {signUpWithEmailAndPassword, loadingAuth} = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
   const handleRegister = async () => {
-    try {
-      setLoading(true);
-      await signUpWithEmailAndPassword(email, password, name);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
+    await signUpWithEmailAndPassword(email, password, name);
   };
 
   const handleGoBack = () => {
@@ -113,7 +107,7 @@ const SignUp = () => {
                   borderRadius={4}
                   title={'Criar conta'}
                   onPress={handleRegister}
-                  isLoading={loading}
+                  isLoading={loadingAuth}
                 />
 
                 <Text marginTop={4} textAlign={'center'} color={'light.300'}>

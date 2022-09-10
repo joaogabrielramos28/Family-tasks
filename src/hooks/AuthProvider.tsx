@@ -70,18 +70,16 @@ const AuthProvider = ({children}) => {
 
                     setUser(userData);
                   }
-                })
-                .catch(error => {
-                  console.log(error);
                 });
-            })
-            .catch(error => {
-              console.log(error);
             });
-        })
-        .catch(() => Alert.alert('Registro', 'Houve um erro ao registar.'));
+        });
     } catch (error) {
       setLoadingAuth(false);
+      const {code} = error;
+
+      if (code === 'auth/email-already-in-use') {
+        return Alert.alert('Registro', 'E-mail em uso');
+      }
       console.log(error);
     }
   };
@@ -119,7 +117,11 @@ const AuthProvider = ({children}) => {
         });
     } catch (error) {
       setLoadingAuth(false);
-      console.log(error);
+      const {code} = error;
+
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password') {
+        return Alert.alert('Login', 'E-mail e/ou senha inválida.');
+      } else return Alert.alert('Login', 'Não foi possível realizar o login');
     }
   };
 

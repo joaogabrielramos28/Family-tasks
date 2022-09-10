@@ -28,6 +28,7 @@ import uuid from 'react-native-uuid';
 import {AlertDialog} from '../../Components/AlertDialog';
 import FastImage from 'react-native-fast-image';
 import {api} from '../../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Params {
   id: string;
@@ -35,7 +36,7 @@ interface Params {
 
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
-  const {user} = useAuth();
+  const {user, USER_STORAGE_KEY} = useAuth();
   const {goBack, navigate} = useNavigation<any>();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
@@ -174,6 +175,13 @@ const GroupDetails = () => {
       await firestore().collection('Users').doc(user.id).update({
         groupInfo: firestore.FieldValue.delete(),
       });
+
+      const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
+      const storageUser = response ? JSON.parse(response) : {};
+
+      delete storageUser.groupInfo;
+
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(storageUser));
     } catch (error) {
       console.log(error);
     }

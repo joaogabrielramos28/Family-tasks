@@ -6,6 +6,8 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useAuth} from '../../../../hooks';
 
 type IMemberProps = IMember & {
   isAdmin: boolean;
@@ -22,6 +24,7 @@ const Member = ({
   members,
   handleResetUser,
 }: IMemberProps) => {
+  const {USER_STORAGE_KEY} = useAuth();
   const FastImageFactory = Factory(FastImage);
 
   const handleRemoveUser = async () => {
@@ -41,6 +44,12 @@ const Member = ({
       await firestore().collection('Users').doc(id).update({
         groupInfo: firestore.FieldValue.delete(),
       });
+      const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
+      const storageUser = response ? JSON.parse(response) : {};
+
+      delete storageUser.groupInfo;
+
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(storageUser));
       handleResetUser();
     } catch (error) {
       console.log(error);

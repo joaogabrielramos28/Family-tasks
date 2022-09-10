@@ -19,7 +19,12 @@ import {useAuth} from '../../hooks';
 import {Modal} from './Components/Modal';
 
 const SignIn = () => {
-  const {signInWithEmailAndPassword, signInWithGoogle, loadingAuth} = useAuth();
+  const {
+    signInWithEmailAndPassword,
+    signInWithGoogle,
+    signInWithApple,
+    loadingAuth,
+  } = useAuth();
   const {goBack, navigate} = useNavigation<any>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -82,6 +87,10 @@ const SignIn = () => {
               <SocialLoginButton
                 iconName={'google'}
                 onPress={signInWithGoogle}
+              />
+              <SocialLoginButton
+                iconName={'apple1'}
+                onPress={signInWithApple}
               />
               <SocialLoginButton
                 iconName={'phone'}

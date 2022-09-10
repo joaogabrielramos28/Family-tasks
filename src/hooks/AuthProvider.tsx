@@ -9,8 +9,10 @@ import React, {
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {IAuthContextProps, IUser} from './types';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+import {IAuthContextProps, IUser} from './types';
 import {uploadFile} from '../Utils/uploadFile';
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -162,13 +164,63 @@ const AuthProvider = ({children}) => {
                 });
             });
         });
-
-      setUser(user);
     } catch (error) {
       setLoadingAuth(false);
       console.log(error);
     }
   }
+  const signInWithApple = async () => {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    if (!appleAuthRequestResponse.identityToken) {
+      throw new Error('Apple Sign-In failed - no identify token returned');
+    }
+
+    const {identityToken, nonce} = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+
+    // Sign the user in with the credential
+    auth()
+      .signInWithCredential(appleCredential)
+      .then(account => {
+        firestore()
+          .collection('Users')
+          .doc(account.user.uid)
+          .get()
+          .then(user => {
+            if (!user.exists) {
+              firestore().collection('Users').doc(account.user.uid).set({
+                email: account.user.email,
+                name: account.user.displayName,
+                photo_url: account.user.photoURL,
+              });
+            }
+            firestore()
+              .collection('Users')
+              .doc(account.user.uid)
+              .get()
+              .then(async userFirestore => {
+                const userData = {
+                  id: userFirestore.id,
+                  ...userFirestore.data(),
+                } as IUser;
+
+                await AsyncStorage.setItem(
+                  USER_STORAGE_KEY,
+                  JSON.stringify(userData),
+                );
+
+                setUser(userData);
+              });
+          });
+      });
+  };
 
   const updateUser = async (name?: string, email?: string) => {
     try {
@@ -312,6 +364,7 @@ const AuthProvider = ({children}) => {
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,
         signInWithGoogle,
+        signInWithApple,
         signOut,
         updateUser,
         updateUserPhoto,

@@ -13,20 +13,11 @@ export interface IAuthContextProps {
   updateUser: (name?: string, email?: string) => Promise<void>;
   updateUserPhoto: (uri: string) => Promise<string>;
   signInWithGoogle: () => Promise<void>;
+  signInWithApple: () => Promise<void>;
   loadingAuth: boolean;
   resetPassword: (email: string) => Promise<void>;
   USER_STORAGE_KEY: string;
 }
-
-// export interface IUser {
-//   displayName?: string;
-//   email: string;
-//   phoneNumber?: string;
-//   photoURL?: string;
-//   uid: string;
-//   groupId?: string;
-//   background?: string;
-// }
 
 export interface IUser {
   id: string;

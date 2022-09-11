@@ -37,7 +37,7 @@ interface Params {
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
   const {user, USER_STORAGE_KEY} = useAuth();
-  const {goBack, navigate} = useNavigation<any>();
+  const {goBack, navigate} = useNavigation();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);

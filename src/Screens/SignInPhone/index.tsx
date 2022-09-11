@@ -20,7 +20,7 @@ import {Button, Input} from '../../Components';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 const SignInPhone = () => {
-  const {goBack, navigate} = useNavigation<any>();
+  const {goBack, navigate} = useNavigation();
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const countryCode = '+55';

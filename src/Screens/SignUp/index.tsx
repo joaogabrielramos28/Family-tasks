@@ -18,7 +18,7 @@ import {Button, Input} from '../../Components';
 import {useAuth} from '../../hooks';
 
 const SignUp = () => {
-  const {goBack, navigate} = useNavigation<any>();
+  const {goBack, navigate} = useNavigation();
   const {signUpWithEmailAndPassword, loadingAuth} = useAuth();
 
   const [email, setEmail] = useState('');

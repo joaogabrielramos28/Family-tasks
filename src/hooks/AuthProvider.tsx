@@ -32,8 +32,6 @@ const AuthProvider = ({children}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
 
-  console.log(user);
-
   const signUpWithEmailAndPassword = async (
     email: string,
     password: string,

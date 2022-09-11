@@ -4,7 +4,7 @@ import React from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {ITask, Status} from './types';
 
-const Task = ({status, id}: ITask) => {
+const Task = ({status, id, title, category, responsible, date}: ITask) => {
   const {navigate} = useNavigation();
 
   function handleNavigateToTask() {
@@ -24,8 +24,8 @@ const Task = ({status, id}: ITask) => {
         marginBottom={6}>
         <VStack width={'100%'} justifyContent={'space-between'}>
           <VStack>
-            <Heading color={'light.50'}>Titulo</Heading>
-            <Text color={'light.400'}>Categoria</Text>
+            <Heading color={'light.50'}>{title}</Heading>
+            <Text color={'light.400'}>{category}</Text>
           </VStack>
 
           <HStack alignItems={'center'} justifyContent={'center'} marginTop={6}>
@@ -34,10 +34,10 @@ const Task = ({status, id}: ITask) => {
                 <Avatar
                   size={'sm'}
                   source={{
-                    uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                    uri: responsible?.photo_url || '',
                   }}
                 />
-                <Text color={'light.400'}>24/08/2000</Text>
+                <Text color={'light.400'}>{date}</Text>
               </HStack>
             </HStack>
             <Box alignItems={'flex-end'} justifyContent={'flex-end'} flex={1}>

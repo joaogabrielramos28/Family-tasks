@@ -61,14 +61,17 @@ const CreateTask = () => {
   };
 
   const handleCreateTask = () => {
-    const userRef = firestore().collection('Users').doc(taskResponsible);
+    const responsibleRef = firestore().collection('Users').doc(taskResponsible);
+    const relatorRef = firestore().collection('Users').doc(user.id);
     const payload = {
       id: uuid.v4() as string,
       name: taskName,
       group_id: groupId,
       description: taskDescription,
       category: taskCategory,
-      responsible: userRef,
+      relator: relatorRef,
+      responsible: responsibleRef,
+      status: 'to do',
       date,
     };
 

@@ -26,12 +26,14 @@ export interface IMember {
 
 export interface ITask {
   id: string;
-  title: string;
+  group_id: string;
+  name: string;
   description: string;
+  category: string;
   relator: IMember;
   responsible: IMember;
-  status: string;
-  createdAt: string;
+  date: Date;
+  status: 'to do' | 'doing' | 'completed';
 }
 
 export interface INotification {

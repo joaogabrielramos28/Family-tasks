@@ -1,53 +1,50 @@
 import {Box, FlatList, Heading, HStack, Text, VStack} from 'native-base';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {WeekCalendar} from './Components/WeekCalendar';
 import {Task} from './Components/Task';
-import {Status} from './Components/Task/types';
 
-const INITIAL_TASK = [
-  {
-    status: Status.Completed,
-    id: 'Task 1',
-  },
-  {
-    status: Status.Doing,
-    id: 'task 2',
-  },
-  {
-    status: Status.Completed,
-    id: 'task 3',
-  },
-  {
-    status: Status.Completed,
-    id: 'task 4',
-  },
-  {
-    status: Status.Doing,
-    id: 'task 5',
-  },
-  {
-    status: Status.Completed,
-    id: 'task 6',
-  },
-  {
-    status: Status.Completed,
-    id: 'task 7',
-  },
-  {
-    status: Status.Doing,
-    id: 'task 8',
-  },
-  {
-    status: Status.Completed,
-    id: 'task 9',
-  },
-  {
-    status: Status.Doing,
-    id: 'task 12',
-  },
-];
+import {ITask} from '../../DTOs/GroupDto';
+import {useAuth} from '../../hooks';
+
+import firestore from '@react-native-firebase/firestore';
+import {format} from 'date-fns';
 
 const Tasks = () => {
+  const {user} = useAuth();
+  const [tasks, setTasks] = useState<ITask[]>([]);
+
+  const groupId = user.groupInfo?.id;
+  useEffect(() => {
+    const subscribe = firestore()
+      .collection('Groups')
+      .doc(groupId)
+      .onSnapshot(async querySnapshot => {
+        const group = querySnapshot.data();
+        Promise.all(
+          group.tasks.map(async task => {
+            const responsible = await task.responsible.get();
+            const relator = await task.relator.get();
+            const dateFormatted = format(
+              new Date(task.date.seconds * 1000),
+              'dd/MM/yyyy',
+            );
+
+            return {
+              ...task,
+              date: dateFormatted,
+              responsible: responsible.data(),
+              relator: relator.data(),
+            };
+          }),
+        )
+          .then(async response => {
+            setTasks(response);
+          })
+          .catch(() => {});
+      });
+    return () => subscribe();
+  }, [groupId]);
+
   return (
     <Box width={'100%'} background={'warmGray.900'} flex={1} paddingBottom={20}>
       <VStack
@@ -61,7 +58,7 @@ const Tasks = () => {
           <Heading color={'light.50'}>Minhas tarefas</Heading>
 
           <Text color={'light.50'} fontSize={16} fontWeight={'bold'}>
-            Total 10 tarefas
+            Total {tasks.length} tarefas
           </Text>
         </HStack>
       </VStack>
@@ -69,10 +66,19 @@ const Tasks = () => {
 
       <FlatList
         paddingX={10}
-        data={INITIAL_TASK}
+        data={tasks}
         marginTop={10}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <Task status={item.status} id={item.id} />}
+        renderItem={({item}) => (
+          <Task
+            status={item.status}
+            id={item.id}
+            title={item.name}
+            category={item.category}
+            responsible={item.responsible}
+            date={item.date}
+          />
+        )}
         showsVerticalScrollIndicator={false}
       />
     </Box>

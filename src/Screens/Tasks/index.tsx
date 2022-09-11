@@ -13,6 +13,14 @@ const Tasks = () => {
   const {user} = useAuth();
   const [tasks, setTasks] = useState<ITask[]>([]);
 
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const handleChangeSelectedDate = (date: string) => {
+    setSelectedDate(date);
+  };
+
+  const tasksPerDate = tasks.filter(task => task.date === selectedDate);
+
   const groupId = user.groupInfo?.id;
   useEffect(() => {
     const subscribe = firestore()
@@ -58,15 +66,22 @@ const Tasks = () => {
           <Heading color={'light.50'}>Minhas tarefas</Heading>
 
           <Text color={'light.50'} fontSize={16} fontWeight={'bold'}>
-            Total {tasks.length} tarefas
+            Total {tasksPerDate.length} tarefas
           </Text>
         </HStack>
       </VStack>
-      <WeekCalendar />
-
+      <WeekCalendar onChangeDate={handleChangeSelectedDate} />
+      {tasksPerDate.length < 1 && (
+        <Box alignItems={'center'} justifyContent={'center'} flex={1}>
+          <Heading color={'light.300'} size={'sm'}>
+            {' '}
+            Nenhuma tarefa para essa data :({' '}
+          </Heading>
+        </Box>
+      )}
       <FlatList
         paddingX={10}
-        data={tasks}
+        data={tasksPerDate}
         marginTop={10}
         keyExtractor={item => item.id}
         renderItem={({item}) => (

@@ -3,8 +3,13 @@ import {useTheme} from 'native-base';
 import ReactNativeCalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
 import {ptBr} from './localeConfig';
+import {format} from 'date-fns';
 
-const WeekCalendar = () => {
+interface WeekCalendarProps {
+  onChangeDate: (date: string) => void;
+}
+
+const WeekCalendar = ({onChangeDate}: WeekCalendarProps) => {
   const theme = useTheme();
 
   return (
@@ -28,6 +33,9 @@ const WeekCalendar = () => {
       locale={ptBr}
       scrollable={true}
       selectedDate={moment()}
+      onDateSelected={date =>
+        onChangeDate(format(new Date(String(date)), 'dd/MM/yyyy'))
+      }
     />
   );
 };

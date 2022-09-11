@@ -32,7 +32,7 @@ export interface ITask {
   category: string;
   relator: IMember;
   responsible: IMember;
-  date: Date;
+  date: string;
   status: 'to do' | 'doing' | 'completed';
 }
 

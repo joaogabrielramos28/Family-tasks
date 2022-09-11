@@ -6,7 +6,7 @@ export interface ITask {
   title: string;
   category: string;
   responsible: IMember;
-  date: Date;
+  date: string;
 }
 
 export enum Status {

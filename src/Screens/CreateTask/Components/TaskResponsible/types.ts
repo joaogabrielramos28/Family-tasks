@@ -1,5 +1,6 @@
-export interface ITaskResponsibleProps {
-  id: string;
-  responsible: string;
-  setResponsible: React.Dispatch<React.SetStateAction<string>>;
+import {BorderlessButtonProps} from 'react-native-gesture-handler';
+
+export interface ITaskResponsibleProps extends BorderlessButtonProps {
+  photo: string;
+  selected?: boolean;
 }

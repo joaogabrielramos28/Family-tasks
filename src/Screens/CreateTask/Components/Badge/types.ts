@@ -1,6 +1,6 @@
-export interface IBadgeProps {
+import {RectButtonProps} from 'react-native-gesture-handler';
+
+export interface IBadgeProps extends RectButtonProps {
   title: string;
-  isPress: string;
-  name: string;
-  setIsPress: React.Dispatch<React.SetStateAction<string>>;
+  selected?: boolean;
 }

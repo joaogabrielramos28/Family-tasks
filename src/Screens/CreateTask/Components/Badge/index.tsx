@@ -1,25 +1,17 @@
-import {Button, useTheme} from 'native-base';
+import {Button} from 'native-base';
 import React from 'react';
 import {RectButton} from 'react-native-gesture-handler';
 import {IBadgeProps} from './types';
 
-const Badge = ({title, isPress, setIsPress, name}: IBadgeProps) => {
-  const handleChangecategory = () => {
-    setIsPress(name);
-  };
-
-  const theme = useTheme();
-
+const Badge = ({title, selected, onPress, ...rest}: IBadgeProps) => {
   return (
-    <RectButton onPress={handleChangecategory}>
+    <RectButton onPress={onPress} {...rest}>
       <Button
         borderRadius={12}
         background={'warmGray.600'}
-        style={{
-          borderColor: isPress === name ? theme.colors.violet[800] : null,
-          borderWidth: isPress === name ? 2 : null,
-        }}
-        marginRight={2}>
+        marginRight={2}
+        borderColor={'violet.500'}
+        borderWidth={selected && 1}>
         {title}
       </Button>
     </RectButton>

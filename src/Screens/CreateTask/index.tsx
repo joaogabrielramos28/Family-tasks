@@ -1,5 +1,6 @@
 import {
   Box,
+  FlatList,
   Heading,
   HStack,
   Input,
@@ -11,22 +12,110 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Dimensions} from 'react-native';
+import {Alert, Dimensions} from 'react-native';
 import {Badge} from './Components/Badge';
 import {TaskResponsible} from './Components/TaskResponsible';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button} from '../../Components';
+import {categories} from '../../Utils/taskCategories';
+import uuid from 'react-native-uuid';
+
+import firestore from '@react-native-firebase/firestore';
+import {useAuth} from '../../hooks';
+import {IMember, ITask} from '../../DTOs/GroupDto';
 
 const CreateTask = () => {
+  const {user} = useAuth();
   const [date, setDate] = useState(new Date());
-  const [categorySelected, setCategorySelected] = useState('');
-  const [responsible, setResponsible] = useState('');
+  const [tasks, setTasks] = useState<ITask[]>([]);
+
+  const [groupMember, setGroupMembers] = useState<IMember[]>([]);
+
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskCategory, setTaskCategory] = useState('');
+  const [taskResponsible, setTaskResponsible] = useState('');
+
+  const groupId = user.groupInfo?.id;
 
   const changeDate = (event: any, date) => {
     setDate(date);
   };
+
+  const handleSelectResponsible = (id: string) => {
+    setTaskResponsible(id);
+  };
+
+  const handleSelectedCategory = (slug: string) => {
+    setTaskCategory(slug);
+  };
+
+  const handleResetForm = () => {
+    setTaskName('');
+    setTaskDescription('');
+    setTaskCategory('');
+    setTaskResponsible('');
+    setDate(new Date());
+  };
+
+  const handleCreateTask = () => {
+    const userRef = firestore().collection('Users').doc(taskResponsible);
+    const payload = {
+      id: uuid.v4() as string,
+      name: taskName,
+      group_id: groupId,
+      description: taskDescription,
+      category: taskCategory,
+      responsible: userRef,
+      date,
+    };
+
+    if (
+      !taskName.trim() ||
+      !taskDescription.trim() ||
+      !taskCategory ||
+      !taskResponsible
+    ) {
+      return Alert.alert('Preencha todos os campos!');
+    }
+    firestore()
+      .collection('Groups')
+      .doc(payload.group_id)
+      .update({
+        tasks: [...tasks, payload],
+      })
+      .then(() => {
+        Alert.alert('Task', 'Task criada com sucesso!');
+      })
+      .catch(() => Alert.alert('Task', 'Erro ao criar task!'));
+    handleResetForm();
+  };
+
+  useEffect(() => {
+    const subscribe = firestore()
+      .collection('Groups')
+      .doc(groupId)
+      .onSnapshot(async querySnapshot => {
+        const group = querySnapshot.data();
+        setTasks(group.tasks);
+
+        Promise.all(
+          group.members.map(async doc => {
+            return await doc.get().then(member => {
+              return {...member.data(), id: member.id};
+            });
+          }),
+        )
+
+          .then(members => {
+            setGroupMembers(members);
+          })
+          .catch(e => console.log(e));
+      });
+    return () => subscribe();
+  }, [groupId]);
 
   const theme = useTheme();
 
@@ -66,8 +155,10 @@ const CreateTask = () => {
                   bgColor={'warmGray.800'}
                   _focus={{borderWidth: 1, borderColor: 'violet.500'}}
                   borderWidth={1}
+                  value={taskName}
                   borderColor={'warmGray.600'}
                   placeholder="Nome da task"
+                  onChangeText={setTaskName}
                 />
               </VStack>
               <VStack marginY={2}>
@@ -85,8 +176,10 @@ const CreateTask = () => {
                   color={'light.50'}
                   bgColor={'warmGray.800'}
                   _focus={{borderWidth: 1, borderColor: 'violet.500'}}
+                  value={taskDescription}
                   borderWidth={1}
                   borderColor={'warmGray.600'}
+                  onChangeText={setTaskDescription}
                 />
               </VStack>
               <HStack>
@@ -98,36 +191,21 @@ const CreateTask = () => {
                     fontWeight={'bold'}>
                     Categoria
                   </Text>
-                  <ScrollView
+                  <FlatList
+                    data={categories}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     maxWidth="250px"
-                    marginY={2}>
-                    <Badge
-                      title="Limpeza"
-                      isPress={categorySelected}
-                      setIsPress={setCategorySelected}
-                      name={'clean'}
-                    />
-                    <Badge
-                      title="Estudos"
-                      isPress={categorySelected}
-                      setIsPress={setCategorySelected}
-                      name={'study'}
-                    />
-                    <Badge
-                      title="Animal de Estimação"
-                      isPress={categorySelected}
-                      setIsPress={setCategorySelected}
-                      name={'pet'}
-                    />
-                    <Badge
-                      title="Alimentação"
-                      isPress={categorySelected}
-                      setIsPress={setCategorySelected}
-                      name={'food'}
-                    />
-                  </ScrollView>
+                    marginY={2}
+                    keyExtractor={item => item.id}
+                    renderItem={({item}) => (
+                      <Badge
+                        title={item.title}
+                        onPress={() => handleSelectedCategory(item.slug)}
+                        selected={item.slug === taskCategory}
+                      />
+                    )}
+                  />
                 </VStack>
               </HStack>
               <HStack marginY={2}>
@@ -139,27 +217,21 @@ const CreateTask = () => {
                     fontWeight={'bold'}>
                     Responsável
                   </Text>
-                  <ScrollView
+                  <FlatList
+                    data={groupMember}
+                    keyExtractor={item => item.id}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     maxWidth="250px"
-                    marginY={2}>
-                    <TaskResponsible
-                      id="1"
-                      responsible={responsible}
-                      setResponsible={setResponsible}
-                    />
-                    <TaskResponsible
-                      id="2"
-                      responsible={responsible}
-                      setResponsible={setResponsible}
-                    />
-                    <TaskResponsible
-                      id="3"
-                      responsible={responsible}
-                      setResponsible={setResponsible}
-                    />
-                  </ScrollView>
+                    marginY={2}
+                    renderItem={({item}) => (
+                      <TaskResponsible
+                        photo={item.photo_url || ''}
+                        onPress={() => handleSelectResponsible(item.id)}
+                        selected={item.id === taskResponsible}
+                      />
+                    )}
+                  />
                 </VStack>
               </HStack>
 
@@ -189,7 +261,12 @@ const CreateTask = () => {
                   />
                 </VStack>
               </HStack>
-              <Button marginTop={5} p={4} title={' Criar Task'} />
+              <Button
+                marginTop={5}
+                p={4}
+                title={'Criar Task'}
+                onPress={handleCreateTask}
+              />
             </VStack>
           </Box>
         </ScrollView>

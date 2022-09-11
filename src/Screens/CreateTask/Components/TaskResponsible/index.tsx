@@ -1,25 +1,20 @@
-import {Avatar, useTheme} from 'native-base';
+import {Factory} from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {ITaskResponsibleProps} from './types';
 
-const TaskResponsible = ({
-  id,
-  responsible,
-  setResponsible,
-}: ITaskResponsibleProps) => {
-  const handleResponsible = () => {
-    setResponsible(id);
-  };
-  const theme = useTheme();
+const TaskResponsible = ({photo, selected, onPress}: ITaskResponsibleProps) => {
+  const FactoryImage = Factory(FastImage);
   return (
-    <BorderlessButton onPress={handleResponsible}>
-      <Avatar
-        style={{
-          borderColor: responsible === id && theme.colors.violet[800],
-          borderWidth: responsible === id ? 2 : null,
-        }}
+    <BorderlessButton onPress={onPress}>
+      <FactoryImage
+        rounded={'full'}
+        size={12}
         marginRight={3}
+        source={{uri: photo}}
+        borderColor={'violet.500'}
+        borderWidth={selected && 2}
       />
     </BorderlessButton>
   );

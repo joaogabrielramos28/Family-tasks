@@ -1,21 +1,14 @@
-import {useNavigation} from '@react-navigation/native';
 import {Box, Factory, Heading, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {ITask, Status} from './types';
 
-const Task = ({status, id, title, category, responsible, date}: ITask) => {
-  const {navigate} = useNavigation();
-
-  function handleNavigateToTask() {
-    navigate('TaskDetails', {id});
-  }
-
+const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
   const FactoryImage = Factory(FastImage);
 
   return (
-    <BorderlessButton onPress={handleNavigateToTask}>
+    <BorderlessButton {...rest}>
       <Box
         width={'100%'}
         background={'warmGray.600'}

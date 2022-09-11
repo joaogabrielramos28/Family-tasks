@@ -1,7 +1,7 @@
 import {AntDesign} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {
-  Avatar,
+  Factory,
   Heading,
   HStack,
   Icon,
@@ -11,17 +11,30 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import FastImage from 'react-native-fast-image';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {TasksDetailsNavigationParams} from '../../@types/navigation/navigation';
+import {categories} from '../../Utils/taskCategories';
 
 const TaskDetails = () => {
   const [status, setStatus] = useState('');
 
+  const route = useRoute();
+
+  const {task} = route.params as TasksDetailsNavigationParams;
+
   const {goBack} = useNavigation();
+
+  const FactoryImage = Factory(FastImage);
 
   const handleGoBack = () => {
     goBack();
   };
+
+  useEffect(() => {
+    setStatus(task.status);
+  }, [task]);
   return (
     <ScrollView
       background={'warmGray.900'}
@@ -64,11 +77,12 @@ const TaskDetails = () => {
             w={'100%'}
             justifyContent={'space-between'}
             alignItems={'center'}>
-            <Heading color={'light.50'}>Task</Heading>
-            <Avatar
-              size={'md'}
+            <Heading color={'light.50'}>{task.name}</Heading>
+            <FactoryImage
+              size={'12'}
+              rounded={'full'}
               source={{
-                uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+                uri: task.responsible.photo_url,
               }}
             />
           </HStack>
@@ -78,8 +92,15 @@ const TaskDetails = () => {
             marginTop={2}
             color={'light.50'}
             fontSize={RFValue(12)}
+            selectedValue={status}
             fontWeight={'bold'}
-            backgroundColor={status === 'doing' ? 'blue.600' : 'green.600'}
+            backgroundColor={
+              status === 'doing'
+                ? 'blue.600'
+                : status === 'to do'
+                ? 'violet.500'
+                : 'green.600'
+            }
             borderWidth={0}
             onValueChange={itemValue => setStatus(itemValue)}
             dropdownIcon={
@@ -92,6 +113,7 @@ const TaskDetails = () => {
                 }}
               />
             }>
+            <Select.Item label="A fazer" value="to do" />
             <Select.Item label="Finalizado" value="completed" />
             <Select.Item label="Em progresso" value="doing" />
           </Select>
@@ -105,12 +127,7 @@ const TaskDetails = () => {
             </Text>
 
             <Text color={'light.50'} fontSize={RFValue(14)} w={RFValue(320)}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              condimentum, nisl ut ultricies lacinia, nisl nisl aliquet nisl,
-              sit amet aliquet nisl nisl sit amet dolor. Donec euismod, nisl sit
-              amet aliquet lacinia, nisl nisl aliquet nisl, sit amet aliquet
-              nisl nisl sit amet dolor. Donec euismod, nisl sit amet aliquet
-              lacinia, nisl
+              {task.description}
             </Text>
           </VStack>
         </VStack>
@@ -123,20 +140,27 @@ const TaskDetails = () => {
           <Select
             fontSize={RFValue(14)}
             borderWidth={0}
+            selectedValue={task.responsible.name}
             color={'light.50'}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
             }>
             <Select.Item
-              value="joao"
-              label="João"
+              value={task.responsible.name}
+              label={task.responsible.name}
               style={{
                 justifyContent: 'center',
               }}
               _text={{
                 fontSize: RFValue(16),
               }}
-              leftIcon={<Avatar size={'sm'} />}
+              leftIcon={
+                <FactoryImage
+                  size={'8'}
+                  rounded={'full'}
+                  source={{uri: task.responsible.photo_url}}
+                />
+              }
             />
           </Select>
         </VStack>
@@ -149,19 +173,28 @@ const TaskDetails = () => {
             fontSize={RFValue(14)}
             borderWidth={0}
             color={'light.50'}
+            selectedValue={task.relator.name}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
             }>
             <Select.Item
-              value="Lucas"
-              label="Lucas"
+              value={task.relator.name}
+              label={task.relator.name}
               style={{
                 justifyContent: 'center',
               }}
               _text={{
                 fontSize: RFValue(16),
               }}
-              leftIcon={<Avatar size={'sm'} />}
+              leftIcon={
+                <FactoryImage
+                  rounded={'full'}
+                  size={'8'}
+                  source={{
+                    uri: task.relator.photo_url,
+                  }}
+                />
+              }
             />
           </Select>
         </VStack>
@@ -174,20 +207,23 @@ const TaskDetails = () => {
             fontSize={RFValue(14)}
             borderWidth={0}
             color={'light.50'}
+            selectedValue={task.category}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
             }>
-            <Select.Item
-              value="food"
-              label="Alimentação"
-              style={{
-                justifyContent: 'center',
-              }}
-              _text={{
-                fontSize: RFValue(16),
-              }}
-              leftIcon={<Avatar size={'sm'} />}
-            />
+            {categories.map(category => (
+              <Select.Item
+                key={category.id}
+                value={category.title}
+                label={category.title}
+                style={{
+                  justifyContent: 'center',
+                }}
+                _text={{
+                  fontSize: RFValue(16),
+                }}
+              />
+            ))}
           </Select>
         </VStack>
       </VStack>

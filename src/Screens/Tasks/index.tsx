@@ -8,16 +8,27 @@ import {useAuth} from '../../hooks';
 
 import firestore from '@react-native-firebase/firestore';
 import {format} from 'date-fns';
+import {useNavigation} from '@react-navigation/native';
+import {Load} from '../../Components';
 
 const Tasks = () => {
   const {user} = useAuth();
   const [tasks, setTasks] = useState<ITask[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), 'dd/MM/yyyy'),
+  );
 
   const handleChangeSelectedDate = (date: string) => {
     setSelectedDate(date);
   };
+
+  const {navigate} = useNavigation();
+
+  function handleNavigateToTask(task: ITask) {
+    navigate('TaskDetails', {task});
+  }
 
   const tasksPerDate = tasks.filter(task => task.date === selectedDate);
 
@@ -47,11 +58,16 @@ const Tasks = () => {
         )
           .then(async response => {
             setTasks(response);
+            setLoading(false);
           })
           .catch(() => {});
       });
     return () => subscribe();
   }, [groupId]);
+
+  if (loading) {
+    return <Load />;
+  }
 
   return (
     <Box width={'100%'} background={'warmGray.900'} flex={1} paddingBottom={20}>
@@ -71,7 +87,7 @@ const Tasks = () => {
         </HStack>
       </VStack>
       <WeekCalendar onChangeDate={handleChangeSelectedDate} />
-      {tasksPerDate.length < 1 && (
+      {tasksPerDate.length === 0 && (
         <Box alignItems={'center'} justifyContent={'center'} flex={1}>
           <Heading color={'light.300'} size={'sm'}>
             {' '}
@@ -87,11 +103,11 @@ const Tasks = () => {
         renderItem={({item}) => (
           <Task
             status={item.status}
-            id={item.id}
             title={item.name}
             category={item.category}
             responsible={item.responsible}
             date={item.date}
+            onPress={() => handleNavigateToTask(item)}
           />
         )}
         showsVerticalScrollIndicator={false}

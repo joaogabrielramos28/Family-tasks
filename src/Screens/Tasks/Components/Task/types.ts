@@ -1,8 +1,8 @@
+import {BorderlessButtonProps} from 'react-native-gesture-handler';
 import {IMember} from '../../../../DTOs/GroupDto';
 
-export interface ITask {
+export interface ITask extends BorderlessButtonProps {
   status: 'to do' | 'doing' | 'completed';
-  id: string;
   title: string;
   category: string;
   responsible: IMember;

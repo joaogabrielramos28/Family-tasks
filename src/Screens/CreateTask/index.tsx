@@ -204,8 +204,8 @@ const CreateTask = () => {
                     renderItem={({item}) => (
                       <Badge
                         title={item.title}
-                        onPress={() => handleSelectedCategory(item.slug)}
-                        selected={item.slug === taskCategory}
+                        onPress={() => handleSelectedCategory(item.title)}
+                        selected={item.title === taskCategory}
                       />
                     )}
                   />

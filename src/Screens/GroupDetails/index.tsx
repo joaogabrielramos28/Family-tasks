@@ -29,15 +29,12 @@ import {AlertDialog} from '../../Components/AlertDialog';
 import FastImage from 'react-native-fast-image';
 import {api} from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-interface Params {
-  id: string;
-}
+import {GroupDetailsNavigationParams} from '../../@types/navigation/navigation';
 
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
   const {user, USER_STORAGE_KEY} = useAuth();
-  const {goBack, navigate} = useNavigation<any>();
+  const {goBack, navigate} = useNavigation();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);
@@ -70,7 +67,7 @@ const GroupDetails = () => {
     navigate('Notifications', {groupId: id});
   };
 
-  const {id} = route.params as Params;
+  const {id} = route.params as GroupDetailsNavigationParams;
 
   const handleChangeLoading = useCallback((state: boolean) => {
     return setLoadingChangeBackground(state);

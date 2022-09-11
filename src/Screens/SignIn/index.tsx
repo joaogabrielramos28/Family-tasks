@@ -25,7 +25,7 @@ const SignIn = () => {
     signInWithApple,
     loadingAuth,
   } = useAuth();
-  const {goBack, navigate} = useNavigation<any>();
+  const {goBack, navigate} = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalIsVisible, setModalIsVisible] = useState(false);

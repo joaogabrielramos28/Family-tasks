@@ -6,7 +6,7 @@ import WelcomeImg from '../../assets/welcome-bg.svg';
 import {Button} from '../../Components';
 
 const Welcome = () => {
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation();
 
   const handleGoToSignUp = () => {
     navigate('SignUp');

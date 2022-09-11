@@ -12,7 +12,7 @@ import {
 import {StyleSheet, View} from 'react-native';
 import {Button} from '../../../Components';
 import {useRoute} from '@react-navigation/native';
-import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {ConfirmationCodeNavigationParams} from '../../../@types/navigation/navigation';
 
 const CELL_COUNT = 6;
 
@@ -33,10 +33,6 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Params {
-  confirmation: FirebaseAuthTypes.ConfirmationResult;
-}
-
 const ConfirmationCodeScreen = () => {
   const route = useRoute();
   const [value, setValue] = useState('');
@@ -48,7 +44,7 @@ const ConfirmationCodeScreen = () => {
 
   const [loading, setIsLoading] = useState(false);
 
-  const {confirmation} = route.params as Params;
+  const {confirmation} = route.params as ConfirmationCodeNavigationParams;
 
   const signIn = async () => {
     try {

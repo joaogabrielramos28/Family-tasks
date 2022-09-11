@@ -15,7 +15,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {IGroupCardProps} from './types';
 
 const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation();
   const FastImageFactory = Factory(FastImage);
   const handleGoToGroup = () => {
     navigate('GroupDetails', {id});

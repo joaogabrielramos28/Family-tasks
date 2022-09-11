@@ -14,10 +14,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {IGroupDto, INotification} from '../../DTOs/GroupDto';
 import {NotificationCard} from './Components/NotificationCard';
 import firestore from '@react-native-firebase/firestore';
-
-interface Params {
-  groupId: string;
-}
+import {NotificationsNavigationParams} from '../../@types/navigation/navigation';
 
 const Notifications = () => {
   const {goBack} = useNavigation<any>();
@@ -26,7 +23,7 @@ const Notifications = () => {
     goBack();
   };
   const [notifications, setNotifications] = useState<INotification[]>([]);
-  const {groupId} = route.params as Params;
+  const {groupId} = route.params as NotificationsNavigationParams;
 
   useEffect(() => {
     const subscribe = firestore()

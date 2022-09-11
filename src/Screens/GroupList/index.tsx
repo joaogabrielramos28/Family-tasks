@@ -18,7 +18,7 @@ const renderScene = SceneMap({
 
 const GroupList = () => {
   const {user} = useAuth();
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation();
   const [index, setIndex] = useState(0);
   const [canCreateGroup] = useState(!!user.groupInfo);
   const [routes] = useState([

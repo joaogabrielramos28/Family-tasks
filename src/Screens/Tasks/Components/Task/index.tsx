@@ -5,7 +5,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {ITask, Status} from './types';
 
 const Task = ({status, id}: ITask) => {
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation();
 
   function handleNavigateToTask() {
     navigate('TaskDetails', {id});

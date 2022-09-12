@@ -17,6 +17,9 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {TasksDetailsNavigationParams} from '../../@types/navigation/navigation';
 import {categories} from '../../Utils/taskCategories';
 
+import firestore from '@react-native-firebase/firestore';
+import {Alert} from 'react-native';
+
 const TaskDetails = () => {
   const [status, setStatus] = useState('');
 
@@ -30,6 +33,41 @@ const TaskDetails = () => {
 
   const handleGoBack = () => {
     goBack();
+  };
+
+  console.log(task);
+
+  const handleUpdateTaskStatus = (status: string) => {
+    setStatus(status);
+    const responsibleRef = firestore()
+      .collection('Users')
+      .doc(task.responsible.id);
+    const relatorRef = firestore().collection('Users').doc(task.relator.id);
+    const updatedTask = {
+      ...task,
+      responsible: responsibleRef,
+      relator: relatorRef,
+      status,
+    };
+
+    firestore()
+      .collection('Groups')
+      .doc(task.group_id)
+      .get()
+      .then(group => {
+        const tasks = group
+          .data()
+          .tasks.filter(taskGroup => taskGroup.id !== task.id);
+
+        firestore()
+          .collection('Groups')
+          .doc(task.group_id)
+          .update({
+            tasks: [...tasks, updatedTask],
+          })
+          .catch(() => Alert.alert('Erro ao atualizar tarefa'));
+      })
+      .catch(() => Alert.alert('Erro ao atualizar tarefa'));
   };
 
   useEffect(() => {
@@ -102,7 +140,7 @@ const TaskDetails = () => {
                 : 'green.600'
             }
             borderWidth={0}
-            onValueChange={itemValue => setStatus(itemValue)}
+            onValueChange={itemValue => handleUpdateTaskStatus(itemValue)}
             dropdownIcon={
               <AntDesign
                 name="down"

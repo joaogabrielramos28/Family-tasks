@@ -10,6 +10,7 @@ import firestore from '@react-native-firebase/firestore';
 import {format} from 'date-fns';
 import {useNavigation} from '@react-navigation/native';
 import {Load} from '../../Components';
+import {Alert} from 'react-native';
 
 const Tasks = () => {
   const {user} = useAuth();
@@ -30,6 +31,8 @@ const Tasks = () => {
     navigate('TaskDetails', {task});
   }
 
+  console.log(tasks);
+
   const tasksPerDate = tasks.filter(task => task.date === selectedDate);
 
   const groupId = user.groupInfo?.id;
@@ -43,25 +46,22 @@ const Tasks = () => {
           group.tasks.map(async task => {
             const responsible = await task.responsible.get();
             const relator = await task.relator.get();
-            const dateFormatted = format(
-              new Date(task.date.seconds * 1000),
-              'dd/MM/yyyy',
-            );
-
             return {
               ...task,
-              date: dateFormatted,
-              responsible: responsible.data(),
-              relator: relator.data(),
+              responsible: {...responsible.data(), id: responsible.id},
+              relator: {...relator.data(), id: relator.id},
             };
           }),
         )
           .then(async response => {
             setTasks(response);
-            setLoading(false);
           })
-          .catch(() => {});
+          .catch(err => {
+            Alert.alert('Erro ao buscar tasks');
+            console.log(err);
+          });
       });
+    setLoading(false);
     return () => subscribe();
   }, [groupId]);
 

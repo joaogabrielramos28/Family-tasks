@@ -25,6 +25,7 @@ import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
 import {useAuth} from '../../hooks';
 import {IMember, ITask} from '../../DTOs/GroupDto';
+import {format} from 'date-fns';
 
 const CreateTask = () => {
   const {user} = useAuth();
@@ -72,7 +73,7 @@ const CreateTask = () => {
       relator: relatorRef,
       responsible: responsibleRef,
       status: 'to do',
-      date,
+      date: format(date, 'dd/MM/yyyy'),
     };
 
     if (

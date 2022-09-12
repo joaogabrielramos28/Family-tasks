@@ -38,15 +38,25 @@ const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
               </HStack>
             </HStack>
             <Box alignItems={'flex-end'} justifyContent={'flex-end'} flex={1}>
-              <HStack alignItems={'center'} space={2} w={20}>
+              <HStack alignItems={'center'} space={2} w={24}>
                 <Box
                   w={'15px'}
                   h={'15px'}
-                  bg={status === Status.Completed ? 'green.500' : 'yellow.300'}
+                  bg={
+                    status === Status.Completed
+                      ? 'green.500'
+                      : status === Status.Doing
+                      ? 'yellow.500'
+                      : 'violet.500'
+                  }
                   borderRadius={50}
                 />
                 <Text color={'light.400'}>
-                  {status === Status.Completed ? 'Finalizado' : 'Ativo'}
+                  {status === Status.Completed
+                    ? 'Finalizado'
+                    : status === Status.Doing
+                    ? 'Em progresso'
+                    : 'À fazer'}
                 </Text>
               </HStack>
             </Box>

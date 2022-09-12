@@ -134,7 +134,7 @@ const TaskDetails = () => {
             fontWeight={'bold'}
             backgroundColor={
               status === 'doing'
-                ? 'blue.600'
+                ? 'yellow.500'
                 : status === 'to do'
                 ? 'violet.500'
                 : 'green.600'

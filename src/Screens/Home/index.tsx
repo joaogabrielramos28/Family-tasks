@@ -67,7 +67,10 @@ const Home = () => {
             <Heading color={'light.100'}>Tasks completadas </Heading>
           </Box>
 
-          <ProgressChart />
+          <ProgressChart
+            allTodayTasks={dailyTasks.length}
+            todayTasksActive={activeTasks.length}
+          />
 
           <Box
             display={'flex'}

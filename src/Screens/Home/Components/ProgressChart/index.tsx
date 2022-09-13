@@ -2,11 +2,19 @@ import {Box, Heading, useTheme} from 'native-base';
 import React from 'react';
 import {ProgressChart as CustomProgressChart} from 'react-native-chart-kit';
 
-const ProgressChart = () => {
+interface ProgressChartProps {
+  allTodayTasks: number;
+  todayTasksActive: number;
+}
+
+const ProgressChart = ({
+  allTodayTasks,
+  todayTasksActive,
+}: ProgressChartProps) => {
   const theme = useTheme();
+  const percentage = allTodayTasks / (allTodayTasks - todayTasksActive);
   const data = {
-    labels: ['Jan'],
-    data: [0.6],
+    data: [percentage],
   };
   return (
     <Box display={'flex'} alignItems="center" position={'relative'}>
@@ -48,7 +56,7 @@ const ProgressChart = () => {
           bottom: '21%',
         }}>
         <Heading color={'indigo.600'} fontSize={'4xl'}>
-          42%
+          {percentage * 100} %
         </Heading>
       </Box>
     </Box>

@@ -3,7 +3,6 @@ export interface IGroupDto {
   name: string;
   admin: IMember;
   members: IMember[];
-  tasks: ITask[];
   notifications: INotification[];
   description: string;
   background?: string;

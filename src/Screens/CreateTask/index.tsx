@@ -24,13 +24,12 @@ import uuid from 'react-native-uuid';
 
 import firestore from '@react-native-firebase/firestore';
 import {useAuth} from '../../hooks';
-import {IMember, ITask} from '../../DTOs/GroupDto';
+import {IMember} from '../../DTOs/GroupDto';
 import {format} from 'date-fns';
 
 const CreateTask = () => {
   const {user} = useAuth();
   const [date, setDate] = useState(new Date());
-  const [tasks, setTasks] = useState<ITask[]>([]);
 
   const [groupMember, setGroupMembers] = useState<IMember[]>([]);
 
@@ -64,8 +63,8 @@ const CreateTask = () => {
   const handleCreateTask = () => {
     const responsibleRef = firestore().collection('Users').doc(taskResponsible);
     const relatorRef = firestore().collection('Users').doc(user.id);
+    const taskId = uuid.v4() as string;
     const payload = {
-      id: uuid.v4() as string,
       name: taskName,
       group_id: groupId,
       description: taskDescription,
@@ -85,11 +84,9 @@ const CreateTask = () => {
       return Alert.alert('Preencha todos os campos!');
     }
     firestore()
-      .collection('Groups')
-      .doc(payload.group_id)
-      .update({
-        tasks: [...tasks, payload],
-      })
+      .collection('Tasks')
+      .doc(taskId)
+      .set(payload)
       .then(() => {
         Alert.alert('Task', 'Task criada com sucesso!');
       })
@@ -103,7 +100,6 @@ const CreateTask = () => {
       .doc(groupId)
       .onSnapshot(async querySnapshot => {
         const group = querySnapshot.data();
-        setTasks(group.tasks);
 
         Promise.all(
           group.members.map(async doc => {

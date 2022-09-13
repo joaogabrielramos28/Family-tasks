@@ -18,7 +18,7 @@ import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input} from '../../Components';
-import {INotification, ITask} from '../../DTOs/GroupDto';
+import {INotification} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,7 +31,7 @@ interface ICreateGroup {
   members: Array<
     FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
   >;
-  tasks: ITask[];
+
   notifications: INotification[];
   createdAt: Date;
   background: string;
@@ -58,7 +58,6 @@ const CreateGroup = () => {
         description,
         admin: userRef,
         members: [userRef],
-        tasks: [],
         notifications: [],
         createdAt: new Date(),
         background: '',

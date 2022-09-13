@@ -12,7 +12,8 @@ const ProgressChart = ({
   todayTasksActive,
 }: ProgressChartProps) => {
   const theme = useTheme();
-  const percentage = allTodayTasks / (allTodayTasks - todayTasksActive);
+  const percentage =
+    todayTasksActive !== 0 ? allTodayTasks / todayTasksActive : 1;
   const data = {
     data: [percentage],
   };

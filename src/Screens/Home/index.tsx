@@ -22,30 +22,33 @@ const Home = () => {
   const activeTasks = tasks.filter(
     task => task?.status !== Status.Completed && task,
   );
+  const groupId = user.groupInfo?.id;
+
+  console.log(dailyTasks.length, activeTasks.length);
 
   useEffect(() => {
     const subscribe = firestore()
-      .collection('Groups')
-      .doc(user.groupInfo?.id)
+      .collection('Tasks')
+      .where('group_id', '==', groupId)
+      .where('date', '==', today)
       .onSnapshot(async querySnapshot => {
-        const group = querySnapshot.data();
-        Promise.all(
-          group.tasks.map(async task => {
-            const responsible = await task.responsible.get();
-            const relator = await task.relator.get();
+        const tasks = querySnapshot.docs.map(async doc => {
+          const task = doc.data();
+          const responsible = await task.responsible.get();
+          const relator = await task.relator.get();
 
-            if (responsible.id === user.id) {
-              return {
-                ...task,
-                responsible: {...responsible.data(), id: responsible.id},
-                relator: {...relator.data(), id: relator.id},
-              };
-            }
-          }),
-        )
-          .then(async response => {
-            setTasks(response);
+          return {
+            ...task,
+            responsible: {...responsible.data(), id: responsible.id},
+            relator: {...relator.data(), id: relator.id},
+          };
+        });
+
+        Promise.all(tasks)
+          .then(response => {
+            setTasks(response as ITask[]);
           })
+
           .catch(err => {
             Alert.alert('Erro ao buscar tasks');
             console.log(err);
@@ -53,7 +56,7 @@ const Home = () => {
       });
     setLoading(false);
     return () => subscribe();
-  }, [user.groupInfo?.id, user.id]);
+  }, [groupId, today, user.groupInfo.id, user.id]);
 
   if (loading) {
     return <Load />;

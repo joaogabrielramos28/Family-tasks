@@ -42,9 +42,11 @@ const Tasks = () => {
       .onSnapshot(async querySnapshot => {
         const tasks = querySnapshot.docs.map(async doc => {
           const task = doc.data();
+
           const responsible = await task.responsible.get();
           const relator = await task.relator.get();
           return {
+            id: doc.id,
             ...task,
             responsible: {...responsible.data(), id: responsible.id},
             relator: {...relator.data(), id: relator.id},

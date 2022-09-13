@@ -35,8 +35,6 @@ const TaskDetails = () => {
     goBack();
   };
 
-  console.log(task);
-
   const handleUpdateTaskStatus = (status: string) => {
     setStatus(status);
     const responsibleRef = firestore()
@@ -50,24 +48,17 @@ const TaskDetails = () => {
       status,
     };
 
-    firestore()
-      .collection('Groups')
-      .doc(task.group_id)
-      .get()
-      .then(group => {
-        const tasks = group
-          .data()
-          .tasks.filter(taskGroup => taskGroup.id !== task.id);
+    delete updatedTask.id;
 
-        firestore()
-          .collection('Groups')
-          .doc(task.group_id)
-          .update({
-            tasks: [...tasks, updatedTask],
-          })
-          .catch(() => Alert.alert('Erro ao atualizar tarefa'));
-      })
-      .catch(() => Alert.alert('Erro ao atualizar tarefa'));
+    firestore()
+      .collection('Tasks')
+      .doc(task.id)
+      .update(updatedTask)
+      .then(() => Alert.alert('Task atualizada'))
+      .catch(err => {
+        Alert.alert('Erro ao atualizar tarefa');
+        console.log(err);
+      });
   };
 
   useEffect(() => {

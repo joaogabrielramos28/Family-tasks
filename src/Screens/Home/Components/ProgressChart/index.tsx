@@ -13,10 +13,15 @@ const ProgressChart = ({
 }: ProgressChartProps) => {
   const theme = useTheme();
   const percentage =
-    todayTasksActive !== 0 ? allTodayTasks / todayTasksActive : 1;
+    todayTasksActive !== 0 ? todayTasksActive / allTodayTasks : 1;
   const data = {
     data: [percentage],
   };
+
+  console.log(todayTasksActive);
+  console.log(allTodayTasks);
+  console.log(allTodayTasks - todayTasksActive);
+
   return (
     <Box display={'flex'} alignItems="center" position={'relative'}>
       <CustomProgressChart
@@ -57,7 +62,7 @@ const ProgressChart = ({
           bottom: '21%',
         }}>
         <Heading color={'indigo.600'} fontSize={'4xl'}>
-          {percentage * 100} %
+          {(percentage * 100).toFixed(1)} %
         </Heading>
       </Box>
     </Box>

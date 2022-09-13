@@ -19,12 +19,12 @@ const Home = () => {
 
   const today = format(new Date(), 'dd/MM/yyyy');
   const dailyTasks = tasks.filter(task => task?.date === today);
-  const activeTasks = tasks.filter(
-    task => task?.status !== Status.Completed && task,
+  const completedTasks = tasks.filter(
+    task => task?.status === Status.Completed && task,
   );
   const groupId = user.groupInfo?.id;
 
-  console.log(dailyTasks.length, activeTasks.length);
+  console.log(dailyTasks.length, completedTasks.length);
 
   useEffect(() => {
     const subscribe = firestore()
@@ -72,7 +72,7 @@ const Home = () => {
 
           <ProgressChart
             allTodayTasks={dailyTasks.length}
-            todayTasksActive={activeTasks.length}
+            todayTasksActive={completedTasks.length}
           />
 
           <Box
@@ -86,10 +86,10 @@ const Home = () => {
               color={'yellow.600'}
             />
             <TasksStatistics
-              title="Tasks ativas"
+              title="Tasks feitas"
               icon={'toggle-on'}
               color={'success.400'}
-              value={activeTasks.length}
+              value={completedTasks.length}
             />
           </Box>
         </Box>

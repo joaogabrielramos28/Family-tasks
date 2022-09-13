@@ -31,8 +31,6 @@ const Tasks = () => {
     navigate('TaskDetails', {task});
   }
 
-  const tasksPerDate = tasks.filter(task => task.date === selectedDate);
-
   const groupId = user.groupInfo?.id;
   useEffect(() => {
     const subscribe = firestore()
@@ -56,6 +54,7 @@ const Tasks = () => {
         Promise.all(tasks)
           .then(response => {
             setTasks(response as ITask[]);
+            setLoading(false);
           })
 
           .catch(err => {
@@ -63,7 +62,7 @@ const Tasks = () => {
             console.log(err);
           });
       });
-    setLoading(false);
+
     return () => subscribe();
   }, [groupId, selectedDate]);
 
@@ -84,12 +83,12 @@ const Tasks = () => {
           <Heading color={'light.50'}>Minhas tarefas</Heading>
 
           <Text color={'light.50'} fontSize={16} fontWeight={'bold'}>
-            Total {tasksPerDate.length} tarefas
+            Total {tasks.length} tarefas
           </Text>
         </HStack>
       </VStack>
       <WeekCalendar onChangeDate={handleChangeSelectedDate} />
-      {tasksPerDate.length === 0 && (
+      {tasks.length === 0 && (
         <Box alignItems={'center'} justifyContent={'center'} flex={1}>
           <Heading color={'light.300'} size={'sm'}>
             {' '}
@@ -99,7 +98,7 @@ const Tasks = () => {
       )}
       <FlatList
         paddingX={10}
-        data={tasksPerDate}
+        data={tasks}
         marginTop={10}
         keyExtractor={item => item.id}
         renderItem={({item}) => (

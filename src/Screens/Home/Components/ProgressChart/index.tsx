@@ -13,14 +13,14 @@ const ProgressChart = ({
 }: ProgressChartProps) => {
   const theme = useTheme();
   const percentage =
-    todayTasksActive !== 0 ? todayTasksActive / allTodayTasks : 1;
+    todayTasksActive !== 0 || allTodayTasks !== 0
+      ? todayTasksActive !== 0
+        ? todayTasksActive / allTodayTasks
+        : 1
+      : 0;
   const data = {
     data: [percentage],
   };
-
-  console.log(todayTasksActive);
-  console.log(allTodayTasks);
-  console.log(allTodayTasks - todayTasksActive);
 
   return (
     <Box display={'flex'} alignItems="center" position={'relative'}>

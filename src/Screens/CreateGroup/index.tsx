@@ -17,7 +17,7 @@ import React, {useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
-import {Button, Input} from '../../Components';
+import {Alert, Button, Input} from '../../Components';
 import {INotification} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
@@ -42,12 +42,21 @@ const CreateGroup = () => {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const {user, USER_STORAGE_KEY} = useAuth();
+  const [showAlert, setShowAlert] = useState(false);
   const {goBack} = useNavigation<any>();
   const handleGoBack = () => {
     goBack();
   };
 
+  const [toastInfo, setToastInfo] = useState({
+    title: '',
+    color: '',
+  });
+
   const handleCreateGroup = async () => {
+    if (!name || !description) {
+      return;
+    }
     try {
       setLoading(true);
 
@@ -80,12 +89,27 @@ const CreateGroup = () => {
       };
 
       await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
-
+      setToastInfo({
+        title: 'Grupo criado com sucesso',
+        color: 'violet.500',
+      });
+      setShowAlert(true);
       setLoading(false);
+
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
     } catch {
-      console.log('erro');
-
+      setToastInfo({
+        title: 'Erro ao criar o grupo',
+        color: 'red.500',
+      });
+      setShowAlert(true);
       setLoading(false);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+      console.log('erro');
     }
   };
   return (
@@ -97,6 +121,11 @@ const CreateGroup = () => {
       <KeyboardAvoidingView enabled behavior="position">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack marginTop={4}>
+            <Alert
+              isOpen={showAlert}
+              text={toastInfo.title}
+              color={toastInfo.color}
+            />
             <HStack alignItems={'center'}>
               <BorderlessButton onPress={handleGoBack}>
                 <IconButton

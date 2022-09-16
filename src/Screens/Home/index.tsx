@@ -25,36 +25,39 @@ const Home = () => {
   const groupId = user.groupInfo?.id;
 
   useEffect(() => {
-    const subscribe = firestore()
-      .collection('Tasks')
-      .where('group_id', '==', groupId)
-      .where('date', '==', today)
-      .onSnapshot(async querySnapshot => {
-        const tasks = querySnapshot.docs.map(async doc => {
-          const task = doc.data();
-          const responsible = await task.responsible.get();
-          const relator = await task.relator.get();
+    if (groupId) {
+      const subscribe = firestore()
+        .collection('Tasks')
+        .where('group_id', '==', groupId)
+        .where('date', '==', today)
+        .onSnapshot(async querySnapshot => {
+          const tasks = querySnapshot.docs.map(async doc => {
+            const task = doc.data();
+            const responsible = await task.responsible.get();
+            const relator = await task.relator.get();
 
-          return {
-            ...task,
-            responsible: {...responsible.data(), id: responsible.id},
-            relator: {...relator.data(), id: relator.id},
-          };
-        });
-
-        Promise.all(tasks)
-          .then(response => {
-            setTasks(response as ITask[]);
-          })
-
-          .catch(err => {
-            Alert.alert('Erro ao buscar tasks');
-            console.log(err);
+            return {
+              ...task,
+              responsible: {...responsible.data(), id: responsible.id},
+              relator: {...relator.data(), id: relator.id},
+            };
           });
-      });
+
+          Promise.all(tasks)
+            .then(response => {
+              setTasks(response as ITask[]);
+            })
+
+            .catch(err => {
+              Alert.alert('Erro ao buscar tasks');
+              console.log(err);
+            });
+        });
+      setLoading(false);
+      return () => subscribe();
+    }
     setLoading(false);
-    return () => subscribe();
-  }, [groupId, today, user.groupInfo.id, user.id]);
+  }, [groupId, today, user.groupInfo?.id, user.id]);
 
   if (loading) {
     return <Load />;

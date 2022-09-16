@@ -53,7 +53,7 @@ const GroupDetails = () => {
     setConfirmationToExitIsOpen(!confirmationToExitIsOpen);
 
   useEffect(() => {
-    group.notifications?.find(
+    group?.notifications?.find(
       notification => notification.member.id === user.id,
     )
       ? setSentNotification(true)
@@ -75,7 +75,7 @@ const GroupDetails = () => {
   }, []);
 
   const handleRequestEntry = async () => {
-    const admin = group.members.filter(
+    const admin = group?.members.filter(
       member => member.groupInfo.position === 'Administrator',
     );
 
@@ -122,7 +122,7 @@ const GroupDetails = () => {
         setGroup(group as IGroupDto);
 
         Promise.all(
-          group.members.map(async doc => {
+          group?.members.map(async doc => {
             return await doc.get().then(member => {
               return {...member.data(), id: member.id};
             });
@@ -169,7 +169,8 @@ const GroupDetails = () => {
 
   const handleExitOfGroup = async () => {
     const items = [];
-    for (let i = 0; i < group.members.length; i++) {
+    const groupSize = group.members.length;
+    for (let i = 0; i < groupSize; i++) {
       if (group.members[i].id !== user.id) {
         const ref = firestore().collection('Users').doc(group.members[i].id);
 
@@ -214,181 +215,187 @@ const GroupDetails = () => {
     checkUserIsAdmin();
   }, [checkUserIsAdmin]);
 
-  if (load || !group.name) {
+  if (load) {
     return <Load />;
   }
 
   return (
-    <Box flex={1} bg={'warmGray.900'}>
-      <>
-        <Box
-          background={'warmGray.900'}
-          height={RFValue(200)}
-          padding={RFValue(4)}>
-          {loadingChangeBackground && (
-            <Spinner
-              size="lg"
-              color={'violet.500'}
-              zIndex={1}
-              position={'absolute'}
-              top={RFValue(100)}
-              left={width / 2 - RFValue(20)}
-            />
-          )}
-          {group.background && (
-            <FastImageFactory
-              source={{
-                uri: group.background,
-              }}
-              onLoad={() => setLoadingChangeBackground(false)}
-              position="absolute"
-              width={width}
-              resizeMode="cover"
+    <>
+      {group && (
+        <Box flex={1} bg={'warmGray.900'}>
+          <>
+            <Box
+              background={'warmGray.900'}
               height={RFValue(200)}
-            />
-          )}
-
-          <ActionSheetBg
-            backgroundPath={group.photo_path}
-            isOpen={isOpen}
-            onClose={onClose}
-            groupId={id}
-            handleChangeLoading={handleChangeLoading}
-          />
-          <HStack marginTop={10} justifyContent={'space-between'}>
-            <IconButton
-              onPress={handleGoBack}
-              icon={
-                <Icon
-                  as={AntDesign}
-                  size={'xl'}
-                  name={'arrowleft'}
-                  color={'light.50'}
+              padding={RFValue(4)}>
+              {loadingChangeBackground && (
+                <Spinner
+                  size="lg"
+                  color={'violet.500'}
+                  zIndex={1}
+                  position={'absolute'}
+                  top={RFValue(100)}
+                  left={width / 2 - RFValue(20)}
                 />
-              }
-            />
-            {memberIsIngroup && isAdmin && (
-              <HStack>
+              )}
+              {group.background && (
+                <FastImageFactory
+                  source={{
+                    uri: group.background,
+                  }}
+                  onLoad={() => setLoadingChangeBackground(false)}
+                  position="absolute"
+                  width={width}
+                  resizeMode="cover"
+                  height={RFValue(200)}
+                />
+              )}
+
+              <ActionSheetBg
+                backgroundPath={group.photo_path}
+                isOpen={isOpen}
+                onClose={onClose}
+                groupId={id}
+                handleChangeLoading={handleChangeLoading}
+              />
+              <HStack marginTop={10} justifyContent={'space-between'}>
                 <IconButton
-                  onPress={onOpen}
+                  onPress={handleGoBack}
                   icon={
                     <Icon
                       as={AntDesign}
                       size={'xl'}
-                      name={'ellipsis1'}
+                      name={'arrowleft'}
                       color={'light.50'}
                     />
                   }
                 />
-                <IconButton
-                  onPress={handleGoToNotificationsScreen}
-                  icon={
-                    <>
-                      <Icon
-                        as={Ionicons}
-                        size={'md'}
-                        name={'notifications'}
-                        color={'light.50'}
-                      />
-                      {group.notifications.length > 0 && (
-                        <Badge
-                          background={'violet.500'}
-                          position="absolute"
-                          top={-4}
-                          right={-2}
-                          borderRadius={'2xl'}
-                          width={6}
-                          height={6}>
-                          <Text
-                            width={'100%'}
-                            color={'light.300'}
-                            fontSize={14}>
-                            {group.notifications.length}
-                          </Text>
-                        </Badge>
-                      )}
-                    </>
-                  }
-                />
+                {memberIsIngroup && isAdmin && (
+                  <HStack>
+                    <IconButton
+                      onPress={onOpen}
+                      icon={
+                        <Icon
+                          as={AntDesign}
+                          size={'xl'}
+                          name={'ellipsis1'}
+                          color={'light.50'}
+                        />
+                      }
+                    />
+                    <IconButton
+                      onPress={handleGoToNotificationsScreen}
+                      icon={
+                        <>
+                          <Icon
+                            as={Ionicons}
+                            size={'md'}
+                            name={'notifications'}
+                            color={'light.50'}
+                          />
+                          {group?.notifications.length > 0 && (
+                            <Badge
+                              background={'violet.500'}
+                              position="absolute"
+                              top={-4}
+                              right={-2}
+                              borderRadius={'2xl'}
+                              width={6}
+                              height={6}>
+                              <Text
+                                width={'100%'}
+                                color={'light.300'}
+                                fontSize={14}>
+                                {group.notifications.length}
+                              </Text>
+                            </Badge>
+                          )}
+                        </>
+                      }
+                    />
+                  </HStack>
+                )}
               </HStack>
-            )}
-          </HStack>
-        </Box>
-        <VStack flex={1} paddingX={8}>
-          <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
-            {group.name}
-          </Heading>
-
-          <Button
-            marginTop={4}
-            title={
-              memberIsIngroup
-                ? 'Sair do grupo'
-                : !memberIsIngroup && !sentNotification
-                ? 'Solicitar entrada'
-                : 'Solicitação enviada'
-            }
-            isDisabled={
-              sentNotification || (!!user.groupInfo && !memberIsIngroup)
-            }
-            onPress={memberIsIngroup ? onToggleAlertDialog : handleRequestEntry}
-          />
-
-          <HStack
-            alignItems={'flex-start'}
-            marginTop={10}
-            justifyContent={'space-between'}>
-            <VStack alignItems={'center'}>
-              <Heading color={'light.300'} size={'md'}>
-                Total de Tasks
+            </Box>
+            <VStack flex={1} paddingX={8}>
+              <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
+                {group.name}
               </Heading>
-              <Text color={'light.100'}>{tasksCount}</Text>
-            </VStack>
-            <VStack alignItems={'center'}>
-              <Heading color={'light.300'} size={'md'}>
-                Participantes
-              </Heading>
-              <Text color={'light.100'}>{group.members?.length}</Text>
-            </VStack>
-          </HStack>
-          <Box marginTop={6}>
-            <HStack>
-              <Heading color={'light.100'}>Membros</Heading>
-            </HStack>
 
-            <FlatList
-              marginTop={4}
-              height={RFPercentage(25)}
-              contentContainerStyle={{
-                paddingVertical: 20,
-              }}
-              data={sortParticipants(group.members)}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <Member
-                  {...item}
-                  isAdmin={isAdmin}
-                  members={group.members}
-                  handleResetUser={handleResetUser}
+              <Button
+                marginTop={4}
+                title={
+                  memberIsIngroup
+                    ? 'Sair do grupo'
+                    : !memberIsIngroup && !sentNotification
+                    ? 'Solicitar entrada'
+                    : 'Solicitação enviada'
+                }
+                isDisabled={
+                  sentNotification || (!!user.groupInfo && !memberIsIngroup)
+                }
+                onPress={
+                  memberIsIngroup ? onToggleAlertDialog : handleRequestEntry
+                }
+              />
+
+              <HStack
+                alignItems={'flex-start'}
+                marginTop={10}
+                justifyContent={'space-between'}>
+                <VStack alignItems={'center'}>
+                  <Heading color={'light.300'} size={'md'}>
+                    Total de Tasks
+                  </Heading>
+                  <Text color={'light.100'}>{tasksCount}</Text>
+                </VStack>
+                <VStack alignItems={'center'}>
+                  <Heading color={'light.300'} size={'md'}>
+                    Participantes
+                  </Heading>
+                  <Text color={'light.100'}>{group.members?.length}</Text>
+                </VStack>
+              </HStack>
+              <Box marginTop={6}>
+                <HStack>
+                  <Heading color={'light.100'}>Membros</Heading>
+                </HStack>
+
+                <FlatList
+                  marginTop={4}
+                  height={RFPercentage(25)}
+                  contentContainerStyle={{
+                    paddingVertical: 20,
+                  }}
+                  data={sortParticipants(group.members)}
+                  keyExtractor={item => item.id}
+                  renderItem={({item}) => (
+                    <Member
+                      {...item}
+                      isAdmin={isAdmin}
+                      members={group.members}
+                      handleResetUser={handleResetUser}
+                    />
+                  )}
+                  showsVerticalScrollIndicator={false}
                 />
-              )}
-              showsVerticalScrollIndicator={false}
-            />
-          </Box>
-        </VStack>
-      </>
+              </Box>
+            </VStack>
+          </>
 
-      <AlertDialog
-        isOpen={confirmationToExitIsOpen}
-        title={'Sair do grupo'}
-        body={'Tem certeza que deseja sair do grupo?'}
-        buttonCancelTitle={'Cancelar'}
-        buttonSuccesTitle={'Sair'}
-        onSuccess={handleExitOfGroup}
-        onCancel={onToggleAlertDialog}
-        onClose={onToggleAlertDialog}
-      />
-    </Box>
+          <AlertDialog
+            isOpen={confirmationToExitIsOpen}
+            title={'Sair do grupo'}
+            body={'Tem certeza que deseja sair do grupo?'}
+            buttonCancelTitle={'Cancelar'}
+            buttonSuccesTitle={'Sair'}
+            onSuccess={handleExitOfGroup}
+            onCancel={onToggleAlertDialog}
+            onClose={onToggleAlertDialog}
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

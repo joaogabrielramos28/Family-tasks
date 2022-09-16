@@ -15,10 +15,12 @@ import {CreateTask, Home, Profile} from '../Screens';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 import {StackTasksRoutes, StackGroupsRoutes} from './app.stack.routes';
+import {useAuth} from '../hooks';
 
 const {Screen, Navigator} = createBottomTabNavigator();
 
 const TabsRoutes = () => {
+  const {user} = useAuth();
   const theme = useTheme();
   return (
     <Navigator
@@ -52,45 +54,50 @@ const TabsRoutes = () => {
           ),
         }}
       />
-      <Screen
-        name="Tasks"
-        component={StackTasksRoutes}
-        options={{
-          tabBarIcon: ({color}) => (
-            <FontAwesome5 name="tasks" size={24} color={color} />
-          ),
-        }}
-      />
-      <Screen
-        name="New"
-        component={CreateTask}
-        options={{
-          tabBarIcon: () => (
-            <BorderlessButton>
-              <IconButton
-                style={{
-                  top: -5,
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  backgroundColor: theme.colors.light[50],
-                  shadowColor: theme.colors.indigo[300],
-                  shadowOffset: {width: 1.8, height: 0},
-                  shadowOpacity: 1.0,
-                }}
-                icon={
-                  <Icon
-                    as={AntDesign}
-                    color={theme.colors.indigo[500]}
-                    size={'4xl'}
-                    name={'plus'}
+      {user.groupInfo && (
+        <>
+          <Screen
+            name="Tasks"
+            component={StackTasksRoutes}
+            options={{
+              tabBarIcon: ({color}) => (
+                <FontAwesome5 name="tasks" size={24} color={color} />
+              ),
+            }}
+          />
+          <Screen
+            name="New"
+            component={CreateTask}
+            options={{
+              tabBarIcon: () => (
+                <BorderlessButton>
+                  <IconButton
+                    style={{
+                      top: -5,
+                      width: 50,
+                      height: 50,
+                      borderRadius: 50,
+                      backgroundColor: theme.colors.light[50],
+                      shadowColor: theme.colors.indigo[300],
+                      shadowOffset: {width: 1.8, height: 0},
+                      shadowOpacity: 1.0,
+                    }}
+                    icon={
+                      <Icon
+                        as={AntDesign}
+                        color={theme.colors.indigo[500]}
+                        size={'4xl'}
+                        name={'plus'}
+                      />
+                    }
                   />
-                }
-              />
-            </BorderlessButton>
-          ),
-        }}
-      />
+                </BorderlessButton>
+              ),
+            }}
+          />
+        </>
+      )}
+
       <Screen
         name="Group"
         component={StackGroupsRoutes}

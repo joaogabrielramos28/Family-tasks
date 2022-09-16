@@ -19,13 +19,16 @@ import {categories} from '../../Utils/taskCategories';
 
 import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
+import {Status} from '../Tasks/Components/Task/types';
+import {IMember, ITask} from '../../DTOs/GroupDto';
+import {Load} from '../../Components';
 
 const TaskDetails = () => {
-  const [status, setStatus] = useState('');
-
   const route = useRoute();
-
-  const {task} = route.params as TasksDetailsNavigationParams;
+  const {id} = route.params as TasksDetailsNavigationParams;
+  const [task, setTask] = useState<ITask>({} as ITask);
+  const [members, setMembers] = useState<IMember[]>([]);
+  const [load, setLoad] = useState(true);
 
   const {goBack} = useNavigation();
 
@@ -35,8 +38,7 @@ const TaskDetails = () => {
     goBack();
   };
 
-  const handleUpdateTaskStatus = (status: string) => {
-    setStatus(status);
+  const handleUpdateTaskStatus = (status: Status) => {
     const responsibleRef = firestore()
       .collection('Users')
       .doc(task.responsible.id);
@@ -48,11 +50,9 @@ const TaskDetails = () => {
       status,
     };
 
-    delete updatedTask.id;
-
     firestore()
       .collection('Tasks')
-      .doc(task.id)
+      .doc(id)
       .update(updatedTask)
       .then(() => Alert.alert('Task atualizada'))
       .catch(err => {
@@ -61,9 +61,95 @@ const TaskDetails = () => {
       });
   };
 
+  const handleUpdateRelator = (memberId: string) => {
+    const memberRef = firestore().collection('Users').doc(memberId);
+    const responsibleRef = firestore()
+      .collection('Users')
+      .doc(task.responsible.id);
+
+    const updatedTask = {
+      ...task,
+      responsible: responsibleRef,
+      relator: memberRef,
+    };
+
+    firestore()
+      .collection('Tasks')
+      .doc(id)
+      .update(updatedTask)
+      .then(() => Alert.alert('Task atualizada'))
+      .catch(err => {
+        Alert.alert('Erro ao atualizar tarefa');
+        console.log(err);
+      });
+  };
+  const handleUpdateResponsible = (memberId: string) => {
+    const relatorRef = firestore().collection('Users').doc(task.relator.id);
+    const memberRef = firestore().collection('Users').doc(memberId);
+
+    const updatedTask = {
+      ...task,
+      responsible: memberRef,
+      relator: relatorRef,
+    };
+
+    firestore()
+      .collection('Tasks')
+      .doc(id)
+      .update(updatedTask)
+      .then(() => {
+        Alert.alert('Task atualizada');
+      })
+      .catch(err => {
+        Alert.alert('Erro ao atualizar tarefa');
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    setStatus(task.status);
-  }, [task]);
+    const subscribe = firestore()
+      .collection('Groups')
+      .doc(task.group_id)
+      .onSnapshot(async querySnapshot => {
+        const group = querySnapshot.data();
+
+        Promise.all(
+          group?.members.map(async doc => {
+            return await doc.get().then(member => {
+              return {...member.data(), id: member.id};
+            });
+          }),
+        )
+
+          .then(members => {
+            setMembers(members);
+          })
+          .catch(e => console.log(e));
+      });
+    return () => subscribe();
+  }, [task.group_id]);
+
+  useEffect(() => {
+    const subscribe = firestore()
+      .collection('Tasks')
+      .doc(id)
+      .onSnapshot(async querySnapshot => {
+        const taskDoc = querySnapshot.data();
+
+        const taskFormatted = {
+          ...taskDoc,
+        } as ITask;
+        setTask(taskFormatted);
+        setLoad(false);
+      });
+
+    return () => subscribe();
+  }, [id]);
+
+  if (load || !task.responsible.id) {
+    return <Load />;
+  }
+
   return (
     <ScrollView
       background={'warmGray.900'}
@@ -88,6 +174,7 @@ const TaskDetails = () => {
               />
             }
           />
+
           <IconButton
             icon={
               <Icon
@@ -111,7 +198,7 @@ const TaskDetails = () => {
               size={'12'}
               rounded={'full'}
               source={{
-                uri: task.responsible.photo_url,
+                uri: task.responsible?.photo_url,
               }}
             />
           </HStack>
@@ -121,17 +208,19 @@ const TaskDetails = () => {
             marginTop={2}
             color={'light.50'}
             fontSize={RFValue(12)}
-            selectedValue={status}
+            selectedValue={task.status}
             fontWeight={'bold'}
             backgroundColor={
-              status === 'doing'
+              task.status === 'doing'
                 ? 'yellow.500'
-                : status === 'to do'
+                : task.status === 'to do'
                 ? 'violet.500'
                 : 'green.600'
             }
             borderWidth={0}
-            onValueChange={itemValue => handleUpdateTaskStatus(itemValue)}
+            onValueChange={(itemValue: Status) =>
+              handleUpdateTaskStatus(itemValue)
+            }
             dropdownIcon={
               <AntDesign
                 name="down"
@@ -169,28 +258,32 @@ const TaskDetails = () => {
           <Select
             fontSize={RFValue(14)}
             borderWidth={0}
-            selectedValue={task.responsible.name}
+            selectedValue={task?.responsible?.id}
             color={'light.50'}
+            onValueChange={responsible => handleUpdateResponsible(responsible)}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
             }>
-            <Select.Item
-              value={task.responsible.name}
-              label={task.responsible.name}
-              style={{
-                justifyContent: 'center',
-              }}
-              _text={{
-                fontSize: RFValue(16),
-              }}
-              leftIcon={
-                <FactoryImage
-                  size={'8'}
-                  rounded={'full'}
-                  source={{uri: task.responsible.photo_url}}
-                />
-              }
-            />
+            {members.map(member => (
+              <Select.Item
+                key={member.id}
+                value={member.id}
+                label={member.name}
+                style={{
+                  justifyContent: 'center',
+                }}
+                _text={{
+                  fontSize: RFValue(16),
+                }}
+                leftIcon={
+                  <FactoryImage
+                    size={'8'}
+                    rounded={'full'}
+                    source={{uri: member.photo_url}}
+                  />
+                }
+              />
+            ))}
           </Select>
         </VStack>
         <VStack width={'100%'} marginTop={6} space={4}>
@@ -202,29 +295,33 @@ const TaskDetails = () => {
             fontSize={RFValue(14)}
             borderWidth={0}
             color={'light.50'}
-            selectedValue={task.relator.name}
+            selectedValue={task?.relator?.id}
+            onValueChange={relator => handleUpdateRelator(relator)}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
             }>
-            <Select.Item
-              value={task.relator.name}
-              label={task.relator.name}
-              style={{
-                justifyContent: 'center',
-              }}
-              _text={{
-                fontSize: RFValue(16),
-              }}
-              leftIcon={
-                <FactoryImage
-                  rounded={'full'}
-                  size={'8'}
-                  source={{
-                    uri: task.relator.photo_url,
-                  }}
-                />
-              }
-            />
+            {members.map(member => (
+              <Select.Item
+                key={member.id}
+                value={member.id}
+                label={member.name}
+                style={{
+                  justifyContent: 'center',
+                }}
+                _text={{
+                  fontSize: RFValue(16),
+                }}
+                leftIcon={
+                  <FactoryImage
+                    rounded={'full'}
+                    size={'8'}
+                    source={{
+                      uri: member.photo_url,
+                    }}
+                  />
+                }
+              />
+            ))}
           </Select>
         </VStack>
         <VStack width={'100%'} marginTop={6} space={4} paddingBottom={10}>

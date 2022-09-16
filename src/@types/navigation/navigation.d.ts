@@ -1,5 +1,4 @@
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {ITask} from '../../DTOs/GroupDto';
 
 export interface NotificationsNavigationParams {
   groupId: string;
@@ -13,7 +12,7 @@ export interface GroupDetailsNavigationParams {
 }
 
 export interface TasksDetailsNavigationParams {
-  task: ITask;
+  id: string;
 }
 
 export declare global {

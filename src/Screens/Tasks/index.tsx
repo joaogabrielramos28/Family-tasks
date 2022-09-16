@@ -28,7 +28,7 @@ const Tasks = () => {
   const {navigate} = useNavigation();
 
   function handleNavigateToTask(task: ITask) {
-    navigate('TaskDetails', {task});
+    navigate('TaskDetails', {id: task.id});
   }
 
   const groupId = user.groupInfo?.id;

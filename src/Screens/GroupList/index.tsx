@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Box, useTheme} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SceneMap, TabView, TabBar} from 'react-native-tab-view';
 import {Button, Header} from '../../Components';
 import {useAuth} from '../../hooks';
@@ -20,12 +20,15 @@ const GroupList = () => {
   const {user} = useAuth();
   const {navigate} = useNavigation();
   const [index, setIndex] = useState(0);
-  const [canCreateGroup] = useState(!!user.groupInfo);
+  const [canCreateGroup, setCanCreateGroup] = useState(false);
   const [routes] = useState([
     {key: 'allGroups', title: 'Todos Grupos'},
     {key: 'myGroup', title: 'Meu Grupo'},
   ]);
 
+  useEffect(() => {
+    setCanCreateGroup(!!user.groupInfo);
+  }, [user]);
   const theme = useTheme();
 
   const handleGoToCreateGroupScreen = () => {

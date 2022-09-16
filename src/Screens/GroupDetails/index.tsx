@@ -33,7 +33,7 @@ import {GroupDetailsNavigationParams} from '../../@types/navigation/navigation';
 
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
-  const {user, USER_STORAGE_KEY} = useAuth();
+  const {user, USER_STORAGE_KEY, updateUserState} = useAuth();
   const {goBack, navigate} = useNavigation();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
   const [tasksCount, setTasksCount] = useState(0);
@@ -192,6 +192,7 @@ const GroupDetails = () => {
       delete storageUser.groupInfo;
 
       await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(storageUser));
+      updateUserState(storageUser);
     } catch (error) {
       console.log(error);
     }

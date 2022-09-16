@@ -17,6 +17,7 @@ export interface IAuthContextProps {
   loadingAuth: boolean;
   resetPassword: (email: string) => Promise<void>;
   USER_STORAGE_KEY: string;
+  updateUserState: (user: IUser) => void;
 }
 
 export interface IUser {

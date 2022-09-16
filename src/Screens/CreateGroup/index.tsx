@@ -22,6 +22,7 @@ import {INotification} from '../../DTOs/GroupDto';
 import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {IUser} from '../../hooks/types';
 
 interface ICreateGroup {
   id: string;
@@ -41,7 +42,7 @@ const CreateGroup = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const {user, USER_STORAGE_KEY} = useAuth();
+  const {user, USER_STORAGE_KEY, updateUserState} = useAuth();
   const [showAlert, setShowAlert] = useState(false);
   const {goBack} = useNavigation<any>();
   const handleGoBack = () => {
@@ -86,9 +87,10 @@ const CreateGroup = () => {
           id: group.id,
           position: 'Administrator',
         },
-      };
+      } as IUser;
 
       await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userUpdated));
+      updateUserState(userUpdated);
       setToastInfo({
         title: 'Grupo criado com sucesso',
         color: 'violet.500',

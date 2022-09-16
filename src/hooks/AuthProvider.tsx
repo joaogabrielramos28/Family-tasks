@@ -31,6 +31,7 @@ const USER_STORAGE_KEY = '@taskfy:user';
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
+  console.log(user);
 
   const signUpWithEmailAndPassword = async (
     email: string,
@@ -335,6 +336,10 @@ const AuthProvider = ({children}) => {
     [user?.id],
   );
 
+  const updateUserState = useCallback((user: IUser) => {
+    setUser(user);
+  }, []);
+
   useEffect(() => {
     async function requestUserPermission() {
       const authStatus = await messaging().requestPermission();
@@ -371,6 +376,7 @@ const AuthProvider = ({children}) => {
         updateUserPhoto,
         loadingAuth,
         resetPassword,
+        updateUserState,
         USER_STORAGE_KEY,
       }}>
       {children}

@@ -12,11 +12,10 @@ const MyGroup = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    firestore()
+    const subscribe = firestore()
       .collection('Users')
       .doc(user.id)
-      .get()
-      .then(member => {
+      .onSnapshot(member => {
         if (member.data()?.groupInfo?.id === undefined) {
           setMyGroups({} as IGroupDto);
           setLoading(false);
@@ -43,8 +42,8 @@ const MyGroup = () => {
 
           return () => subscribe();
         }
-      })
-      .catch(e => console.log(e));
+      });
+    return () => subscribe();
   }, [user.id]);
 
   if (loading) {

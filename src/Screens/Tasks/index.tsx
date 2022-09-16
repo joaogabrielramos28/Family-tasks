@@ -88,14 +88,7 @@ const Tasks = () => {
         </HStack>
       </VStack>
       <WeekCalendar onChangeDate={handleChangeSelectedDate} />
-      {tasks.length === 0 && (
-        <Box alignItems={'center'} justifyContent={'center'} flex={1}>
-          <Heading color={'light.300'} size={'sm'}>
-            {' '}
-            Nenhuma tarefa para essa data :({' '}
-          </Heading>
-        </Box>
-      )}
+
       <FlatList
         paddingX={10}
         data={tasks}
@@ -112,6 +105,14 @@ const Tasks = () => {
           />
         )}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <Box alignItems={'center'} justifyContent={'center'} flex={1}>
+            <Heading color={'light.300'} size={'sm'}>
+              {' '}
+              Nenhuma tarefa para essa data :({' '}
+            </Heading>
+          </Box>
+        )}
       />
     </Box>
   );

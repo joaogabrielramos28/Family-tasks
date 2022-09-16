@@ -1,4 +1,4 @@
-import {FlatList} from 'native-base';
+import {Box, FlatList, Text} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {IGroupDto} from '../../../../DTOs/GroupDto';
 import {GroupCard} from '../GroupCard';
@@ -66,6 +66,11 @@ const AllGroups = () => {
               members={item.members}
             />
           </>
+        )}
+        ListEmptyComponent={() => (
+          <Box alignItems={'center'}>
+            <Text color={'light.300'}>Ainda não existe nenhum grupo</Text>
+          </Box>
         )}
       />
     </>

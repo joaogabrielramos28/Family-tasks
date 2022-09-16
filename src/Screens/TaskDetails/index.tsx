@@ -194,13 +194,6 @@ const TaskDetails = () => {
             justifyContent={'space-between'}
             alignItems={'center'}>
             <Heading color={'light.50'}>{task.name}</Heading>
-            <FactoryImage
-              size={'12'}
-              rounded={'full'}
-              source={{
-                uri: task.responsible?.photo_url,
-              }}
-            />
           </HStack>
 
           <Select

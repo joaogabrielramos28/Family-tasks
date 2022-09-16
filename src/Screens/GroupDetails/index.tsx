@@ -36,6 +36,7 @@ const GroupDetails = () => {
   const {user, USER_STORAGE_KEY} = useAuth();
   const {goBack, navigate} = useNavigation();
   const [group, setGroup] = useState<IGroupDto>({} as IGroupDto);
+  const [tasksCount, setTasksCount] = useState(0);
   const [memberIsIngroup, setMemberIsIngroup] = useState(false);
   const [sentNotification, setSentNotification] = useState(false);
   const [loadingChangeBackground, setLoadingChangeBackground] = useState(false);
@@ -145,6 +146,17 @@ const GroupDetails = () => {
       });
     return () => subscribe();
   }, [id, user.id]);
+
+  useEffect(() => {
+    firestore()
+      .collection('Tasks')
+      .where('group_id', '==', id)
+      .get()
+      .then(res => {
+        setTasksCount(res.size);
+      })
+      .catch(e => console.log(e));
+  }, [id]);
 
   const sortParticipants = (members: IMember[]) => {
     return members?.sort((a: IMember) => {
@@ -330,7 +342,7 @@ const GroupDetails = () => {
               <Heading color={'light.300'} size={'md'}>
                 Total de Tasks
               </Heading>
-              <Text color={'light.100'}>{group.tasks?.length}</Text>
+              <Text color={'light.100'}>{tasksCount}</Text>
             </VStack>
             <VStack alignItems={'center'}>
               <Heading color={'light.300'} size={'md'}>

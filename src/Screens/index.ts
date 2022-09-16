@@ -2,7 +2,7 @@ import {Home} from './Home';
 import {CreateTask} from './CreateTask';
 import {Tasks} from './Tasks';
 import {TaskDetails} from './TaskDetails';
-import {Profile} from './Profile';
+import {MyProfile} from './MyProfile';
 import {GroupList} from './GroupList';
 import {GroupDetails} from './GroupDetails';
 import {CreateGroup} from './CreateGroup';
@@ -17,7 +17,7 @@ export {
   CreateTask,
   Tasks,
   TaskDetails,
-  Profile,
+  MyProfile,
   GroupList,
   GroupDetails,
   CreateGroup,

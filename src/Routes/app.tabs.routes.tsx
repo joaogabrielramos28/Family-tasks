@@ -11,7 +11,7 @@ import {
 } from '@expo/vector-icons';
 import {BorderlessButton} from 'react-native-gesture-handler';
 
-import {CreateTask, Home, Profile} from '../Screens';
+import {CreateTask, Home, MyProfile} from '../Screens';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 import {StackTasksRoutes, StackGroupsRoutes} from './app.stack.routes';
@@ -109,7 +109,7 @@ const TabsRoutes = () => {
       />
       <Screen
         name="Profile"
-        component={Profile}
+        component={MyProfile}
         options={{
           tabBarIcon: ({color}) => (
             <FontAwesome name="user" size={26} color={color} />

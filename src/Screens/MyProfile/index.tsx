@@ -24,7 +24,7 @@ import {ActionSheetItem} from '../../Components/ActionSheet/Components/ActionShe
 import {useAuth} from '../../hooks';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-const Profile = () => {
+const MyProfile = () => {
   const theme = useTheme();
   const {user, updateUser, updateUserPhoto} = useAuth();
 
@@ -284,4 +284,4 @@ const Profile = () => {
   );
 };
 
-export {Profile};
+export {MyProfile};

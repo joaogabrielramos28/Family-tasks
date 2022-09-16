@@ -24,8 +24,6 @@ const Home = () => {
   );
   const groupId = user.groupInfo?.id;
 
-  console.log(dailyTasks.length, completedTasks.length);
-
   useEffect(() => {
     const subscribe = firestore()
       .collection('Tasks')

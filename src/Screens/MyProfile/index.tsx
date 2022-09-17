@@ -2,7 +2,6 @@ import {AntDesign, MaterialIcons} from '@expo/vector-icons';
 import {
   Avatar,
   Box,
-  FormControl,
   Heading,
   HStack,
   Icon,
@@ -14,41 +13,32 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {BorderlessButton} from 'react-native-gesture-handler';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {ActionSheet, Button, Input} from '../../Components';
+import {ActionSheet} from '../../Components';
 import {ActionSheetItem} from '../../Components/ActionSheet/Components/ActionSheetItem';
 import {useAuth} from '../../hooks';
-// import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {ModalEditProfile} from './Components/ModalEditProfile';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const MyProfile = () => {
   const theme = useTheme();
-  const {user, updateUser, updateUserPhoto} = useAuth();
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const {user, updateUserPhoto} = useAuth();
 
-  const [email, setEmail] = useState(user?.email);
-  const [name, setName] = useState(user?.name);
   const [imageUri, setImageUri] = useState(user?.photo_url);
-  const [loading, setLoading] = useState(false);
+
   const [loadingImage, setLoadingImage] = useState(true);
 
   const {isOpen, onOpen, onClose} = useDisclose();
 
-  const handleUpdateUser = async () => {
-    try {
-      setLoading(true);
-      await updateUser(name, email);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      Alert.alert(
-        'Atualizar perfil',
-        'Ocorreu um erro ao atualizar seu perfil',
-      );
-      console.log(error);
-    }
+  const handleCloseModal = useCallback(() => {
+    setModalIsVisible(false);
+  }, []);
+
+  const handleOpen = () => {
+    setModalIsVisible(true);
   };
 
   useEffect(() => {
@@ -56,22 +46,22 @@ const MyProfile = () => {
     else setLoadingImage(true);
   }, [user.photo_url]);
 
-  // const handleLaunchCamera = async (): Promise<void> => {
-  //   await launchCamera(
-  //     {
-  //       mediaType: 'photo',
-  //       saveToPhotos: true,
-  //     },
-  //     async response => {
-  //       if (response.didCancel) {
-  //         return;
-  //       }
-  //       if (response.errorCode) {
-  //         console.log(response.errorMessage);
-  //       }
-  //     },
-  //   );
-  // };
+  const handleLaunchCamera = async (): Promise<void> => {
+    await launchCamera(
+      {
+        mediaType: 'photo',
+        saveToPhotos: true,
+      },
+      async response => {
+        if (response.didCancel) {
+          return;
+        }
+        if (response.errorCode) {
+          console.log(response.errorMessage);
+        }
+      },
+    );
+  };
 
   const handleLaunchGallery = async (): Promise<void> => {
     await launchImageLibrary(
@@ -118,8 +108,7 @@ const MyProfile = () => {
             Abrir galeria
           </ActionSheetItem>
           <ActionSheetItem
-            // onPress={handleLaunchCamera}
-            onPress={() => {}}
+            onPress={handleLaunchCamera}
             startIcon={
               <Icon
                 as={MaterialIcons}
@@ -138,7 +127,7 @@ const MyProfile = () => {
           background={'warmGray.800'}
           padding={10}
           alignItems={'flex-end'}>
-          <BorderlessButton>
+          <BorderlessButton onPress={handleOpen}>
             <AntDesign
               name="ellipsis1"
               size={22}
@@ -215,7 +204,12 @@ const MyProfile = () => {
             </Avatar>
           )}
 
-          <Heading color={'light.300'}>{name}</Heading>
+          <Heading color={'light.300'}>{user.name}</Heading>
+          <Box w={'100%'} px={8}>
+            <Text mt={2} color={'light.300'} textAlign="center">
+              {user?.bio}
+            </Text>
+          </Box>
         </VStack>
 
         <HStack paddingX={10} justifyContent="space-around">
@@ -229,56 +223,14 @@ const MyProfile = () => {
           </VStack>
         </HStack>
 
-        <VStack marginTop={4}>
-          <Box paddingX={10}>
-            <Text color="light.300" fontSize={'sm'} fontWeight={600}>
-              Nome
-            </Text>
-            <Input
-              placeholder="Digite seu nome"
-              onChangeText={setName}
-              value={name}
-              leftElement={
-                <AntDesign
-                  name="user"
-                  color={'gray'}
-                  size={22}
-                  style={{
-                    marginLeft: 2,
-                  }}
-                />
-              }
+        <Box marginTop={8}>
+          {modalIsVisible && (
+            <ModalEditProfile
+              isVisible={modalIsVisible}
+              onClose={handleCloseModal}
             />
-            <FormControl.Label
-              _text={{color: 'light.300', fontSize: 'sm', fontWeight: 600}}>
-              E-mail
-            </FormControl.Label>
-            <Input
-              placeholder="email@example.com"
-              value={email}
-              onChangeText={setEmail}
-              leftElement={
-                <AntDesign
-                  name="mail"
-                  color={'gray'}
-                  size={22}
-                  style={{
-                    marginLeft: 2,
-                  }}
-                />
-              }
-            />
-
-            <Box marginTop={8}>
-              <Button
-                title="Atualizar perfil"
-                p={4}
-                onPress={handleUpdateUser}
-                isLoading={loading}
-              />
-            </Box>
-          </Box>
-        </VStack>
+          )}
+        </Box>
       </KeyboardAvoidingView>
     </ScrollView>
   );

@@ -10,7 +10,7 @@ export interface IAuthContextProps {
     password: string,
   ) => Promise<void>;
   signOut: () => Promise<void>;
-  updateUser: (name?: string, email?: string) => Promise<void>;
+  updateUser: (name?: string, bio?: string) => Promise<void>;
   updateUserPhoto: (uri: string) => Promise<string>;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
@@ -24,6 +24,7 @@ export interface IUser {
   id: string;
   email: string;
   name: string;
+  bio?: string;
   photo_url?: string;
   photo_path: string;
   groupInfo: {

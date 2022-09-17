@@ -31,7 +31,6 @@ const USER_STORAGE_KEY = '@taskfy:user';
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
-  console.log(user);
 
   const signUpWithEmailAndPassword = async (
     email: string,
@@ -223,20 +222,20 @@ const AuthProvider = ({children}) => {
       });
   };
 
-  const updateUser = async (name?: string, email?: string) => {
+  const updateUser = async (name: string, bio: string) => {
     try {
-      if (!name || !email) {
+      if (!name || !bio) {
         Alert.alert('Editar Perfil', 'Preencha todos os campos');
       }
 
       firestore().collection('Users').doc(user.id).update({
-        email,
+        bio,
         name,
       });
 
       const userUpdated = {
         ...user,
-        email,
+        bio,
         name,
       };
 

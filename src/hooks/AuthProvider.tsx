@@ -294,14 +294,32 @@ const AuthProvider = ({children}) => {
   };
 
   const loadStoragedUser = async () => {
-    const storagedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
-    const user = storagedUser ? JSON.parse(storagedUser) : {};
+    const response = await AsyncStorage.getItem(USER_STORAGE_KEY);
+    const storagedUser: IUser = response ? JSON.parse(response) : {};
 
-    setUser(user);
+    const subscribe = firestore()
+      .collection('Users')
+      .doc(storagedUser?.id)
+      .onSnapshot(async querySnapshot => {
+        const firestoreUser = querySnapshot.data();
+
+        const userFormatted = {
+          id: querySnapshot.id,
+          ...firestoreUser,
+        } as IUser;
+
+        await AsyncStorage.setItem(
+          USER_STORAGE_KEY,
+          JSON.stringify(userFormatted),
+        );
+
+        setUser(userFormatted);
+      });
+    return () => subscribe();
   };
 
   useEffect(() => {
-    loadStoragedUser().catch(() => Alert.alert('Error ao manter os dados'));
+    loadStoragedUser();
   }, []);
 
   const getPushToken = useCallback(

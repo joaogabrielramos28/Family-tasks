@@ -16,7 +16,7 @@ const ProgressChart = ({
     todayTasksActive !== 0 || allTodayTasks !== 0
       ? todayTasksActive !== 0
         ? todayTasksActive / allTodayTasks
-        : 1
+        : 0
       : 0;
   const data = {
     data: [percentage],

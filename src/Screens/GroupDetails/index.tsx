@@ -168,19 +168,36 @@ const GroupDetails = () => {
   };
 
   const handleExitOfGroup = async () => {
-    const items = [];
+    const groupMembers = [];
+    const groupMembersId = [];
     const groupSize = group.members.length;
     for (let i = 0; i < groupSize; i++) {
       if (group.members[i].id !== user.id) {
         const ref = firestore().collection('Users').doc(group.members[i].id);
 
-        items.push(ref);
+        groupMembers.push(ref);
+        groupMembersId.push(group.members[i].id);
       }
     }
 
     try {
+      if (groupSize >= 2 && user.groupInfo.position === 'Administrator') {
+        await firestore().collection('Groups').doc(id).update({
+          admin: groupMembers[0],
+        });
+
+        await firestore()
+          .collection('Users')
+          .doc(groupMembersId[0])
+          .update({
+            groupInfo: {
+              id,
+              position: 'Administrator',
+            },
+          });
+      }
       await firestore().collection('Groups').doc(id).update({
-        members: items,
+        members: groupMembers,
       });
       await firestore().collection('Users').doc(user.id).update({
         groupInfo: firestore.FieldValue.delete(),

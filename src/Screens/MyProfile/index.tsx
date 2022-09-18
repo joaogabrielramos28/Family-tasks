@@ -10,7 +10,6 @@ import {
   Spinner,
   Text,
   useDisclose,
-  useTheme,
   VStack,
 } from 'native-base';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -21,9 +20,9 @@ import {ActionSheetItem} from '../../Components/ActionSheet/Components/ActionShe
 import {useAuth} from '../../hooks';
 import {ModalEditProfile} from './Components/ModalEditProfile';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {theme} from '../../theme';
 
 const MyProfile = () => {
-  const theme = useTheme();
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const {user, updateUserPhoto} = useAuth();
 
@@ -87,7 +86,7 @@ const MyProfile = () => {
 
   return (
     <ScrollView
-      background={'warmGray.900'}
+      background={theme.colors.background[900]}
       flex={1}
       _contentContainerStyle={{
         paddingBottom: 40,
@@ -99,7 +98,7 @@ const MyProfile = () => {
             startIcon={
               <Icon
                 as={MaterialIcons}
-                color="light.300"
+                color={theme.colors.text}
                 mr="1"
                 size="6"
                 name="photo"
@@ -124,15 +123,11 @@ const MyProfile = () => {
         <Box
           height={'160px'}
           w={'100%'}
-          background={'warmGray.800'}
+          background={theme.colors.background[800]}
           padding={10}
           alignItems={'flex-end'}>
           <BorderlessButton onPress={handleOpen}>
-            <AntDesign
-              name="ellipsis1"
-              size={22}
-              color={theme.colors.light[200]}
-            />
+            <AntDesign name="ellipsis1" size={22} color={theme.colors.text} />
           </BorderlessButton>
         </Box>
         <VStack
@@ -146,12 +141,12 @@ const MyProfile = () => {
           }}
           space={2}>
           {loadingImage && user.photo_url && (
-            <Spinner size="lg" color={'violet.500'} />
+            <Spinner size="lg" color={theme.colors.primary[500]} />
           )}
           {user.photo_url ? (
             <Avatar
               size={'2xl'}
-              borderColor={'light.50'}
+              borderColor={theme.colors.title}
               borderWidth={4}
               source={{
                 uri: imageUri,
@@ -161,7 +156,7 @@ const MyProfile = () => {
                 resizeMode: 'cover',
               }}>
               <Avatar.Badge
-                bg={'violet.500'}
+                bg={theme.colors.primary[500]}
                 borderWidth={0}
                 display="flex"
                 alignItems={'center'}
@@ -175,15 +170,18 @@ const MyProfile = () => {
                   <AntDesign
                     name="camera"
                     size={20}
-                    color={theme.colors.light[200]}
+                    color={theme.colors.text}
                   />
                 </BorderlessButton>
               </Avatar.Badge>
             </Avatar>
           ) : (
-            <Avatar size={'2xl'} borderColor={'light.50'} borderWidth={4}>
+            <Avatar
+              size={'2xl'}
+              borderColor={theme.colors.title}
+              borderWidth={4}>
               <Avatar.Badge
-                bg={'violet.500'}
+                bg={theme.colors.primary[500]}
                 borderWidth={0}
                 display="flex"
                 alignItems={'center'}
@@ -204,9 +202,9 @@ const MyProfile = () => {
             </Avatar>
           )}
 
-          <Heading color={'light.300'}>{user.name}</Heading>
+          <Heading color={theme.colors.text}>{user.name}</Heading>
           <Box w={'100%'} px={8}>
-            <Text mt={2} color={'light.300'} textAlign="center">
+            <Text mt={2} color={theme.colors.text} textAlign="center">
               {user?.bio}
             </Text>
           </Box>
@@ -214,12 +212,12 @@ const MyProfile = () => {
 
         <HStack paddingX={10} justifyContent="space-around">
           <VStack alignItems={'center'}>
-            <Text color={'light.300'}>Tasks completadas</Text>
-            <Heading color={'light.100'}>10</Heading>
+            <Text color={theme.colors.text}>Tasks completadas</Text>
+            <Heading color={theme.colors.title}>10</Heading>
           </VStack>
           <VStack alignItems={'center'}>
-            <Text color={'light.300'}>Grupos</Text>
-            <Heading color={'light.100'}>1</Heading>
+            <Text color={theme.colors.text}>Grupos</Text>
+            <Heading color={theme.colors.title}>1</Heading>
           </VStack>
         </HStack>
 

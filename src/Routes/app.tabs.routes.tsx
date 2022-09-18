@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {Icon, IconButton, useTheme} from 'native-base';
+import {Icon, IconButton} from 'native-base';
 
 import {
   AntDesign,
@@ -16,12 +16,12 @@ import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 
 import {StackTasksRoutes, StackGroupsRoutes} from './app.stack.routes';
 import {useAuth} from '../hooks';
+import {theme} from '../theme';
 
 const {Screen, Navigator} = createBottomTabNavigator();
 
 const TabsRoutes = () => {
   const {user} = useAuth();
-  const theme = useTheme();
   return (
     <Navigator
       initialRouteName="Home"
@@ -31,7 +31,7 @@ const TabsRoutes = () => {
 
         tabBarStyle: {
           borderTopWidth: 0,
-          backgroundColor: theme.colors.muted[900],
+          backgroundColor: theme.colors.background[900],
           position: 'absolute',
           bottom: getStatusBarHeight(),
           left: 20,
@@ -41,8 +41,8 @@ const TabsRoutes = () => {
           paddingVertical: 5,
           height: 60,
         },
-        tabBarActiveTintColor: theme.colors.indigo[500],
-        tabBarInactiveTintColor: theme.colors.light[500],
+        tabBarActiveTintColor: theme.colors.secondary[500],
+        tabBarInactiveTintColor: theme.colors.background[600],
         tabBarShowLabel: false,
       })}>
       <Screen

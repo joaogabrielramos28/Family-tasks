@@ -15,6 +15,7 @@ import {IGroupDto, INotification} from '../../DTOs/GroupDto';
 import {NotificationCard} from './Components/NotificationCard';
 import firestore from '@react-native-firebase/firestore';
 import {NotificationsNavigationParams} from '../../@types/navigation/navigation';
+import {theme} from '../../theme';
 
 const Notifications = () => {
   const {goBack} = useNavigation<any>();
@@ -37,7 +38,7 @@ const Notifications = () => {
   }, [groupId]);
 
   return (
-    <Box flex={1} bgColor={'warmGray.900'} safeArea>
+    <Box flex={1} bgColor={theme.colors.background[900]} safeArea>
       <HStack paddingX={4} alignItems={'center'}>
         <BorderlessButton onPress={handleGoBack}>
           <IconButton
@@ -46,12 +47,12 @@ const Notifications = () => {
                 as={AntDesign}
                 size={'xl'}
                 name={'arrowleft'}
-                color={'light.50'}
+                color={theme.colors.title}
               />
             }
           />
         </BorderlessButton>
-        <Heading color={'light.50'}>Notificações</Heading>
+        <Heading color={theme.colors.title}>Notificações</Heading>
       </HStack>
 
       <FlatList
@@ -59,7 +60,9 @@ const Notifications = () => {
           paddingVertical: 20,
         }}
         data={notifications}
-        ItemSeparatorComponent={() => <Divider background={'warmGray.600'} />}
+        ItemSeparatorComponent={() => (
+          <Divider background={theme.colors.background[600]} />
+        )}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <>

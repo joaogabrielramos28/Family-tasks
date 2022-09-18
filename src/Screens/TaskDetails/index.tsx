@@ -22,6 +22,7 @@ import {Alert} from 'react-native';
 import {Status} from '../Tasks/Components/Task/types';
 import {IMember, ITask} from '../../DTOs/GroupDto';
 import {Load} from '../../Components';
+import {theme} from '../../theme';
 
 const TaskDetails = () => {
   const route = useRoute();
@@ -152,13 +153,13 @@ const TaskDetails = () => {
 
   return (
     <ScrollView
-      background={'warmGray.900'}
+      background={theme.colors.background[900]}
       contentContainerStyle={{
         paddingVertical: 20,
       }}>
       <VStack
         flex={1}
-        background={'warmGray.900'}
+        background={theme.colors.background[900]}
         alignItems={'flex-start'}
         paddingY={10}
         paddingX={6}>
@@ -170,7 +171,7 @@ const TaskDetails = () => {
                 as={AntDesign}
                 size={'xl'}
                 name={'close'}
-                color={'light.50'}
+                color={theme.colors.title}
               />
             }
           />
@@ -181,7 +182,7 @@ const TaskDetails = () => {
                 as={AntDesign}
                 size={'xl'}
                 name={'ellipsis1'}
-                color={'light.50'}
+                color={theme.colors.title}
               />
             }
           />
@@ -193,13 +194,13 @@ const TaskDetails = () => {
             w={'100%'}
             justifyContent={'space-between'}
             alignItems={'center'}>
-            <Heading color={'light.50'}>{task.name}</Heading>
+            <Heading color={theme.colors.title}>{task.name}</Heading>
           </HStack>
 
           <Select
             width={142}
             marginTop={2}
-            color={'light.50'}
+            color={theme.colors.title}
             fontSize={RFValue(12)}
             selectedValue={task.status}
             fontWeight={'bold'}
@@ -231,20 +232,23 @@ const TaskDetails = () => {
 
           <VStack marginTop={4} space={2}>
             <Text
-              color={'light.400'}
+              color={theme.colors.text}
               fontSize={RFValue(14)}
               fontWeight={'bold'}>
               Descrição
             </Text>
 
-            <Text color={'light.50'} fontSize={RFValue(14)} w={RFValue(320)}>
+            <Text
+              color={theme.colors.title}
+              fontSize={RFValue(14)}
+              w={RFValue(320)}>
               {task.description}
             </Text>
           </VStack>
         </VStack>
 
         <VStack width={'100%'} marginTop={6} space={4}>
-          <Text color={'light.400'} fontSize={RFValue(14)}>
+          <Text color={theme.colors.text} fontSize={RFValue(14)}>
             {' '}
             Responsável
           </Text>
@@ -252,7 +256,7 @@ const TaskDetails = () => {
             fontSize={RFValue(14)}
             borderWidth={0}
             selectedValue={task?.responsible?.id}
-            color={'light.50'}
+            color={theme.colors.title}
             onValueChange={responsible => handleUpdateResponsible(responsible)}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />
@@ -280,14 +284,14 @@ const TaskDetails = () => {
           </Select>
         </VStack>
         <VStack width={'100%'} marginTop={6} space={4}>
-          <Text color={'light.400'} fontSize={RFValue(14)}>
+          <Text color={theme.colors.text} fontSize={RFValue(14)}>
             {' '}
             Relator
           </Text>
           <Select
             fontSize={RFValue(14)}
             borderWidth={0}
-            color={'light.50'}
+            color={theme.colors.title}
             selectedValue={task?.relator?.id}
             onValueChange={relator => handleUpdateRelator(relator)}
             dropdownIcon={
@@ -318,14 +322,14 @@ const TaskDetails = () => {
           </Select>
         </VStack>
         <VStack width={'100%'} marginTop={6} space={4} paddingBottom={10}>
-          <Text color={'light.400'} fontSize={RFValue(14)}>
+          <Text color={theme.colors.text} fontSize={RFValue(14)}>
             {' '}
             Categoria
           </Text>
           <Select
             fontSize={RFValue(14)}
             borderWidth={0}
-            color={'light.50'}
+            color={theme.colors.title}
             selectedValue={task.category}
             dropdownIcon={
               <AntDesign name="right" color={'white'} size={RFValue(14)} />

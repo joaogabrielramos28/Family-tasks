@@ -13,6 +13,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {IGroupCardProps} from './types';
+import {theme} from '../../../../theme';
 
 const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
   const {navigate} = useNavigation();
@@ -52,7 +53,7 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
               />
             </AspectRatio>
             <Center
-              bg="violet.500"
+              bg={theme.colors.primary[500]}
               _text={{
                 color: 'warmGray.50',
                 fontWeight: '700',
@@ -65,14 +66,14 @@ const GroupCard = ({name, description, id, background}: IGroupCardProps) => {
               Grupo
             </Center>
           </Box>
-          <Stack p="4" space={3} bgColor={'warmGray.600'}>
+          <Stack p="4" space={3} bgColor={theme.colors.background[600]}>
             <Stack space={2}>
-              <Heading size="md" ml="-1" color={'light.50'}>
+              <Heading size="md" ml="-1" color={theme.colors.title}>
                 {name}
               </Heading>
               <Text
                 fontSize="xs"
-                color={'violet.500'}
+                color={theme.colors.primary[500]}
                 fontWeight="500"
                 ml="-0.5"
                 mt="-1">

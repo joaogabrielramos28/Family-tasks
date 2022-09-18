@@ -11,6 +11,7 @@ import {ITask} from '../../DTOs/GroupDto';
 import {Alert} from 'react-native';
 import {format} from 'date-fns';
 import {Status} from '../Tasks/Components/Task/types';
+import {theme} from '../../theme';
 
 const Home = () => {
   const {user} = useAuth();
@@ -64,11 +65,11 @@ const Home = () => {
   }
   return (
     <>
-      <ScrollView bg={'warmGray.900'} flex={1}>
+      <ScrollView bg={theme.colors.background[900]} flex={1}>
         <Header />
         <Box>
           <Box marginTop={6} w={'100%'} display={'flex'} alignItems={'center'}>
-            <Heading color={'light.100'}>Tasks completadas </Heading>
+            <Heading color={theme.colors.title}>Tasks completadas </Heading>
           </Box>
 
           <ProgressChart

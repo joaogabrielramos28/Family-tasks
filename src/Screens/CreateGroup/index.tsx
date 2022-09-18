@@ -23,6 +23,7 @@ import {useAuth} from '../../hooks';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {IUser} from '../../hooks/types';
+import {theme} from '../../theme';
 
 interface ICreateGroup {
   id: string;
@@ -93,7 +94,7 @@ const CreateGroup = () => {
       updateUserState(userUpdated);
       setToastInfo({
         title: 'Grupo criado com sucesso',
-        color: 'violet.500',
+        color: theme.colors.primary[500],
       });
       setShowAlert(true);
       setLoading(false);
@@ -104,7 +105,7 @@ const CreateGroup = () => {
     } catch {
       setToastInfo({
         title: 'Erro ao criar o grupo',
-        color: 'red.500',
+        color: theme.colors.error,
       });
       setShowAlert(true);
       setLoading(false);
@@ -119,7 +120,7 @@ const CreateGroup = () => {
       paddingTop={getStatusBarHeight()}
       paddingX={4}
       flex={1}
-      bg={'warmGray.900'}>
+      bg={theme.colors.background[900]}>
       <KeyboardAvoidingView enabled behavior="position">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack marginTop={4}>
@@ -137,29 +138,29 @@ const CreateGroup = () => {
                       as={AntDesign}
                       size={'xl'}
                       name={'arrowleft'}
-                      color={'light.50'}
+                      color={theme.colors.title}
                     />
                   }
                 />
               </BorderlessButton>
-              <Heading size={'xl'} color={'light.100'}>
+              <Heading size={'xl'} color={theme.colors.title}>
                 Criar grupo
               </Heading>
             </HStack>
 
-            <Text color={'light.300'}>
+            <Text color={theme.colors.text}>
               Crie um grupo para compartilhar suas atividades
             </Text>
 
             <VStack space={6} marginTop={8}>
               <Box paddingX={2}>
-                <Heading size={'sm'} color={'light.200'} marginBottom={2}>
+                <Heading size={'sm'} color={theme.colors.text} marginBottom={2}>
                   Nome do grupo
                 </Heading>
 
                 <Input placeholder="Familia Doe" onChangeText={setName} />
 
-                <Heading size={'sm'} color={'light.200'} marginY={2}>
+                <Heading size={'sm'} color={theme.colors.text} marginY={2}>
                   Descrição
                 </Heading>
 

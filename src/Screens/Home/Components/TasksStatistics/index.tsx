@@ -2,6 +2,7 @@ import {Box, Icon, Text} from 'native-base';
 import React from 'react';
 import {ITasksStatisticsProps} from './types';
 import {FontAwesome5} from '@expo/vector-icons';
+import {theme} from '../../../../theme';
 const TasksStatistics = ({
   value,
   title,
@@ -11,7 +12,7 @@ const TasksStatistics = ({
   return (
     <Box
       display={'flex'}
-      background={'light.700'}
+      background={theme.colors.background[800]}
       width={'140px'}
       height={'80px'}
       borderRadius={12}
@@ -27,11 +28,11 @@ const TasksStatistics = ({
           marginRight={2}
         />
 
-        <Text color={'light.100'} fontWeight={'bold'}>
+        <Text color={theme.colors.title} fontWeight={'bold'}>
           {title}
         </Text>
       </Box>
-      <Text color={'light.100'} fontSize={'22'} fontWeight={'bold'}>
+      <Text color={theme.colors.text} fontSize={'22'} fontWeight={'bold'}>
         {value}
       </Text>
     </Box>

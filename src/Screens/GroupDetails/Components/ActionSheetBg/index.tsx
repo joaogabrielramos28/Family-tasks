@@ -8,6 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import {uploadFile} from '../../../../Utils/uploadFile';
 import {Alert} from 'react-native';
+import {theme} from '../../../../theme';
 
 interface IActionSheetBGProps {
   onClose: () => void;
@@ -83,7 +84,7 @@ const ActionSheetBg = ({
         startIcon={
           <Icon
             as={MaterialIcons}
-            color="light.300"
+            color={theme.colors.text}
             mr="1"
             size="6"
             name="photo"

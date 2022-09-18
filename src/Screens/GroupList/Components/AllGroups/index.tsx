@@ -4,6 +4,7 @@ import {IGroupDto} from '../../../../DTOs/GroupDto';
 import {GroupCard} from '../GroupCard';
 import firestore from '@react-native-firebase/firestore';
 import {ActivityIndicator} from 'react-native';
+import {theme} from '../../../../theme';
 
 const AllGroups = () => {
   const [groups, setGroups] = useState<IGroupDto[]>([]);
@@ -69,7 +70,7 @@ const AllGroups = () => {
         )}
         ListEmptyComponent={() => (
           <Box alignItems={'center'}>
-            <Text color={'light.300'}>Ainda não existe nenhum grupo</Text>
+            <Text color={theme.colors.text}>Ainda não existe nenhum grupo</Text>
           </Box>
         )}
       />

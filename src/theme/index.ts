@@ -3,6 +3,7 @@ import {extendTheme, theme as NativeBaseTheme} from 'native-base';
 export const theme = extendTheme({
   colors: {
     primary: {
+      600: NativeBaseTheme.colors.violet[600],
       500: NativeBaseTheme.colors.violet[500],
       400: NativeBaseTheme.colors.violet[400],
     },

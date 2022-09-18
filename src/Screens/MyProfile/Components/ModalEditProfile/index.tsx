@@ -11,6 +11,7 @@ import {
 import {Input} from '../../../../Components';
 import {Alert, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {useAuth} from '../../../../hooks';
+import {theme} from '../../../../theme';
 
 interface ModalEditProfileProps {
   isVisible: boolean;
@@ -50,20 +51,20 @@ const ModalEditProfile = ({isVisible, onClose}: ModalEditProfileProps) => {
         finalFocusRef={finalRef}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView behavior="position" w={'100%'} px={12}>
-            <Modal.Content bg={'warmGray.800'} w={'100%'}>
+            <Modal.Content bg={theme.colors.background[800]} w={'100%'}>
               <Modal.CloseButton />
               <Modal.Header
-                borderBottomColor={'warmGray.600'}
-                bg={'warmGray.800'}
+                borderBottomColor={theme.colors.background[600]}
+                bg={theme.colors.background[800]}
                 borderWidth={0}
                 _text={{
-                  color: 'light.50',
+                  color: theme.colors.title,
                 }}>
                 Atualizar perfil
               </Modal.Header>
               <Modal.Body borderWidth={0}>
                 <VStack borderWidth={0}>
-                  <Text color={'light.300'}>Nome</Text>
+                  <Text color={theme.colors.text}>Nome</Text>
                   <Input value={name} onChangeText={setName} />
 
                   {/* <Text color={'light.300'}>E-mail</Text>
@@ -73,7 +74,7 @@ const ModalEditProfile = ({isVisible, onClose}: ModalEditProfileProps) => {
                     onChangeText={setEmail}
                   /> */}
 
-                  <Text my={2} color={'light.300'}>
+                  <Text my={2} color={theme.colors.text}>
                     Bio
                   </Text>
 
@@ -83,38 +84,43 @@ const ModalEditProfile = ({isVisible, onClose}: ModalEditProfileProps) => {
                     h={20}
                     spellCheck
                     placeholder={'Biografia'}
-                    color={'light.50'}
-                    bgColor={'warmGray.800'}
-                    _focus={{borderWidth: 1, borderColor: 'violet.500'}}
+                    color={theme.colors.title}
+                    bgColor={theme.colors.background[800]}
+                    _focus={{
+                      borderWidth: 1,
+                      borderColor: theme.colors.primary[500],
+                    }}
                     value={bio}
                     borderWidth={1}
-                    borderColor={'warmGray.400'}
+                    borderColor={theme.colors.background[400]}
                     onChangeText={setBio}
                   />
                   <Box w={'100%'} alignItems={'flex-end'} my={1}>
-                    <Text color={'light.300'}>{bio.length} de 120</Text>
+                    <Text color={theme.colors.text}>{bio.length} de 120</Text>
                   </Box>
                 </VStack>
               </Modal.Body>
-              <Modal.Footer bg={'warmGray.800'} borderTopColor={'warmGray.600'}>
+              <Modal.Footer
+                bg={theme.colors.background[800]}
+                borderTopColor={theme.colors.background[600]}>
                 <Button.Group space={2}>
                   <Button
                     variant={'unstyled'}
                     _text={{
-                      color: 'light.300',
+                      color: theme.colors.text,
                     }}
                     onPress={onClose}>
                     Cancelar
                   </Button>
                   <Button
                     onPress={handleUpdateUser}
-                    bg={'violet.500'}
+                    bg={theme.colors.primary[500]}
                     _text={{
-                      color: 'light.50',
+                      color: theme.colors.title,
                     }}
                     isLoading={loading}
                     _pressed={{
-                      bg: 'violet.500',
+                      bg: theme.colors.primary[500],
                       opacity: 0.5,
                     }}>
                     Atualizar

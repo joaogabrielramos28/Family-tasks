@@ -1,6 +1,7 @@
-import {Box, Heading, useTheme} from 'native-base';
+import {Box, Heading} from 'native-base';
 import React from 'react';
 import {ProgressChart as CustomProgressChart} from 'react-native-chart-kit';
+import {theme} from '../../../../theme';
 
 interface ProgressChartProps {
   allTodayTasks: number;
@@ -11,7 +12,6 @@ const ProgressChart = ({
   allTodayTasks,
   todayTasksActive,
 }: ProgressChartProps) => {
-  const theme = useTheme();
   const percentage =
     todayTasksActive !== 0 || allTodayTasks !== 0
       ? todayTasksActive !== 0
@@ -32,9 +32,9 @@ const ProgressChart = ({
         radius={100}
         hideLegend={true}
         chartConfig={{
-          backgroundColor: theme.colors.warmGray[900],
-          backgroundGradientFrom: theme.colors.warmGray[900],
-          backgroundGradientTo: theme.colors.warmGray[900],
+          backgroundColor: theme.colors.background[900],
+          backgroundGradientFrom: theme.colors.background[900],
+          backgroundGradientTo: theme.colors.background[900],
 
           decimalPlaces: 2, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(79, 70, 229, ${opacity})`,
@@ -58,10 +58,10 @@ const ProgressChart = ({
         alignItems={'center'}
         justifyContent={'center'}
         style={{
-          backgroundColor: theme.colors.light[200],
+          backgroundColor: theme.colors.title,
           bottom: '21%',
         }}>
-        <Heading color={'indigo.600'} fontSize={'4xl'}>
+        <Heading color={theme.colors.secondary[600]} fontSize={'4xl'}>
           {(percentage * 100).toFixed(1)} %
         </Heading>
       </Box>

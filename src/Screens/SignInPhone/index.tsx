@@ -18,6 +18,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input} from '../../Components';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {theme} from '../../theme';
 
 const SignInPhone = () => {
   const {goBack, navigate} = useNavigation();
@@ -53,7 +54,7 @@ const SignInPhone = () => {
       paddingTop={getStatusBarHeight()}
       paddingX={4}
       flex={1}
-      bg={'warmGray.900'}>
+      bg={theme.colors.background[900]}>
       <KeyboardAvoidingView enabled behavior="position">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack marginTop={4}>
@@ -66,24 +67,24 @@ const SignInPhone = () => {
                       as={AntDesign}
                       size={'xl'}
                       name={'arrowleft'}
-                      color={'light.50'}
+                      color={theme.colors.title}
                     />
                   }
                 />
               </BorderlessButton>
-              <Heading size={'xl'} color={'light.100'}>
+              <Heading size={'xl'} color={theme.colors.title}>
                 Fazer Login
               </Heading>
             </HStack>
 
-            <Text color={'light.300'}>
+            <Text color={theme.colors.text}>
               Para continuar, informe seu número de telefone.
             </Text>
 
             <VStack space={6} marginTop={8}>
               <FormControl paddingX={2}>
                 <FormControl.Label>
-                  <Heading size={'sm'} color={'light.200'}>
+                  <Heading size={'sm'} color={theme.colors.text}>
                     Número de telefone
                   </Heading>
                 </FormControl.Label>

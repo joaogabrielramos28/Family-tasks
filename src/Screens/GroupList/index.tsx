@@ -1,9 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
-import {Box, useTheme} from 'native-base';
+import {Box} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {SceneMap, TabView, TabBar} from 'react-native-tab-view';
 import {Button, Header} from '../../Components';
 import {useAuth} from '../../hooks';
+import {theme} from '../../theme';
 import {AllGroups} from './Components/AllGroups';
 import {MyGroup} from './Components/MyGroup';
 
@@ -29,14 +30,13 @@ const GroupList = () => {
   useEffect(() => {
     setCanCreateGroup(!!user.groupInfo);
   }, [user]);
-  const theme = useTheme();
 
   const handleGoToCreateGroupScreen = () => {
     navigate('CreateGroup');
   };
 
   return (
-    <Box bg={'warmGray.900'} flex={1}>
+    <Box bg={theme.colors.background[900]} flex={1}>
       <Header />
 
       <TabView
@@ -48,11 +48,11 @@ const GroupList = () => {
             <TabBar
               {...props}
               style={{
-                backgroundColor: theme.colors.warmGray[900],
+                backgroundColor: theme.colors.background[900],
               }}
-              activeColor={theme.colors.light[100]}
+              activeColor={theme.colors.title}
               indicatorStyle={{
-                backgroundColor: theme.colors.violet[400],
+                backgroundColor: theme.colors.primary[400],
               }}
             />
             <Button

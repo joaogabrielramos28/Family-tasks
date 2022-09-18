@@ -6,6 +6,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {AlertDialog} from '../../../../Components/AlertDialog';
 import firestore from '@react-native-firebase/firestore';
 import {api} from '../../../../services/api';
+import {theme} from '../../../../theme';
 
 interface NotificationCardProps {
   member: IMember;
@@ -88,15 +89,15 @@ const NotificationCard = ({
       <Box
         width={width}
         paddingX={4}
-        bgColor={'warmGray.700'}
+        bgColor={theme.colors.background[700]}
         height={'80px'}
         justifyContent={'center'}>
         <HStack justifyContent={'space-between'} alignItems={'center'}>
           <Avatar source={{uri: member?.photo_url}} />
-          <Text fontSize={12} color={'light.300'} maxW={width - 140}>
+          <Text fontSize={12} color={theme.colors.text} maxW={width - 140}>
             {message}
           </Text>
-          <Text color={'light.300'}>hoje</Text>
+          <Text color={theme.colors.text}>hoje</Text>
           {/* <Text>{id}</Text> */}
         </HStack>
       </Box>

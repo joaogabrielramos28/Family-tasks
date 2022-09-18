@@ -2,6 +2,7 @@ import {Box, Factory, Heading, HStack, Text, VStack} from 'native-base';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {BorderlessButton} from 'react-native-gesture-handler';
+import {theme} from '../../../../theme';
 import {ITask, Status} from './types';
 
 const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
@@ -11,17 +12,17 @@ const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
     <BorderlessButton {...rest}>
       <Box
         width={'100%'}
-        background={'warmGray.600'}
+        background={theme.colors.background[600]}
         borderRadius={8}
-        color={'light.50'}
+        color={theme.colors.title}
         height={'140px'}
         padding={6}
         alignItems={'flex-start'}
         marginBottom={6}>
         <VStack width={'100%'} justifyContent={'space-between'}>
           <VStack>
-            <Heading color={'light.50'}>{title}</Heading>
-            <Text color={'light.400'}>{category}</Text>
+            <Heading color={theme.colors.title}>{title}</Heading>
+            <Text color={theme.colors.text}>{category}</Text>
           </VStack>
 
           <HStack alignItems={'center'} justifyContent={'center'} marginTop={6}>
@@ -34,7 +35,7 @@ const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
                     uri: responsible?.photo_url || '',
                   }}
                 />
-                <Text color={'light.400'}>{date}</Text>
+                <Text color={theme.colors.text}>{date}</Text>
               </HStack>
             </HStack>
             <Box alignItems={'flex-end'} justifyContent={'flex-end'} flex={1}>
@@ -51,7 +52,7 @@ const Task = ({status, title, category, responsible, date, ...rest}: ITask) => {
                   }
                   borderRadius={50}
                 />
-                <Text color={'light.400'}>
+                <Text color={theme.colors.text}>
                   {status === Status.Completed
                     ? 'Finalizado'
                     : status === Status.Doing

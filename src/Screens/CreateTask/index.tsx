@@ -9,7 +9,6 @@ import {
   StatusBar,
   Text,
   TextArea,
-  useTheme,
   VStack,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
@@ -26,6 +25,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useAuth} from '../../hooks';
 import {IMember} from '../../DTOs/GroupDto';
 import {format} from 'date-fns';
+import {theme} from '../../theme';
 
 const CreateTask = () => {
   const {user} = useAuth();
@@ -117,8 +117,6 @@ const CreateTask = () => {
     return () => subscribe();
   }, [groupId]);
 
-  const theme = useTheme();
-
   const {height} = Dimensions.get('screen');
 
   return (
@@ -126,44 +124,47 @@ const CreateTask = () => {
       <StatusBar barStyle="light-content" />
       <KeyboardAvoidingView behavior="height" enabled>
         <ScrollView
-          bgColor={'warmGray.900'}
+          bgColor={theme.colors.background[900]}
           _contentContainerStyle={{
             padding: 6,
             marginTop: getStatusBarHeight(),
           }}>
           <Box
-            bgColor={'warmGray.900'}
+            bgColor={theme.colors.background[900]}
             alignItems={'center'}
             display={'flex'}
             height={height}>
             <HStack justifyContent="space-between" alignItems="center">
-              <Heading color={'light.50'} marginBottom={2}>
+              <Heading color={theme.colors.title} marginBottom={2}>
                 Adicionar Task
               </Heading>
             </HStack>
             <VStack>
               <VStack>
                 <Text
-                  color={'light.50'}
+                  color={theme.colors.title}
                   marginBottom={2}
                   fontSize={14}
                   fontWeight={'bold'}>
                   Nome
                 </Text>
                 <Input
-                  color={'light.50'}
-                  bgColor={'warmGray.800'}
-                  _focus={{borderWidth: 1, borderColor: 'violet.500'}}
+                  color={theme.colors.title}
+                  bgColor={theme.colors.background[800]}
+                  _focus={{
+                    borderWidth: 1,
+                    borderColor: theme.colors.primary[500],
+                  }}
                   borderWidth={1}
                   value={taskName}
-                  borderColor={'warmGray.600'}
+                  borderColor={theme.colors.background[600]}
                   placeholder="Nome da task"
                   onChangeText={setTaskName}
                 />
               </VStack>
               <VStack marginY={2}>
                 <Text
-                  color={'light.50'}
+                  color={theme.colors.title}
                   marginBottom={2}
                   fontSize={14}
                   fontWeight={'bold'}>
@@ -174,18 +175,21 @@ const CreateTask = () => {
                   h={20}
                   placeholder={'Digite a descriçao'}
                   color={'light.50'}
-                  bgColor={'warmGray.800'}
-                  _focus={{borderWidth: 1, borderColor: 'violet.500'}}
+                  bgColor={theme.colors.background[800]}
+                  _focus={{
+                    borderWidth: 1,
+                    borderColor: theme.colors.primary[500],
+                  }}
                   value={taskDescription}
                   borderWidth={1}
-                  borderColor={'warmGray.600'}
+                  borderColor={theme.colors.background[600]}
                   onChangeText={setTaskDescription}
                 />
               </VStack>
               <HStack>
                 <VStack>
                   <Text
-                    color={'light.50'}
+                    color={theme.colors.title}
                     marginBottom={2}
                     fontSize={14}
                     fontWeight={'bold'}>
@@ -211,7 +215,7 @@ const CreateTask = () => {
               <HStack marginY={2}>
                 <VStack>
                   <Text
-                    color={'light.50'}
+                    color={theme.colors.title}
                     marginBottom={2}
                     fontSize={14}
                     fontWeight={'bold'}>
@@ -238,7 +242,7 @@ const CreateTask = () => {
               <HStack marginY={'10px'}>
                 <VStack>
                   <Text
-                    color={'light.50'}
+                    color={theme.colors.title}
                     marginBottom={2}
                     fontSize={14}
                     fontWeight={'bold'}>

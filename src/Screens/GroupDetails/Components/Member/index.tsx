@@ -8,6 +8,7 @@ import {Feather} from '@expo/vector-icons';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuth} from '../../../../hooks';
+import {theme} from '../../../../theme';
 
 type IMemberProps = IMember & {
   isAdmin: boolean;
@@ -69,10 +70,10 @@ const Member = ({
               rounded={'full'}
             />
             <VStack marginLeft={4}>
-              <Heading color={'light.50'} size={'md'}>
+              <Heading color={theme.colors.title} size={'md'}>
                 {name}
               </Heading>
-              <Text color={'light.300'}>{groupInfo?.position}</Text>
+              <Text color={theme.colors.text}>{groupInfo?.position}</Text>
             </VStack>
           </HStack>
         </Box>
@@ -91,7 +92,7 @@ const Member = ({
                   }}>
                   <Icon
                     as={<Feather name="trash" />}
-                    color={'violet.500'}
+                    color={theme.colors.primary[500]}
                     size={6}
                   />
                 </BorderlessButton>
@@ -108,10 +109,10 @@ const Member = ({
                 rounded={'full'}
               />
               <VStack marginLeft={4}>
-                <Heading color={'light.50'} size={'md'}>
+                <Heading color={theme.colors.title} size={'md'}>
                   {name}
                 </Heading>
-                <Text color={'light.300'}>{groupInfo?.position}</Text>
+                <Text color={theme.colors.text}>{groupInfo?.position}</Text>
               </VStack>
             </HStack>
           </Box>

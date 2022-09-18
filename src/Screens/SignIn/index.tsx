@@ -16,6 +16,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Button, Input, SocialLoginButton} from '../../Components';
 import {useAuth} from '../../hooks';
+import {theme} from '../../theme';
 import {Modal} from './Components/Modal';
 
 const SignIn = () => {
@@ -53,7 +54,7 @@ const SignIn = () => {
       paddingTop={getStatusBarHeight()}
       paddingX={4}
       flex={1}
-      bg={'warmGray.900'}>
+      bg={theme.colors.background[900]}>
       <KeyboardAvoidingView enabled behavior="position">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack marginTop={4}>
@@ -69,17 +70,17 @@ const SignIn = () => {
                       as={AntDesign}
                       size={'xl'}
                       name={'arrowleft'}
-                      color={'light.50'}
+                      color={theme.colors.title}
                     />
                   }
                 />
               </BorderlessButton>
-              <Heading size={'xl'} color={'light.100'}>
+              <Heading size={'xl'} color={theme.colors.title}>
                 Fazer login
               </Heading>
             </HStack>
 
-            <Text color={'light.300'}>
+            <Text color={theme.colors.text}>
               Faça seu login com uma das contas abaixo
             </Text>
 
@@ -101,7 +102,7 @@ const SignIn = () => {
             <VStack space={6} marginTop={8}>
               <Box paddingX={2}>
                 <Box marginY={1}>
-                  <Heading size={'sm'} color={'light.200'}>
+                  <Heading size={'sm'} color={theme.colors.text}>
                     E-mail
                   </Heading>
 
@@ -112,7 +113,7 @@ const SignIn = () => {
                 </Box>
 
                 <Box marginY={1}>
-                  <Heading size={'sm'} color={'light.200'}>
+                  <Heading size={'sm'} color={theme.colors.text}>
                     Senha
                   </Heading>
                 </Box>
@@ -122,7 +123,7 @@ const SignIn = () => {
                   onChangeText={setPassword}
                 />
                 <BorderlessButton onPress={onOpenModal}>
-                  <Text textAlign={'right'} color={'violet.500'}>
+                  <Text textAlign={'right'} color={theme.colors.primary[500]}>
                     Esqueceu a senha?
                   </Text>
                 </BorderlessButton>
@@ -135,9 +136,14 @@ const SignIn = () => {
                   isLoading={loadingAuth}
                 />
 
-                <Text marginTop={4} textAlign={'center'} color={'light.300'}>
+                <Text
+                  marginTop={4}
+                  textAlign={'center'}
+                  color={theme.colors.text}>
                   Não possui conta?{' '}
-                  <Text color={'violet.500'} onPress={handleGoToSignUp}>
+                  <Text
+                    color={theme.colors.primary[500]}
+                    onPress={handleGoToSignUp}>
                     Criar conta
                   </Text>
                 </Text>

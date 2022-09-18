@@ -30,6 +30,7 @@ import FastImage from 'react-native-fast-image';
 import {api} from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GroupDetailsNavigationParams} from '../../@types/navigation/navigation';
+import {theme} from '../../theme';
 
 const GroupDetails = () => {
   const width = Dimensions.get('window').width;
@@ -240,16 +241,16 @@ const GroupDetails = () => {
   return (
     <>
       {group && (
-        <Box flex={1} bg={'warmGray.900'}>
+        <Box flex={1} bg={theme.colors.background[900]}>
           <>
             <Box
-              background={'warmGray.900'}
+              background={theme.colors.background[900]}
               height={RFValue(200)}
               padding={RFValue(4)}>
               {loadingChangeBackground && (
                 <Spinner
                   size="lg"
-                  color={'violet.500'}
+                  color={theme.colors.primary[500]}
                   zIndex={1}
                   position={'absolute'}
                   top={RFValue(100)}
@@ -284,7 +285,7 @@ const GroupDetails = () => {
                       as={AntDesign}
                       size={'xl'}
                       name={'arrowleft'}
-                      color={'light.50'}
+                      color={theme.colors.title}
                     />
                   }
                 />
@@ -297,7 +298,7 @@ const GroupDetails = () => {
                           as={AntDesign}
                           size={'xl'}
                           name={'ellipsis1'}
-                          color={'light.50'}
+                          color={theme.colors.title}
                         />
                       }
                     />
@@ -309,11 +310,11 @@ const GroupDetails = () => {
                             as={Ionicons}
                             size={'md'}
                             name={'notifications'}
-                            color={'light.50'}
+                            color={theme.colors.title}
                           />
                           {group?.notifications.length > 0 && (
                             <Badge
-                              background={'violet.500'}
+                              background={theme.colors.primary[500]}
                               position="absolute"
                               top={-4}
                               right={-2}
@@ -322,7 +323,7 @@ const GroupDetails = () => {
                               height={6}>
                               <Text
                                 width={'100%'}
-                                color={'light.300'}
+                                color={theme.colors.text}
                                 fontSize={14}>
                                 {group.notifications.length}
                               </Text>
@@ -336,7 +337,10 @@ const GroupDetails = () => {
               </HStack>
             </Box>
             <VStack flex={1} paddingX={8}>
-              <Heading color={'light.50'} textAlign={'center'} marginTop={6}>
+              <Heading
+                color={theme.colors.title}
+                textAlign={'center'}
+                marginTop={6}>
                 {group.name}
               </Heading>
 
@@ -362,21 +366,23 @@ const GroupDetails = () => {
                 marginTop={10}
                 justifyContent={'space-between'}>
                 <VStack alignItems={'center'}>
-                  <Heading color={'light.300'} size={'md'}>
+                  <Heading color={theme.colors.text} size={'md'}>
                     Total de Tasks
                   </Heading>
-                  <Text color={'light.100'}>{tasksCount}</Text>
+                  <Text color={theme.colors.title}>{tasksCount}</Text>
                 </VStack>
                 <VStack alignItems={'center'}>
-                  <Heading color={'light.300'} size={'md'}>
+                  <Heading color={theme.colors.text} size={'md'}>
                     Participantes
                   </Heading>
-                  <Text color={'light.100'}>{group.members?.length}</Text>
+                  <Text color={theme.colors.title}>
+                    {group.members?.length}
+                  </Text>
                 </VStack>
               </HStack>
               <Box marginTop={6}>
                 <HStack>
-                  <Heading color={'light.100'}>Membros</Heading>
+                  <Heading color={theme.colors.title}>Membros</Heading>
                 </HStack>
 
                 <FlatList

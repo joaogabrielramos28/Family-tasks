@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import {IGroupDto} from '../../../../DTOs/GroupDto';
 import {ActivityIndicator} from 'react-native';
 import {useAuth} from '../../../../hooks';
+import {theme} from '../../../../theme';
 
 const MyGroup = () => {
   const {user} = useAuth();
@@ -63,7 +64,7 @@ const MyGroup = () => {
         </Box>
       ) : (
         <VStack alignItems={'center'} justifyContent={'center'} marginTop={20}>
-          <Text color={'light.300'} fontSize={'xl'}>
+          <Text color={theme.colors.text} fontSize={'xl'}>
             Você não está em nenhum grupo {':('}
           </Text>
         </VStack>

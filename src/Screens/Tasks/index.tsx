@@ -11,6 +11,7 @@ import {format} from 'date-fns';
 import {useNavigation} from '@react-navigation/native';
 import {Load} from '../../Components';
 import {Alert} from 'react-native';
+import {theme} from '../../theme';
 
 const Tasks = () => {
   const {user} = useAuth();
@@ -71,18 +72,22 @@ const Tasks = () => {
   }
 
   return (
-    <Box width={'100%'} background={'warmGray.900'} flex={1} paddingBottom={20}>
+    <Box
+      width={'100%'}
+      background={theme.colors.background[900]}
+      flex={1}
+      paddingBottom={20}>
       <VStack
-        background={'warmGray.800'}
+        background={theme.colors.background[800]}
         width={'100%'}
         height={'120px'}
         borderBottomLeftRadius={'20px'}
         padding={'20px'}
         justifyContent={'center'}>
         <HStack justifyContent={'space-between'} alignItems={'center'}>
-          <Heading color={'light.50'}>Minhas tarefas</Heading>
+          <Heading color={theme.colors.title}>Minhas tarefas</Heading>
 
-          <Text color={'light.50'} fontSize={16} fontWeight={'bold'}>
+          <Text color={theme.colors.title} fontSize={16} fontWeight={'bold'}>
             Total {tasks.length} tarefas
           </Text>
         </HStack>
@@ -107,7 +112,7 @@ const Tasks = () => {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Box alignItems={'center'} justifyContent={'center'} flex={1}>
-            <Heading color={'light.300'} size={'sm'}>
+            <Heading color={theme.colors.text} size={'sm'}>
               {' '}
               Nenhuma tarefa para essa data :({' '}
             </Heading>

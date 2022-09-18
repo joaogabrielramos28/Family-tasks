@@ -13,6 +13,7 @@ import {StyleSheet, View} from 'react-native';
 import {Button} from '../../../Components';
 import {useRoute} from '@react-navigation/native';
 import {ConfirmationCodeNavigationParams} from '../../../@types/navigation/navigation';
+import {theme} from '../../../theme';
 
 const CELL_COUNT = 6;
 
@@ -60,16 +61,16 @@ const ConfirmationCodeScreen = () => {
   return (
     <Box
       flex={1}
-      bg={'warmGray.900'}
+      bg={theme.colors.background[900]}
       display={'flex'}
       justifyContent={'center'}
       paddingX={8}>
       <VStack w={'100%'} alignItems={'center'}>
-        <Heading color={'light.100'} textAlign={'center'}>
+        <Heading color={theme.colors.title} textAlign={'center'}>
           Verificação de código de segurança
         </Heading>
         <OTPImg width={240} height={RFValue(240)} />
-        <Text color={'light.200'} textAlign={'center'}>
+        <Text color={theme.colors.text} textAlign={'center'}>
           Digite o código de segurança {'\n'} enviado para o seu número de
           telefone
         </Text>

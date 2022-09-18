@@ -1,6 +1,7 @@
 import {Actionsheet as ActionSheetBase, Icon} from 'native-base';
 import React from 'react';
 import {Path} from 'react-native-svg';
+import {theme} from '../../theme';
 
 interface ActionSheetProps {
   isOpen: boolean;
@@ -12,19 +13,19 @@ const ActionSheet = ({isOpen, onClose, children}: ActionSheetProps) => {
   return (
     <ActionSheetBase isOpen={isOpen} onClose={onClose} size="full">
       <ActionSheetBase.Content
-        background={'warmGray.800'}
+        background={theme.colors.background[800]}
         alignItems={'flex-start'}>
         {children}
         <ActionSheetBase.Item
           _text={{
-            color: 'light.300',
+            color: theme.colors.text,
           }}
-          background={'warmGray.800'}
+          background={theme.colors.background[800]}
           onPress={onClose}
           startIcon={
             <Icon
               size={6}
-              color="light.100"
+              color={theme.colors.title}
               mr="1"
               h="24"
               w="24"

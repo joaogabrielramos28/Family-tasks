@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
 import {AlertDialog as AlertDialogNative, Button} from 'native-base';
+import {theme} from '../../theme';
 
 interface AlertDialogProps {
   isOpen: boolean;
@@ -32,23 +33,23 @@ const AlertDialog = ({
       <AlertDialogNative.Content>
         <AlertDialogNative.CloseButton />
         <AlertDialogNative.Header
-          backgroundColor={'warmGray.800'}
+          backgroundColor={theme.colors.background[800]}
           _text={{
-            color: 'light.50',
+            color: theme.colors.title,
           }}
-          borderColor={'warmGray.700'}>
+          borderColor={theme.colors.background[700]}>
           {title}
         </AlertDialogNative.Header>
         <AlertDialogNative.Body
-          backgroundColor={'warmGray.800'}
+          backgroundColor={theme.colors.background[800]}
           _text={{
-            color: 'light.50',
+            color: theme.colors.title,
           }}>
           {body}
         </AlertDialogNative.Body>
         <AlertDialogNative.Footer
-          backgroundColor={'warmGray.800'}
-          borderColor={'warmGray.700'}>
+          backgroundColor={theme.colors.background[800]}
+          borderColor={theme.colors.background[700]}>
           <Button.Group space={2}>
             <Button colorScheme="danger" onPress={onCancel} ref={cancelRef}>
               {buttonCancelTitle}

@@ -13,7 +13,9 @@ export const theme = extendTheme({
     background: {
       900: NativeBaseTheme.colors.warmGray[900],
       800: NativeBaseTheme.colors.warmGray[800],
+      700: NativeBaseTheme.colors.warmGray[700],
       600: NativeBaseTheme.colors.warmGray[600],
+      400: NativeBaseTheme.colors.warmGray[400],
     },
     text: NativeBaseTheme.colors.light[300],
     title: NativeBaseTheme.colors.light[50],

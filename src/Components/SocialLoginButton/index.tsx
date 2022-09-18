@@ -1,16 +1,16 @@
 import {AntDesign} from '@expo/vector-icons';
-import {Icon, useTheme} from 'native-base';
+import {Icon} from 'native-base';
 import React from 'react';
 import {BorderlessButton} from 'react-native-gesture-handler';
+import {theme} from '../../theme';
 import {ISocialButtonLogin} from './types';
 
 const SocialLoginButton = ({iconName, onPress}: ISocialButtonLogin) => {
-  const theme = useTheme();
   return (
     <BorderlessButton
       onPress={onPress}
       style={{
-        backgroundColor: theme.colors.warmGray[800],
+        backgroundColor: theme.colors.background[800],
         width: 80,
         height: 40,
         borderRadius: 12,
@@ -20,7 +20,7 @@ const SocialLoginButton = ({iconName, onPress}: ISocialButtonLogin) => {
       }}>
       <Icon
         size={'md'}
-        color={'light.100'}
+        color={theme.colors.title}
         as={<AntDesign name={iconName} />}
       />
     </BorderlessButton>

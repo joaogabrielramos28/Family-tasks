@@ -1,5 +1,6 @@
 import React from 'react';
 import {Alert as AlertNativeBase, Center, Slide, Text} from 'native-base';
+import {theme} from '../../theme';
 
 interface AlertProps {
   text: string;
@@ -16,7 +17,7 @@ export const Alert = ({text, color, isOpen}: AlertProps) => {
           status="error"
           safeAreaTop={8}
           bg={color}>
-          <Text color="light.300" fontWeight="medium">
+          <Text color={theme.colors.text} fontWeight="medium">
             {text}
           </Text>
         </AlertNativeBase>

@@ -6,6 +6,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import {useAuth} from '../../hooks';
 import {AvatarPlaceholder} from '../AvatarPlaceholder';
 import FastImage from 'react-native-fast-image';
+import {theme} from '../../theme';
 
 const Header = () => {
   const {signOut, user} = useAuth();
@@ -17,7 +18,7 @@ const Header = () => {
   const FastImageFactory = Factory(FastImage);
   return (
     <Box
-      bg={'warmGray.800'}
+      bg={theme.colors.background[800]}
       w={'100%'}
       h={`${RFValue(100)}px`}
       borderBottomLeftRadius={'20px'}
@@ -40,10 +41,10 @@ const Header = () => {
           )}
 
           <VStack>
-            <Text color={'light.400'} fontSize={RFValue(14)}>
+            <Text color={theme.colors.text} fontSize={RFValue(14)}>
               Bem vindo,
             </Text>
-            <Heading fontSize={RFValue(18)} color={'light.200'}>
+            <Heading fontSize={RFValue(18)} color={theme.colors.title}>
               {user.name}
             </Heading>
           </VStack>

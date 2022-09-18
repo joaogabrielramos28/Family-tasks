@@ -1,5 +1,6 @@
 import {Box} from 'native-base';
 import React from 'react';
+import {theme} from '../../theme';
 
 interface AvatarPlaceholderProps {
   size?: number;
@@ -11,7 +12,7 @@ export const AvatarPlaceholder = ({size = 12}: AvatarPlaceholderProps) => {
       height={size}
       width={size}
       borderRadius={'full'}
-      background={'warmGray.400'}
+      background={theme.colors.background[400]}
     />
   );
 };

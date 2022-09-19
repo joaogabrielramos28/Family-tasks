@@ -22,4 +22,14 @@ export const theme = extendTheme({
     title: NativeBaseTheme.colors.light[50],
     error: NativeBaseTheme.colors.red[500],
   },
+  fonts: {
+    heading: 'Roboto_700Bold',
+    body: 'Roboto_400Regular',
+  },
+  fontSizes: {
+    xs: 12,
+    sm: 14,
+    md: 16,
+    lg: 20,
+  },
 });

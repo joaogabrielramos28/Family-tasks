@@ -41,10 +41,16 @@ const Header = () => {
           )}
 
           <VStack>
-            <Text color={theme.colors.text} fontSize={RFValue(14)}>
+            <Text
+              color={theme.colors.text}
+              fontSize={theme.fontSizes.md}
+              fontFamily={'body'}>
               Bem vindo,
             </Text>
-            <Heading fontSize={RFValue(18)} color={theme.colors.title}>
+            <Heading
+              fontSize={theme.fontSizes.lg}
+              fontFamily={'heading'}
+              color={theme.colors.title}>
               {user.name}
             </Heading>
           </VStack>
